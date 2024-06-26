@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PillPal420</string>
+    <string name="open_navdrawer">Open Navigation Drawer</string>
+    <string name="close_navdrawer">Close Navigation Drawer</string>
+    <string name="nav_logout">Logout</string>
+    <string name="nav_help">Help</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_inventur">Inventory</string>
+    <string name="nav_scan">Scan</string>
+    <string name="header_desc">Welcome!</string>
+</resources>

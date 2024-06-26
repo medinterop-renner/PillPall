@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">PillPal</string>
+    <string name="open_navdrawer">Navigationsleiste Öffnen</string>
+    <string name="close_navdrawer">Navigationsleiste schliessen</string>
+    <string name="nav_logout">Abmelden</string>
+    <string name="nav_help">Hilfe</string>
+    <string name="nav_home">Start</string>
+    <string name="nav_inventur">Inventur</string>
+    <string name="nav_scan">Scannen</string>
+    <string name="header_desc">Willkommen!</string>
+
+</resources>
