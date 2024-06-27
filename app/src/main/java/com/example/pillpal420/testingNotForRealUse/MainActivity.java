@@ -26,8 +26,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
-    DataStorage dataStorage = new DataStorage();
-    String[] patientDataJson;
+
 
     private PatientViewModel patientViewModel;
 
