@@ -1,4 +1,4 @@
-package com.example.pillpal420.Backend.RoomDB;
+package com.example.pillpal420.backend.roomDB;
 
 import android.content.Context;
 

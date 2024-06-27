@@ -1,4 +1,4 @@
-package com.example.pillpal420.Documentation;
+package com.example.pillpal420.documentation;
 
 public enum LogTag {
 
@@ -6,7 +6,9 @@ public enum LogTag {
     MEDICATION_REQUEST("MedicationRequestDataModel"),
     PRACTITIONER("PractitionerDataModel"),
     PATIENT("PatientDataModel"),
+    ROOM_DB("DataBanking"),
     DOSAGE_INSTRUCTION("DosageInstructions");
+
 
     private final String tag;
 

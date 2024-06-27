@@ -1,4 +1,4 @@
-package com.example.pillpal420.Backend;
+package com.example.pillpal420.backend.dataModels;
 
 public class PractitionerDataModel {
 
@@ -81,45 +81,3 @@ public class PractitionerDataModel {
 }
 
 
-
-
-
-
-
-
-
-
-
-/*
-
-  "resourceType" : "Practitioner",
-  "id" : "f007",
-
-  "name" : [{
-    "use" : "official",
-    "family" : "Blackwell",
-    "given" : ["Elizabeth"],
-    "suffix" : ["Dr"]
-  }],
-  "telecom" : [{
-    "system" : "phone",
-    "value" : "0123456789",
-    "use" : "work"
-  },
-  {
-    "system" : "email",
-    "value" : "elizabeth.blackwell@md.com",
-    "use" : "work"
-  }
-],
-  "gender" : "female",
-  "birthDate" : "03.03.1821",
-  "address" : [{
-    "use" : "work",
-    "line" : ["1stAve"],
-    "city" : "NY",
-    "postalCode" : "9101",
-    "country" : "USA"
-  }]
-}
- */

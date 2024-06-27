@@ -6,8 +6,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pillpal420.Backend.FullPrescriptionDataModel;
-import com.example.pillpal420.Backend.MedicationRequestDataModelForFullPrescription;
+import com.example.pillpal420.backend.dataModels.FullPrescriptionDataModel;
+import com.example.pillpal420.backend.dataModels.MedicationRequestDataModelForFullPrescription;
 
 import java.util.List;
 public class RezeptAdapter extends RecyclerView.Adapter<RezeptAdapter.ViewHolder>{

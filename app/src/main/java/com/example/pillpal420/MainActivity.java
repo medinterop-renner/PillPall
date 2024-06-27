@@ -51,6 +51,7 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
+
     private static final int CAM_REQUEST = 24;
     private static final int REQUEST_PERMISSIONS = 123;
     private DrawerLayout dLayout;

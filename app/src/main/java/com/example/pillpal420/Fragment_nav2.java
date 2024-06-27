@@ -11,11 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.pillpal420.Backend.FullPrescriptionDataModel;
-import com.example.pillpal420.Backend.MedicationRequestDataModelForFullPrescription;
-import com.example.pillpal420.Backend.PatientDataModel;
-import com.example.pillpal420.Backend.PractitionerDataModel;
-import com.example.pillpal420.Documentation.LogTag;
+import com.example.pillpal420.backend.dataModels.FullPrescriptionDataModel;
+import com.example.pillpal420.backend.dataModels.MedicationRequestDataModelForFullPrescription;
+import com.example.pillpal420.backend.dataModels.PatientDataModel;
+import com.example.pillpal420.backend.dataModels.PractitionerDataModel;
+import com.example.pillpal420.documentation.LogTag;
 
 import java.util.ArrayList;
 import java.util.List;
