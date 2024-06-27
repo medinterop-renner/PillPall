@@ -25,6 +25,8 @@ import okhttp3.Response;
 public class PractitionerRepository {
 
 
+
+
     public interface PractitionerCallback{
         void onResponse(PractitionerDataModel practitionerDataModel);
         void onFailure(Exception e);

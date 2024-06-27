@@ -18,6 +18,8 @@ public class FullPrescriptionViewModel extends AndroidViewModel {
     private FullPrescriptionRepository repository;
     private MutableLiveData<List<FullPrescriptionDataModel>> fullPrescriptionLiveData;
 
+
+
     public FullPrescriptionViewModel(@NonNull Application application) {
         super(application);
         repository = new FullPrescriptionRepository();

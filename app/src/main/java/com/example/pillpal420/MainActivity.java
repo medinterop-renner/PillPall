@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if(!checkStoragePermissions()){
                 reqStoragePermission();
                 }
+
     }
     //Kamera Permission
     private void camPermission(){

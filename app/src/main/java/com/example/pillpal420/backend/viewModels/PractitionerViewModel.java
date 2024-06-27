@@ -16,7 +16,7 @@ public class PractitionerViewModel extends ViewModel {
 
     public PractitionerViewModel(){
         practitionerLiveData = new MutableLiveData<>();
-        practitionerRepository = new PractitionerRepository();
+        practitionerRepository = new PractitionerRepository(); // here is an argument (server adress expected how do i handle this )
     }
 
     public LiveData<PractitionerDataModel> getPractitionerLiveData(){
