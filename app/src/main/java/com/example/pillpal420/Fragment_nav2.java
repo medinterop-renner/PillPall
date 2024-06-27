@@ -3,6 +3,8 @@ package com.example.pillpal420;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,30 +32,35 @@ public class Fragment_nav2 extends Fragment {
     //YYYY:MM:DD
     private String birthdate;
 
+    private RecyclerView rezeptRecView;
+    private RezeptAdapter rezeptAdapter;
+    private List<FullPrescriptionDataModel> fullPrescriptionDataModels;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //fullPrescriptionDataModels --> alles
-        //fullPrescriptionDataModels.get(0).toString() ganzes Rezeot (Arzt, Patient, Medikation)
-        //fullPrescriptionDataModels.get(0).patientDataModel.toString()
-        //fullPrescriptionDataModels.get(0).practicionerDataModel.toString()
-        //fullPrescriptionDataModels.get(0).medicationRequestDataModelForFullPrescription.toString()
         List<FullPrescriptionDataModel> fullPrescriptionDataModels = new ArrayList<>();
         fullPrescriptionDataModels = createTestFullPrescriptionDataModels();
         Log.d("Rezept", fullPrescriptionDataModels.get(0).toString());
         Log.d("Rezept", fullPrescriptionDataModels.get(1).toString());
         Log.d(LogTag.FULL_PRESCRIPTION.getTag(),"logging full prescription");
 
+        View view = inflater.inflate(R.layout.fragment_scan, container, false);
+        rezeptRecView = view.findViewById(R.id.scanRecView);
+        rezeptRecView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
-
-
-
+        fetchFullPrescriptionDataModels();
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_scan, container, false);
+        return view;
 
+    }
 
+    private void fetchFullPrescriptionDataModels(){
+        //Hier Server Daten abfragen für Display
+
+        fullPrescriptionDataModels = createTestFullPrescriptionDataModels();
+        rezeptAdapter = new RezeptAdapter(fullPrescriptionDataModels);
+        rezeptRecView.setAdapter(rezeptAdapter);
 
     }
 
