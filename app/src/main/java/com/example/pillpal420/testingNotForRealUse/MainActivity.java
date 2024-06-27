@@ -1,5 +1,5 @@
-package com.example.pillpal420.testingNotForRealUse;
-
+//package com.example.pillpal420.testingNotForRealUse;
+/*
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -292,42 +292,7 @@ public void anbindungAnRoomDB(){
 
 
 
-/*
-         List<MedicationRequestDataModelForFullPrescription> allMedications = fullPrescription.getMedicationRequestDataModelForFullPrescription();
 
-          List<String> medikas = new ArrayList<>();
-
-
-            String medikamentname= null;
-            String patientInstructions = null;
-            String frequency = null;
-            String when = null;
-
-
-         for(MedicationRequestDataModelForFullPrescription medications: allMedications){
-
-          medikamentname = medications.getDisplayMedication();
-        List<MedicationRequestDataModelForFullPrescription.DosageInstructionsForMedicationRequestDataModelForFullPrescription> alleDosageInstructions =  medications.getDosageInstructions();
-
-        medikamentname = medications.getDisplayMedication();
-
-        for (MedicationRequestDataModelForFullPrescription.DosageInstructionsForMedicationRequestDataModelForFullPrescription dosages: alleDosageInstructions){
-            patientInstructions = dosages.getPatientInstruction();
-            frequency = dosages.getFrequency();
-            when = dosages.getWhen();
-
-        }
-
-        String ganzeAnleitungFürJedesMedika = medikamentname +"." + frequency +" oft am " +when +" einnehmen.";
-        medikas.add(ganzeAnleitungFürJedesMedika);
-
-        medikamentname = null;
-        patientInstructions = null;
-        frequency=null;
-        when = null;
-
-
-         }*/
 
          Log.d("Rezept","Rezept für:\n "+ SVN +" "+ family +" "+given+" "+line +" "+city+" "+postleizahl+" "+state +"\n "
                  +"Ausgestellt von:  "+ suffix +" "+familyPractitioner +" "+ givenPractitioner +" "+linePracttioner+" "+cityPractioner+"\n"+
@@ -348,10 +313,7 @@ public void anbindungAnRoomDB(){
         String patientIdLinkedWithMedicationRequest = "1599";
         medicationRequestViewModels.get(0).fetchMedicationRequest(patientIdLinkedWithMedicationRequest);
 
-        // achtung hier sollte es reichen einmal die View Models zu fetchen... Es sollte ja nur ein bundle zurückgeliefert werden.
-       /* for (MedicationRequestViewModel viewModel : medicationRequestViewModels) {
-            viewModel.fetchMedicationRequest(patientIdLinkedWithMedicationRequest);
-        }*/
+
     }
 
     private void fetchPractitionerDataModel() {
@@ -470,68 +432,5 @@ public void anbindungAnRoomDB(){
 
 }
 
-/*
 
-public void getPatientOverview(){
-    final CountDownLatch latch = new CountDownLatch(1);
-    ExecutorService service = Executors.newSingleThreadExecutor();
-    service.execute(new Runnable() {
-
-        @Override
-        public void run() {
-
-            DataStorage.getAllPatientsFromServer();
-            latch.countDown();
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-
-
-            runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                      /*  try {
-                            latch.await();
-                            patientDataJson = DataStorage.getPatientData();
-                            Log.d("Testing", patientDataJson[0]);
-                            displayData();
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-
-                        if (patientDataJson[0] != null) {
-
-
-                        }
-                    }
-                });
-
-
-        }
-    });
-
-
-
-}
-
-
-public void displayData(){
-Parser parser = new Parser();
-    Log.d("Testing","Before creating Patient");
-    Patient patient = parser.createPatient(patientDataJson[3]);
-
-
-    TextView textView = findViewById(R.id.main);
-    textView.setText(patient.getId() +" "+ patient.getFamily()+" " + patient.getGiven());
-       for(int i = 0; i<patientDataJson.length;i++){
-           Log.d("Testing",patientDataJson[i]);
-       }
-
-
-
-}
-}
 */
-
