@@ -10,9 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.pillpal420.Backend.CorePatientDataCallback;
-import com.example.pillpal420.Backend.RoomDB.CorePatientProfil;
-import com.example.pillpal420.Backend.RoomDB.CorePatientProfileDatabase;
+import com.example.pillpal420.backend.CorePatientDataCallback;
+import com.example.pillpal420.backend.roomDB.CorePatientProfil;
+import com.example.pillpal420.backend.roomDB.CorePatientProfileDatabase;
+import com.example.pillpal420.documentation.LogTag;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -68,12 +69,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onPatientDataLoaded(CorePatientProfil patient) {
                 corePatientProfil = patient;
-                Log.d("RoomDB", "Retrieved person from db: " + patient.toString());
+                Log.d(LogTag.ROOM_DB.getTag(), "Retrieved person from db: " + patient.toString());
             }
 
             @Override
             public void onDataNotAvailable() {
-                Log.d("RoomDB", "No person found in db with id: " + idRoomDB);
+                Log.d(LogTag.ROOM_DB.getTag(), "No person found in db with id: " + idRoomDB);
             }
         });
     }
@@ -85,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
             CorePatientProfil patient = corePatientProfileDatabase.getCorePatientProfilDAO().getCorePatientProfil(idRoomDB);
             handler.post(() -> {
                 if (patient != null) {
+                    Log.d(LogTag.ROOM_DB.getTag(), "Request Succesfull");
                     callback.onPatientDataLoaded(patient);
                 } else {
                     callback.onDataNotAvailable();
@@ -92,4 +94,6 @@ public class LoginActivity extends AppCompatActivity {
             });
         });
     }
+
+
 }

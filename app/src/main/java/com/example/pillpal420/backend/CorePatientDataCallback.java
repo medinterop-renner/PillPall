@@ -1,6 +1,6 @@
-package com.example.pillpal420.Backend;
+package com.example.pillpal420.backend;
 
-import com.example.pillpal420.Backend.RoomDB.CorePatientProfil;
+import com.example.pillpal420.backend.roomDB.CorePatientProfil;
 
 public interface CorePatientDataCallback {
 

@@ -1,4 +1,4 @@
-package com.example.pillpal420.Backend;
+package com.example.pillpal420.backend.dataModels;
 
 import androidx.annotation.NonNull;
 import java.util.List;
