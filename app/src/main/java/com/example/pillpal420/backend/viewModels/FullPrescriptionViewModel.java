@@ -1,6 +1,8 @@
 package com.example.pillpal420.backend.viewModels;
 
 import android.app.Application;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -8,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.pillpal420.backend.dataModels.FullPrescriptionDataModel;
 import com.example.pillpal420.backend.repository.FullPrescriptionRepository;
+import com.example.pillpal420.documentation.LogTag;
 
 import java.util.List;
 
@@ -29,12 +32,13 @@ public class FullPrescriptionViewModel extends AndroidViewModel {
         repository.getFullMedicationRequests(patientId, new FullPrescriptionRepository.FullPrescriptionRepositoryCallback() {
             @Override
             public void onResponse(List<FullPrescriptionDataModel> fullPrescriptionDataModels) {
-                fullPrescriptionLiveData.postValue(fullPrescriptionDataModels);
+                Log.d(LogTag.FULL_PRESCRIPTION.getTag(),"successfully posted to live data");
+                        fullPrescriptionLiveData.postValue(fullPrescriptionDataModels);
             }
 
             @Override
             public void onFailure(Exception e) {
-                // Handle the error accordingly, possibly setting an error value in the LiveData
+                Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "Error in view model");
                 fullPrescriptionLiveData.postValue(null);
             }
         });

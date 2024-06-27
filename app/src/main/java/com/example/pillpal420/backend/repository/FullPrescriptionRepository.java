@@ -51,6 +51,7 @@ public class FullPrescriptionRepository {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 if (!response.isSuccessful()) {
+
                     fullPrescriptionRepositoryCallback.onFailure(new IOException("Unexpected code " + response));
                     return;
                 }

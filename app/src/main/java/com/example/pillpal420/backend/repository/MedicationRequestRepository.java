@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.pillpal420.backend.Parser;
 import com.example.pillpal420.backend.dataModels.MedicationRequestDataModel;
+import com.example.pillpal420.documentation.LogTag;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,7 +65,7 @@ public class MedicationRequestRepository {
         OkHttpClient client = new OkHttpClient();
         Parser parser = new Parser();
         JSONObject json = parser.createPostMedicationRequest(medicationRequest);
-        Log.d("MedicationRequest",json.toString());
+        Log.d(LogTag.MEDICATION_REQUEST.name(),"Raw json from server: "+ json.toString());
         RequestBody body = RequestBody.create(json.toString(), MediaType.parse("application/fhir+json"));
         String url = "http://10.0.2.2:8080/hapi-fhir-jpaserver/fhir/MedicationRequest";
 
@@ -88,12 +89,12 @@ public class MedicationRequestRepository {
                     throw new IOException("Unexpected code " + response);
                 } else {
                     String responseBody = response.body().string();
-                    Log.d("MedicationRequest","Inside of MedicationRequestRepo " + responseBody);
+                    Log.d(LogTag.MEDICATION_REQUEST.name(),"Inside of MedicationRequestRepo " + responseBody);
 
                         JSONObject jsonObjectMedicationResourceBody = new JSONObject(responseBody);
 
-                    MedicationRequestDataModel result = parser.parseMedicationRequest(jsonObjectMedicationResourceBody); // Assuming single entry
-                    Log.d("MedicationRequest","Successfully created medication RequestViewModel");
+                    MedicationRequestDataModel result = parser.parseMedicationRequest(jsonObjectMedicationResourceBody);
+                    Log.d(LogTag.MEDICATION_REQUEST.name(),"Successfully created medication RequestViewModel inside of MedReqRepository");
                     liveData.postValue(result);
                 }
                 } catch (JSONException e) {

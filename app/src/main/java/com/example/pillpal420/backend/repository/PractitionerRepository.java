@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.pillpal420.backend.Parser;
 import com.example.pillpal420.backend.dataModels.PractitionerDataModel;
+import com.example.pillpal420.documentation.LogTag;
 
 import org.json.JSONObject;
 
@@ -86,9 +87,9 @@ public class PractitionerRepository {
                 throw new IOException("Got back Unexpected Code from Server " + response);
             }else{
                 String responseBody = response.body().string();
-                Log.d("Practitioner","Got this back after posting to Server: " + responseBody);
+                Log.d(LogTag.PRACTITIONER.getTag(), "Got this back after posting to Server: " + responseBody);
                 PractitionerDataModel result = parser.createPractitioner(responseBody);
-                Log.d("Practitioner","practitioner successfully created from server response");
+                Log.d(LogTag.PRACTITIONER.getTag(),"practitioner successfully created from server response");
                 liveData.postValue(result);
             }
             }

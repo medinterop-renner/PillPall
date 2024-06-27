@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.pillpal420.backend.dataModels.MedicationRequestDataModel;
 import com.example.pillpal420.backend.dataModels.PatientDataModel;
 import com.example.pillpal420.backend.dataModels.PractitionerDataModel;
+import com.example.pillpal420.documentation.LogTag;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,7 +18,7 @@ public class Parser {
 
     public PatientDataModel createPatient(String jsonResponse) {
         PatientDataModel patientDataModel = null;
-        Log.d("Testing","Creating Patient");
+        Log.d(LogTag.PATIENT.name(), "Parsing JSON for getRequest");
         try {
             // Parse the JSON response string into a JSONObject
             JSONObject jsonObject = new JSONObject(jsonResponse);
@@ -66,15 +67,12 @@ public class Parser {
             ,birthDate,line,city,state,postalCode,country);
 
         } catch (JSONException e) {
+            Log.d(LogTag.PATIENT.name(),"Error while parsing json for get Request");
             throw new RuntimeException(e);
         }
-        Log.d("Testing", "Parser class PatientDataModelCreated"+patientDataModel.getId() + " " +
-                patientDataModel.getIdentifierSocialSecurityNum() + " " + patientDataModel.getFamily() + " " +
-                patientDataModel.getGiven() + " " + patientDataModel.getPrefix()
-        +" " + patientDataModel.getGender() +" " +patientDataModel.getBirthDate() +" " +patientDataModel.getLine()
-                +" " +patientDataModel.getState() + " " + patientDataModel.getPostalCode()+ " " + patientDataModel.getCountry());
 
 
+        Log.d(LogTag.PATIENT.name(),"PatientDataModel successfully parsed for get");
         return patientDataModel;
     }
     public JSONObject createPostPatientResource(PatientDataModel patientDataModel) {
@@ -129,13 +127,15 @@ public class Parser {
             json.put("address", addressArray);
 
         } catch (JSONException e) {
+            Log.d(LogTag.PATIENT.name(),"Error while parsing JSON for post req");
             throw new RuntimeException(e);
         }
+        Log.d(LogTag.PATIENT.name(),"JSON parsed succeffully for postReq");
         return json;
     }
     public List<MedicationRequestDataModel> createMedicationRequest(String jsonResponse) {
 
-        Log.d("MedicationRequest", jsonResponse);
+        Log.d(LogTag.MEDICATION_REQUEST.name(), "Parsing json from get Request");
         List<MedicationRequestDataModel> medicationRequests = new ArrayList<>();
 
         try {
@@ -155,10 +155,10 @@ public class Parser {
             }
 
         } catch (JSONException e) {
-            Log.d("Testing", "Error during Medication parsing");
+            Log.d(LogTag.MEDICATION_REQUEST.name(), "Error during Medication parsing from get request");
             throw new RuntimeException(e);
         }
-
+        Log.d(LogTag.MEDICATION_REQUEST.name(), "Medication parsed from get request successfully");
         return medicationRequests;
     }
 
@@ -221,6 +221,7 @@ public class Parser {
             }
         }
 
+     Log.d(LogTag.MEDICATION_REQUEST.name(), "MedicationRequest parsed successfully from get");
         return new MedicationRequestDataModel(id, eMedID, eMedIDGroup, aspCode, displayMedication, requester, subjectReference, dosageInstructions);
     }
 
@@ -277,15 +278,15 @@ public class Parser {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        Log.d("MedicationRequest", "Successfully Created med req.");
+        Log.d(LogTag.MEDICATION_REQUEST.name(), "Successfully Created med req.");
         return json;
     }
 
     public PractitionerDataModel createPractitioner(String jsonResponse){
         PractitionerDataModel practitioner = null;
 
-        Log.d("Practitioner","Creating new Practitioner");
-        Log.d("Practitioner",jsonResponse);
+        Log.d(LogTag.PRACTITIONER.getTag(), "Creating new Practitioner");
+        Log.d(LogTag.PRACTITIONER.getTag(),jsonResponse);
 
         try {
             JSONObject jsonObject = new JSONObject(jsonResponse);
@@ -320,7 +321,7 @@ public class Parser {
             String postalCode = addressObject.getString("postalCode");
             String country = addressObject.getString("country");
 
-            Log.d("Practitioner",id +" " + family+" " + given + " " + suffix+ " " +telecom+ " " +line+ " " +city+ " " +postalCode+ " " +country);
+            Log.d(LogTag.PRACTITIONER.getTag(),id +" " + family+" " + given + " " + suffix+ " " +telecom+ " " +line+ " " +city+ " " +postalCode+ " " +country);
 
             practitioner = new PractitionerDataModel(id,oidPractitioner,family,given,suffix,telecom,line,city,postalCode,country);
 
@@ -395,8 +396,10 @@ public class Parser {
             json.put("gender", "female"); // Assuming gender is always female as per your provided resource example
 
         } catch (JSONException e) {
+            Log.d(LogTag.PRACTITIONER.getTag(),"failure by parsing json for post request");
             throw new RuntimeException(e);
         }
+        Log.d(LogTag.PRACTITIONER.getTag(),"json for post request successfully parsed");
         return json;
     }
 }
