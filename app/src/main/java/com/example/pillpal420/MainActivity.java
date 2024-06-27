@@ -47,6 +47,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import com.example.pillpal420.documentation.LogTag;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -82,6 +83,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if(!checkStoragePermissions()){
                 reqStoragePermission();
                 }
+
+
+            // backend
+        // Retrieve the data passed from LoginActivity
+        String userId = getIntent().getStringExtra("USER_ID"); // Default value -1 if no data
+
+
+
+        Log.d(LogTag.LOG_IN.getTag(), userId );
 
     }
     //Kamera Permission

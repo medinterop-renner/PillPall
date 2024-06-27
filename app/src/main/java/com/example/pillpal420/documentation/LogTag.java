@@ -7,6 +7,8 @@ public enum LogTag {
     PRACTITIONER("PractitionerDataModel"),
     PATIENT("PatientDataModel"),
     ROOM_DB("DataBanking"),
+
+    LOG_IN("LogIn"),
     DOSAGE_INSTRUCTION("DosageInstructions");
 
 

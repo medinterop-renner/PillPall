@@ -51,7 +51,9 @@ public class LoginActivity extends AppCompatActivity {
 
             if (corePatientProfil != null) {
                 if (validateLogin(vornameCheck, svnCheck)) {
+
                     Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
+                    loginIntent.putExtra("USER_ID",svnCheck );
                     startActivity(loginIntent);
                     finish();
                 } else {
@@ -61,6 +63,14 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "Patientendaten nicht verfügbar", Toast.LENGTH_SHORT).show();
             }
         });
+
+
+// back end
+// pass id to main activity
+
+
+
+
     }
 
     private boolean validateLogin(String vornameCheck, String svnCheck) {
