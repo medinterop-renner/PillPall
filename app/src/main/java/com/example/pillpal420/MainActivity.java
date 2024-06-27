@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, CAM_REQUEST);
 
         }
-
     }
     //Permission Request weil Android 14 mich nicht mag :(
     public boolean checkStoragePermissions(){
@@ -129,18 +128,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                                                                             REQUEST_PERMISSIONS);
         }
     }
-private ActivityResultLauncher<Intent> storageLauncher =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult o) {
-                    //über Android 11
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
-                        //External Storage granted
-                        if(Environment.isExternalStorageManager()){
 
-                        }else{
-                            Toast.makeText(MainActivity.this, "Zugriff nicht gewährt",Toast.LENGTH_SHORT).show();
-                        }
+    //lambda anstatt new ActivityResultCallback<ActivityResult>()
+private ActivityResultLauncher<Intent> storageLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), o -> {
+                //über Android 11
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+                    //External Storage granted
+                    if(Environment.isExternalStorageManager()){
+
+                    }else{
+                        Toast.makeText(MainActivity.this, "Zugriff nicht gewährt",Toast.LENGTH_SHORT).show();
                     }
                 }
             });
