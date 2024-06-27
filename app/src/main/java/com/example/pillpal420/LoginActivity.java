@@ -38,7 +38,10 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
 
         corePatientProfileDatabase = CorePatientProfileDatabase.getDatabase(getApplicationContext());
-
+        //derweil nicht wichtig
+        /*CorePatientProfil patientRoomDB = new CorePatientProfil(1, "100", "1234", "turbotoll", "turboVorname", "Dr",
+                "male", "2000-01-01", "Patientenstrasse 1", "Graz", "Stmk", "8052", "AUT");
+        addPersonInBackground(patientRoomDB);*/
         // Fetch patient login information
         fetchPatientLogInInformation(1); // Assuming the patient ID is 1 for testing
 
@@ -92,6 +95,22 @@ public class LoginActivity extends AppCompatActivity {
                     callback.onDataNotAvailable();
                 }
             });
+        });
+    }
+    public void addPersonInBackground(CorePatientProfil patientRoomDB) {
+        ExecutorService executorServiceDB = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+        executorServiceDB.execute(new Runnable() {
+            @Override
+            public void run() {
+                corePatientProfileDatabase.getCorePatientProfilDAO().addCorePatientProfil(patientRoomDB);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("RoomDB", "Added person to db");
+                    }
+                });
+            }
         });
     }
 
