@@ -13,6 +13,7 @@ import com.example.pillpal420.Backend.FullPrescriptionDataModel;
 import com.example.pillpal420.Backend.MedicationRequestDataModelForFullPrescription;
 import com.example.pillpal420.Backend.PatientDataModel;
 import com.example.pillpal420.Backend.PractitionerDataModel;
+import com.example.pillpal420.Documentation.LogTag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,9 @@ public class Fragment_nav2 extends Fragment {
         List<FullPrescriptionDataModel> fullPrescriptionDataModels = new ArrayList<>();
         fullPrescriptionDataModels = createTestFullPrescriptionDataModels();
         Log.d("Rezept", fullPrescriptionDataModels.get(0).toString());
+        Log.d("Rezept", fullPrescriptionDataModels.get(1).toString());
+        Log.d(LogTag.FULL_PRESCRIPTION.getTag(),"logging full prescription");
+
 
 
 
@@ -93,6 +97,31 @@ public class Fragment_nav2 extends Fragment {
 
         // Add to list
         fullPrescriptionDataModels.add(fullPrescription);
+
+
+        // Second FullPrescriptionDataModel with three medications
+        List<MedicationRequestDataModelForFullPrescription.DosageInstructionsForMedicationRequestDataModelForFullPrescription> dosageInstructions5 = new ArrayList<>();
+        dosageInstructions5.add(new MedicationRequestDataModelForFullPrescription.DosageInstructionsForMedicationRequestDataModelForFullPrescription("Eine Pille einnehmen", "1", "NOON"));
+
+        MedicationRequestDataModelForFullPrescription medicationRequest3 = new MedicationRequestDataModelForFullPrescription("Ibuprofen 200MG", dosageInstructions5);
+
+        List<MedicationRequestDataModelForFullPrescription.DosageInstructionsForMedicationRequestDataModelForFullPrescription> dosageInstructions3 = new ArrayList<>();
+        dosageInstructions3.add(new MedicationRequestDataModelForFullPrescription.DosageInstructionsForMedicationRequestDataModelForFullPrescription("Tablette nach dem Essen einnehmen", "1", "EVENING"));
+
+        MedicationRequestDataModelForFullPrescription medicationRequest4 = new MedicationRequestDataModelForFullPrescription("Paracetamol 500MG", dosageInstructions3);
+
+        List<MedicationRequestDataModelForFullPrescription.DosageInstructionsForMedicationRequestDataModelForFullPrescription> dosageInstructions4 = new ArrayList<>();
+        dosageInstructions4.add(new MedicationRequestDataModelForFullPrescription.DosageInstructionsForMedicationRequestDataModelForFullPrescription("Kapsel auf nüchternen Magen einnehmen", "1", "MORNING"));
+
+        MedicationRequestDataModelForFullPrescription medicationRequest5 = new MedicationRequestDataModelForFullPrescription("Aspirin 100MG", dosageInstructions4);
+
+        List<MedicationRequestDataModelForFullPrescription> medicationRequests2 = new ArrayList<>();
+        medicationRequests2.add(medicationRequest3);
+        medicationRequests2.add(medicationRequest4);
+        medicationRequests2.add(medicationRequest5);
+
+        FullPrescriptionDataModel fullPrescription2 = new FullPrescriptionDataModel(patient, practitioner, medicationRequests2);
+        fullPrescriptionDataModels.add(fullPrescription2);
 
         return fullPrescriptionDataModels;
     }
