@@ -3,10 +3,11 @@ package com.example.pillpal420;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,22 +16,20 @@ import com.example.pillpal420.backend.dataModels.FullPrescriptionDataModel;
 import com.example.pillpal420.backend.dataModels.MedicationRequestDataModelForFullPrescription;
 import com.example.pillpal420.backend.dataModels.PatientDataModel;
 import com.example.pillpal420.backend.dataModels.PractitionerDataModel;
-import com.example.pillpal420.documentation.LogTag;
+import com.example.pillpal420.backend.viewModels.FullPrescriptionViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 //Scan Fragment
 public class Fragment_nav2 extends Fragment {
-    private String[] patient;
-    //Familyname, Givenname, Prefix/Suffix
-    private String[] name;
-    //Straßenname, Hausnummer, Stadt, Staat, Postleitzahl
-    private String[] address;
-    //male, female, other, unknown
-    private String gender;
-    //YYYY:MM:DD
-    private String birthdate;
+
+
+    //  BACKEND !!
+    private FullPrescriptionViewModel fullPrescriptionViewModel;
+
+
+
 
     private RecyclerView rezeptRecView;
     private RezeptAdapter rezeptAdapter;
@@ -38,27 +37,49 @@ public class Fragment_nav2 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        List<FullPrescriptionDataModel> fullPrescriptionDataModels = new ArrayList<>();
-        fullPrescriptionDataModels = createTestFullPrescriptionDataModels();
-        Log.d("Rezept", fullPrescriptionDataModels.get(0).toString());
-        Log.d("Rezept", fullPrescriptionDataModels.get(1).toString());
-        Log.d(LogTag.FULL_PRESCRIPTION.getTag(),"logging full prescription");
+       // List<FullPrescriptionDataModel> fullPrescriptionDataModels = new ArrayList<>();
+       // fullPrescriptionDataModels = createTestFullPrescriptionDataModels();
+        //Log.d("Rezept", fullPrescriptionDataModels.get(0).toString());
+       // Log.d("Rezept", fullPrescriptionDataModels.get(1).toString());
+        //Log.d(LogTag.FULL_PRESCRIPTION.getTag(),"logging full prescription");
+
 
         View view = inflater.inflate(R.layout.fragment_scan, container, false);
         rezeptRecView = view.findViewById(R.id.scanRecView);
         rezeptRecView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        fetchFullPrescriptionDataModels();
+
+
+        // backend
+        fullPrescriptionViewModel = new ViewModelProvider(this).get(FullPrescriptionViewModel.class);
+
+        fullPrescriptionViewModel.getFullPrescriptionLiveData().observe(getViewLifecycleOwner(), new Observer<List<FullPrescriptionDataModel>>() {
+            @Override
+            public void onChanged(List<FullPrescriptionDataModel> fullPrescriptionDataModels) {
+                if (fullPrescriptionDataModels != null) {
+                    displayFullPrescriptionDataModels(fullPrescriptionDataModels);
+
+
+                }
+            }
+        });
+
+        // UI Testing hier auscommenten
+        fetchFullPrescriptions();
 
         // Inflate the layout for this fragment
         return view;
 
     }
+// Liste aus methoden übergabe entfernen und in onCreateview aufrufen
+    private void displayFullPrescriptionDataModels(List<FullPrescriptionDataModel> fullPrescriptionDataModels){
+        //Hier Server Daten abfragen für Display unten
 
-    private void fetchFullPrescriptionDataModels(){
-        //Hier Server Daten abfragen für Display
 
-        fullPrescriptionDataModels = createTestFullPrescriptionDataModels();
+// Hier generator methode reingeben
+
+        //Backend magic oben
+
         rezeptAdapter = new RezeptAdapter(fullPrescriptionDataModels);
         rezeptRecView.setAdapter(rezeptAdapter);
 
@@ -132,6 +153,15 @@ public class Fragment_nav2 extends Fragment {
 
         return fullPrescriptionDataModels;
     }
+// Backend Magic wowowowowowoowowowowoowowowowo
+
+
+    //triggermethode der fullmedreq auslöst
+    private void fetchFullPrescriptions() {
+        String patientId = "1599"; // Globale ID Einfügen!!!!
+        fullPrescriptionViewModel.fetchFullPrescriptions(patientId);
+    }
+
 
 
 }
