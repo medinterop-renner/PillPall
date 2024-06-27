@@ -24,7 +24,6 @@ public class RezeptAdapter extends RecyclerView.Adapter<RezeptAdapter.ViewHolder
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rezept_items, parent, false);
         return new RezeptAdapter.ViewHolder(view);
     }
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int pos){
         FullPrescriptionDataModel rezept = rezepte.get(pos);
@@ -40,7 +39,6 @@ public class RezeptAdapter extends RecyclerView.Adapter<RezeptAdapter.ViewHolder
         }
         holder.medicationInfo.setText(medicationSB.toString());
     }
-
     @Override
     public int getItemCount(){return rezepte.size();}
 
