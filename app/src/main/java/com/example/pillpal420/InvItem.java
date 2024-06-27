@@ -8,11 +8,10 @@ public class InvItem {
     private String expiryDate;
     private Bitmap picBitmap;
 
-    public InvItem(String picPath, Bitmap picBitmap, String picName, String expiryDate){
+    public InvItem(String picPath, String picName, String expiryDate){
 
         this.picName = picName;
         this.picPath = picPath;
-        this.picBitmap = picBitmap;
         this.expiryDate = expiryDate;
     }
 
@@ -22,5 +21,11 @@ public class InvItem {
     public Bitmap getPicBitmap(){return picBitmap;}
 
 
+    public void setName(String name) {
+        this.picName = name;
+    }
 
+    public void setDate(String date) {
+        this.expiryDate = date;
+    }
 }

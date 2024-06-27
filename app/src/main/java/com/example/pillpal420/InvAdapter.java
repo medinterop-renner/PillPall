@@ -1,5 +1,8 @@
 package com.example.pillpal420;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +12,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
 import java.util.List;
 
 public class InvAdapter extends RecyclerView.Adapter<InvAdapter.InventoryViewHolder> {
@@ -33,10 +37,25 @@ public class InvAdapter extends RecyclerView.Adapter<InvAdapter.InventoryViewHol
         holder.imageView.setImageBitmap(currentItem.getPicBitmap());
         holder.editName.setText(currentItem.getPicName());
         holder.editExpiryDate.setText(currentItem.getExpiryDate());
+
+        Uri picUri = Uri.fromFile(new File(currentItem.getPicPath()));
+        holder.imageView.setImageURI(picUri);
+
+        holder.itemView.setOnClickListener(v ->{
+            Context context = v.getContext();
+            Intent intent = new Intent(context, EditRecView.class);
+            intent.putExtra("picPath", currentItem.getPicPath());
+            intent.putExtra("title", currentItem.getPicName());
+            intent.putExtra("date", currentItem.getExpiryDate());
+            context.startActivity(intent);
+
+        });
     }
     public int getItemCount(){return invList.size();}
 
-    public class InventoryViewHolder extends RecyclerView.ViewHolder{
+
+
+    public static class InventoryViewHolder extends RecyclerView.ViewHolder{
 
         public ImageView imageView;
         public EditText editName;

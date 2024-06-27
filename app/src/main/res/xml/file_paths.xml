@@ -4,4 +4,5 @@
     <external-path
         name="my_images"
         path="Android/data/com.example.pillpal420/files/Pictures"/>
+
 </paths>

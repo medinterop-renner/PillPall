@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="250dp"
+        android:layout_height="500dp"
         android:layout_gravity="center"/>
 
     <EditText
@@ -22,5 +22,11 @@
         android:id="@+id/editExpiryDate"
         android:hint="Ablaufdatum"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/saveBtn"
+        android:layout_marginTop="16dp"
+        android:text="Speichern"/>
 
 </LinearLayout>

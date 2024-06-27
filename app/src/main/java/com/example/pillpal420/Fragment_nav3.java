@@ -23,7 +23,7 @@ public class Fragment_nav3 extends Fragment {
 
     private BtnClickListener btnListener;
     private RecyclerView recView;
-    private List<InvItem> invList;
+    private ArrayList<InvItem> invList;
     private InvAdapter invAdapter;
     public interface BtnClickListener{
         void onButtonClicked();
@@ -44,7 +44,7 @@ public class Fragment_nav3 extends Fragment {
 
         //RecyclerView
         recView = invView.findViewById(R.id.recView);
-        invList = new ArrayList<>();
+        invList = new ArrayList<InvItem>();
         invAdapter = new InvAdapter(invList);
         recView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recView.setAdapter(invAdapter);
@@ -61,9 +61,12 @@ public class Fragment_nav3 extends Fragment {
         return invView;
     }
 
+
     //get recyclerView
     public RecyclerView getRecView(){
         return recView;
     }
+    public ArrayList<InvItem> getInvList(){return invList;}
+    public InvAdapter getInvAdapter(){return invAdapter;}
 
 }
