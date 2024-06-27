@@ -32,16 +32,16 @@ public class Fragment_nav2 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        List<FullPrescriptionDataModel> fullPrescriptionDataModels = new ArrayList<>();
-        fullPrescriptionDataModels = createTestFullPrescriptionDataModels();
-
         //fullPrescriptionDataModels --> alles
         //fullPrescriptionDataModels.get(0).toString() ganzes Rezeot (Arzt, Patient, Medikation)
         //fullPrescriptionDataModels.get(0).patientDataModel.toString()
         //fullPrescriptionDataModels.get(0).practicionerDataModel.toString()
         //fullPrescriptionDataModels.get(0).medicationRequestDataModelForFullPrescription.toString()
+        List<FullPrescriptionDataModel> fullPrescriptionDataModels = new ArrayList<>();
+        fullPrescriptionDataModels = createTestFullPrescriptionDataModels();
         Log.d("Rezept", fullPrescriptionDataModels.get(0).toString());
+
+
 
 
 
