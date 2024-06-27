@@ -38,6 +38,7 @@ public class FullPrescriptionViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Exception e) {
+                e.printStackTrace();
                 Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "Error in view model");
                 fullPrescriptionLiveData.postValue(null);
             }
