@@ -1,0 +1,20 @@
+package com.example.pillpal420.Documentation;
+
+public enum LogTag {
+
+    FULL_PRESCRIPTION("FullPrescriptionDataModel"),
+    MEDICATION_REQUEST("MedicationRequestDataModel"),
+    PRACTITIONER("PractitionerDataModel"),
+    PATIENT("PatientDataModel"),
+    DOSAGE_INSTRUCTION("DosageInstructions");
+
+    private final String tag;
+
+    LogTag(String tag) {
+        this.tag = tag;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+}
