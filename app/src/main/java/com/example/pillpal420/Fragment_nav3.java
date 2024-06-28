@@ -2,7 +2,9 @@ package com.example.pillpal420;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -28,85 +30,150 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 //Inventur Fragment
 public class Fragment_nav3 extends Fragment {
-
-    public static final String TAG = "CamFragment";
+    private static final String invTAG = "InvFragment";
+    private static final String PREFS_NAME = "Preferences";
+    private static final String KEY_PICS = "pics";
     private Uri picUri;
-    private ActivityResultLauncher<Uri> picLauncher;
+    private LinearLayout invLinLayout;
+    private ActivityResultLauncher<Uri> invPicLauncher;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View invView = inflater.inflate(R.layout.fragment_inventur, container, false);
+        Button invPicBtn = invView.findViewById(R.id.invPicBtn);
+        invLinLayout = invView.findViewById(R.id.invLinLayout);
 
-        Button picBtn = invView.findViewById(R.id.invPicBtn);
-        ImageView invImgView = invView.findViewById(R.id.invImgView);
-
-        picLauncher = registerForActivityResult(new ActivityResultContracts.TakePicture(), result ->{
-
+        invPicLauncher = registerForActivityResult(new ActivityResultContracts.TakePicture(), result -> {
             if(result){
-                displayPicture(invImgView, picUri);
-                Toast.makeText(getActivity(), "Foto wurde erfolgreich gespeichert", Toast.LENGTH_SHORT).show();
-            }else {
-                Toast.makeText(getActivity(), "Bild wurde nicht gespeichert", Toast.LENGTH_SHORT).show();
+                addPicTags(picUri);
+                savePics();
+            }else{
+                Toast.makeText(getActivity(), "Fehler beim Bild machen", Toast.LENGTH_SHORT).show();
             }
         });
 
-        picBtn.setOnClickListener(v -> openCam());
+        invPicBtn.setOnClickListener(v -> openCam());
 
+        loadPics();
         return invView;
     }
 
-    public void openCam(){
+    private void openCam(){
+        savePics();
         File picFile = null;
-
         try{
-            picFile = createImageFile();
+            picFile = createPicFile();
         }catch(IOException e){
-            Log.e(TAG, "Fehler beim File erstellen", e);
+            Log.e(invTAG, "File error", e);
         }
         if(picFile != null){
-            picUri = FileProvider.getUriForFile(getActivity(),"com.example.pillpal420.fileprovider", picFile);
-            picLauncher.launch(picUri);
+            picUri = FileProvider.getUriForFile(getActivity(), "com.example.pillpal420.fileprovider", picFile);
+            invPicLauncher.launch(picUri);
         }
     }
 
-    private void displayPicture(ImageView imgView, Uri imgUri  ) {
-        if (imgUri != null) {
-            imgView.setImageURI(imgUri);
-        } else {
-            Toast.makeText(getActivity(), "Uri is null", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private File createImageFile() throws IOException{
+    private File createPicFile() throws IOException{
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String picFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File picture = File.createTempFile(picFileName, ".jpg",storageDir);
 
-        return picture;
+        return File.createTempFile(picFileName, ".jpg", storageDir);
     }
 
-    private void showSavedPics(){
-        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File[] pics = storageDir.listFiles();
-        if(pics != null){
-            for (File file : pics){
-                Log.d(TAG, "Bilder " + file.getAbsolutePath());
+    private void addPicTags(Uri picUri){
+        View addTagView = getLayoutInflater().inflate(R.layout.inventory_item, invLinLayout, false);
+
+        ImageView imgView = addTagView.findViewById(R.id.imgView);
+        EditText editName = addTagView.findViewById(R.id.editName);
+        EditText editExpiryDate = addTagView.findViewById(R.id.editExpiryDate);
+        Button deleteBtn  = addTagView.findViewById(R.id.deleteBtn);
+
+        imgView.setImageURI(picUri);
+        imgView.setTag(picUri.toString());
+        deleteBtn.setOnClickListener(v -> {
+            invLinLayout.removeView(addTagView);
+            savePics();
+        });
+
+        invLinLayout.addView(addTagView);
+    }
+
+    private void savePics(){
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        JSONArray jsonArr = new JSONArray();
+        for (int i = 0; i < invLinLayout.getChildCount(); i++){
+            View view = invLinLayout.getChildAt(i);
+            ImageView imgView = view.findViewById(R.id.imgView);
+            EditText editName = view.findViewById(R.id.editName);
+            EditText editExpiryDate = view.findViewById(R.id.editExpiryDate);
+
+            // funktioniert nicht: Uri picUri = imgView.getStringURI(); -->
+            String imgUriString = (String) imgView.getTag();
+            Uri picUri = Uri.parse(imgUriString);
+            String editName22 = editName.getText().toString();
+            String editExpiryDate22 = editExpiryDate.getText().toString();
+
+            JSONObject jsonObj = new JSONObject();
+            try{
+                jsonObj.put("picUri", picUri.toString());
+                jsonObj.put("editName", editName22);
+                jsonObj.put("editExpiryDate", editExpiryDate22);
+                jsonArr.put(jsonObj);
+
+            }catch(JSONException e){
+                e.printStackTrace();
             }
-        }else{
-            Log.d(TAG, "Keine Bilder vorhanden");
+        }
+
+        editor.putString(KEY_PICS, jsonArr.toString());
+        editor.apply();
+    }
+
+    private void loadPics(){
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        String jsonPics = sharedPref.getString(KEY_PICS, "");
+
+        if(!jsonPics.isEmpty()){
+            try{
+                JSONArray jsonArr = new JSONArray(jsonPics);
+                for(int i = 0; i < jsonArr.length(); i++){
+                    JSONObject jsonObj = jsonArr.getJSONObject(i);
+                    String imgUriString = jsonObj.getString("picUri");
+                    String editName = jsonObj.getString("editName");
+                    String editExpiryDate = jsonObj.getString("editExpiryDate");
+
+                    Uri picUri = Uri.parse(imgUriString);
+                    addPicTags(picUri);
+
+                    View view = invLinLayout.getChildAt(invLinLayout.getChildCount() -1);
+                    EditText editName1 = view.findViewById(R.id.editName);
+                    EditText editExpiryDate1 = view.findViewById(R.id.editExpiryDate);
+
+                    editName1.setText(editName);
+                    editExpiryDate1.setText(editExpiryDate);
+                }
+            }catch(JSONException e){
+                e.printStackTrace();
+            }
         }
     }
-
 }
