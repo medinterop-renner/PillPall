@@ -1,7 +1,10 @@
 package com.example.pillpal420.backend.repository;
 
+import android.util.Log;
+
 import com.example.pillpal420.backend.Parser;
 import com.example.pillpal420.backend.dataModels.PatientDataModel;
+import com.example.pillpal420.documentation.LogTag;
 
 import java.io.IOException;
 
@@ -21,7 +24,7 @@ public class WhisperRepository {
 
     public void searchPatientWithNameGetBackPatientObject(String familyNameForFHIRSearch, WhisperCallback callback) {
         OkHttpClient client = new OkHttpClient();
-        String urlPatient = " http://10.0.2.2:8080/hapi-fhir-jpaserver/fhir/Patient?family=turbotoll" + familyNameForFHIRSearch;
+        String urlPatient = " http://192.168.0.2:8080/hapi-fhir-jpaserver/fhir/Patient?family=" + familyNameForFHIRSearch;
 
         Request request = new Request.Builder()
                 .url(urlPatient)
@@ -39,6 +42,7 @@ public class WhisperRepository {
                     callback.onFailure(new IOException("Unexpected code " + response));
                 } else {
                     String responseBody = response.body().string();
+                    Log.d(LogTag.WHISPER.getTag(), responseBody.toString());
                     PatientDataModel patientDataModel = new Parser().createPatient(responseBody);
                     callback.onResponse(patientDataModel);
                 }

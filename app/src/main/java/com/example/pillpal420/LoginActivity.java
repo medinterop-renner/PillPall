@@ -59,11 +59,11 @@ public class LoginActivity extends AppCompatActivity {
         corePatientProfileDatabase = CorePatientProfileDatabase.getDatabase(getApplicationContext());
         corePractitionerProfileDatabase = CorePractitionerProfileDatabase.getDatabase(getApplicationContext());
         // ADD Patient to room db for Login
-      //  createTestPatientForLogInOnlyOnce();
+        //createTestPatientForLogInOnlyOnce();
 
         //ADD Practitioner to room db for Login
 
-      // createTestPractitionerForLogInOnlyOnce();
+       //createTestPractitionerForLogInOnlyOnce();
 
         // createTestPractitionerForLogInOnlyOnce();
 
@@ -83,23 +83,28 @@ public class LoginActivity extends AppCompatActivity {
         //--------------------------------------------------------------------------------------------
 
         loginButton.setOnClickListener(v -> {
+            Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(loginIntent);
+            finish();
+
+            /*
             String vornameCheck = vorname.getText().toString();
             String svnCheck = svnNummer.getText().toString();
 
             if (corePatientProfil != null) {
                 if (validateLogin(vornameCheck, svnCheck)) {
                     // passing the User relative Path to patient zum server.
+// Hier den intent reingeben...
 
-                   Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(loginIntent);
-                    finish();
+                    // Hier log in activity ....
+
 
                 } else {
                     Toast.makeText(LoginActivity.this, "Fehler: falscher Benutzername oder Passwort", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 Toast.makeText(LoginActivity.this, "Patientendaten nicht verfügbar", Toast.LENGTH_SHORT).show();
-            }
+            } */
         });
 
 
@@ -229,7 +234,7 @@ public class LoginActivity extends AppCompatActivity {
     // Create New Patient / Practitioner
 
     public void createTestPatientForLogInOnlyOnce(){
-        CorePatientProfil patientRoomDB0 = new CorePatientProfil(1, "1599", "0", "test0", "turboVorname", "Dr",
+        CorePatientProfil patientRoomDB0 = new CorePatientProfil(1, "1599", "0", "0", "turboVorname", "Dr",
                 "male", "2000-01-01", "Patientenstrasse 1", "Graz", "Stmk", "8052", "AUT");
       /*  CorePatientProfil patientRoomDB1 = new CorePatientProfil(30, "1", "1", "test1", "turboVorname", "Dr",
                 "male", "2000-01-01", "Patientenstrasse 1", "Graz", "Stmk", "8052", "AUT");

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.example.pillpal420.backend.Parser;
 import com.example.pillpal420.backend.dataModels.PatientDataModel;
@@ -11,7 +12,7 @@ import com.example.pillpal420.backend.repository.PatientRepository;
 import com.example.pillpal420.backend.repository.WhisperRepository;
 import com.example.pillpal420.documentation.LogTag;
 
-public class WhisperViewModel {
+public class WhisperViewModel extends ViewModel {
 
     private MutableLiveData<PatientDataModel> patientLiveData;
     private WhisperRepository repository;
@@ -36,6 +37,7 @@ public class WhisperViewModel {
 
                 // Hier könnte man direkt den neuen Patienten zum Server Posten practitioner muss seine DienstNummer -> "Practioner/ + idfromVoice" string sagen
                 // Login nur mit practitioner -> nur whisper sichtabr
+
             }
 
             @Override

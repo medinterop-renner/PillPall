@@ -185,10 +185,12 @@ public class Fragment_nav2 extends Fragment {
 
 
         LoginActivity loginActivity = new LoginActivity();
-        String relativePathPatientReq = loginActivity.getCorePatientProfil().getId();
+//        String relativePathPatientReq = loginActivity.getCorePatientProfil().getId();
+
+        String testTestPatientRplacewithrelativePathPatientReq = "1599";
 
 
-        fullPrescriptionViewModel.fetchFullPrescriptions(relativePathPatientReq);
+        fullPrescriptionViewModel.fetchFullPrescriptions(testTestPatientRplacewithrelativePathPatientReq);
     }
 
 
