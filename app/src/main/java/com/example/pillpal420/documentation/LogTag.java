@@ -9,6 +9,8 @@ public enum LogTag {
     ROOM_DB("DataBanking"),
 
     LOG_IN("LogIn"),
+
+    WHISPER("Whisper"),
     DOSAGE_INSTRUCTION("DosageInstructions");
 
 
