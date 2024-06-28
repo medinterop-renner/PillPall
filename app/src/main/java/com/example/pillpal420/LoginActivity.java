@@ -27,7 +27,12 @@ public class LoginActivity extends AppCompatActivity {
 
     // ROOM DB Anbindung
     private CorePatientProfileDatabase corePatientProfileDatabase;
-    private CorePatientProfil corePatientProfil;
+
+    public CorePatientProfil getCorePatientProfil() {
+        return corePatientProfil;
+    }
+
+  static  private CorePatientProfil corePatientProfil;
 
 
     private CorePractitionerProfileDatabase corePractitionerProfileDatabase;
@@ -54,11 +59,11 @@ public class LoginActivity extends AppCompatActivity {
         corePatientProfileDatabase = CorePatientProfileDatabase.getDatabase(getApplicationContext());
         corePractitionerProfileDatabase = CorePractitionerProfileDatabase.getDatabase(getApplicationContext());
         // ADD Patient to room db for Login
-        // createTestPatientForLogInOnlyOnce();
+      //  createTestPatientForLogInOnlyOnce();
 
         //ADD Practitioner to room db for Login
 
-       //createTestPractitionerForLogInOnlyOnce();
+      // createTestPractitionerForLogInOnlyOnce();
 
         // createTestPractitionerForLogInOnlyOnce();
 
@@ -69,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         fetchPatientLogInInformation(1); // Assuming the patient ID is 1 for testing
 
         // Fetch Practitioner login info
-        fetchPractitionerLogInInformation(1);
+    //    fetchPractitionerLogInInformation(1);
 
 
 
@@ -85,24 +90,10 @@ public class LoginActivity extends AppCompatActivity {
                 if (validateLogin(vornameCheck, svnCheck)) {
                     // passing the User relative Path to patient zum server.
 
-                    Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
-                    loginIntent.putExtra("USER_ID",corePatientProfil.getId());
+                   Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(loginIntent);
-
-                    //ID an andere Fragments übergeben
-                    String loginID = corePatientProfil.getId();
-                    Bundle bundle = new Bundle();
-                    //IDkey very importante
-                    bundle.putString("IDkey", loginID);
-
-                    //Hier genau das für andere Fragments tun wenn nötig
-                    Fragment_nav2 frag2 = new Fragment_nav2();
-                    frag2.setArguments(bundle);
-
-                    //LogCat -.-
-                    Log.d(LogTag.ROOM_DB.getTag(), String.valueOf(corePatientProfil.getIdRoomDB()));
-
                     finish();
+
                 } else {
                     Toast.makeText(LoginActivity.this, "Fehler: falscher Benutzername oder Passwort", Toast.LENGTH_SHORT).show();
                 }
@@ -141,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Log.d("RoomDB", "Added person to db");
+                        Log.d(LogTag.ROOM_DB.getTag(), "Added Patient to DB");
                     }
                 });
             }
@@ -238,11 +229,13 @@ public class LoginActivity extends AppCompatActivity {
     // Create New Patient / Practitioner
 
     public void createTestPatientForLogInOnlyOnce(){
-        CorePatientProfil patientRoomDB0 = new CorePatientProfil(10, "0", "0", "test0", "turboVorname", "Dr",
+        CorePatientProfil patientRoomDB0 = new CorePatientProfil(1, "1599", "0", "test0", "turboVorname", "Dr",
                 "male", "2000-01-01", "Patientenstrasse 1", "Graz", "Stmk", "8052", "AUT");
-        CorePatientProfil patientRoomDB1 = new CorePatientProfil(30, "1", "1", "test1", "turboVorname", "Dr",
+      /*  CorePatientProfil patientRoomDB1 = new CorePatientProfil(30, "1", "1", "test1", "turboVorname", "Dr",
                 "male", "2000-01-01", "Patientenstrasse 1", "Graz", "Stmk", "8052", "AUT");
+        */
         addPersonInBackground(patientRoomDB0);
+
        // addPersonInBackground(patientRoomDB1);
     }
     public void createTestPractitionerForLogInOnlyOnce(){

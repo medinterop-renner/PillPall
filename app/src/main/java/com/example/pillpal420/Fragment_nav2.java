@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.example.pillpal420.backend.dataModels.MedicationRequestDataModelForFu
 import com.example.pillpal420.backend.dataModels.PatientDataModel;
 import com.example.pillpal420.backend.dataModels.PractitionerDataModel;
 import com.example.pillpal420.backend.viewModels.FullPrescriptionViewModel;
+import com.example.pillpal420.documentation.LogTag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +46,10 @@ public class Fragment_nav2 extends Fragment {
         Bundle arg = getArguments();
         if (arg != null){
              id = arg.getString("IDkey");
+
+             Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "id passed to if statement"+ id);
+        }else {
+            Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "Id did not pass to fragment");
         }
 
 
@@ -176,8 +182,14 @@ public class Fragment_nav2 extends Fragment {
 
         // Hier muss dieser String ankommen -> Also in übergabe parameter String relativePathPatientIDServer
         // dann String patientId = relativePathPatientIDServer
-        String patientId = id; // Globale ID Einfügen!!!!
-        fullPrescriptionViewModel.fetchFullPrescriptions(patientId);
+
+
+
+        LoginActivity loginActivity = new LoginActivity();
+        String relativePathPatientReq = loginActivity.getCorePatientProfil().getId();
+
+
+        fullPrescriptionViewModel.fetchFullPrescriptions(relativePathPatientReq);
     }
 
 
