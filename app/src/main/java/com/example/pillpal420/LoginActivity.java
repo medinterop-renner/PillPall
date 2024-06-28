@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.example.pillpal420.backend.CorePatientDataCallback;
 import com.example.pillpal420.backend.roomDB.CorePatientProfil;
 import com.example.pillpal420.backend.roomDB.CorePatientProfileDatabase;
+import com.example.pillpal420.backend.roomDB.CorePractitionerProfil;
+import com.example.pillpal420.backend.roomDB.CorePractitionerProfileDatabase;
 import com.example.pillpal420.documentation.LogTag;
 
 import java.util.concurrent.ExecutorService;
@@ -23,6 +25,11 @@ public class LoginActivity extends AppCompatActivity {
     // ROOM DB Anbindung
     private CorePatientProfileDatabase corePatientProfileDatabase;
     private CorePatientProfil corePatientProfil;
+
+
+    private CorePractitionerProfileDatabase corePractitionerProfileDatabase;
+
+    private CorePractitionerProfil practitionerProfil;
 
     private EditText vorname;
     private EditText svnNummer;
@@ -37,18 +44,30 @@ public class LoginActivity extends AppCompatActivity {
         svnNummer = findViewById(R.id.editPassword);
         loginButton = findViewById(R.id.loginButton);
 
+        //--------------------------------------------------------------------------------------------
+        // Backend beginning
+
+
         corePatientProfileDatabase = CorePatientProfileDatabase.getDatabase(getApplicationContext());
-        //derweil nicht wichtig
-    /*    CorePatientProfil patientRoomDB0 = new CorePatientProfil(10, "0", "0", "test0", "turboVorname", "Dr",
-                "male", "2000-01-01", "Patientenstrasse 1", "Graz", "Stmk", "8052", "AUT");
-        CorePatientProfil patientRoomDB1 = new CorePatientProfil(30, "1", "1", "test1", "turboVorname", "Dr",
-                "male", "2000-01-01", "Patientenstrasse 1", "Graz", "Stmk", "8052", "AUT");
-        addPersonInBackground(patientRoomDB0);
-        addPersonInBackground(patientRoomDB1);
-        */
+        // ADD Patient to room db for Login
+        // createTestPatientForLogInOnlyOnce();
+
+        //ADD Practitioner to room db for Login
+        createTestPractitionerForLogInOnlyOnce();
+
+
         // Fetch patient login information
 
         fetchPatientLogInInformation(1); // Assuming the patient ID is 1 for testing
+
+
+
+
+
+
+        // Back end Ende
+
+        //--------------------------------------------------------------------------------------------
 
         loginButton.setOnClickListener(v -> {
             String vornameCheck = vorname.getText().toString();
@@ -82,9 +101,14 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+
+
     private boolean validateLogin(String vornameCheck, String svnCheck) {
         return vornameCheck.equals(corePatientProfil.getFamily()) && svnCheck.equals(corePatientProfil.getIdentifierSocialSecurityNum());
     }
+
+    //--------------------------------------------------------------------------------------------
+    // backend Magic
 
     private void fetchPatientLogInInformation(int idRoomDB) {
         getPatientFromDB(idRoomDB, new CorePatientDataCallback() {
@@ -133,5 +157,62 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+
+    // -------------------------------------------------
+    // Practitioner
+
+    private void fetchPractitionerLogInInformation(int idRoomDB) {
+        getPatientFromDB(idRoomDB, new CorePatientDataCallback() {
+            @Override
+            public void onPatientDataLoaded(CorePatientProfil patient) {
+                corePatientProfil = patient;
+                Log.d(LogTag.ROOM_DB.getTag(), "Retrieved person from db: " + patient.toString());
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                Log.d(LogTag.ROOM_DB.getTag(), "No person found in db with id: " + idRoomDB);
+            }
+        });
+    }
+
+    public void addPractitionerInBackground(CorePractitionerProfil practitionerProfil) {
+        ExecutorService executorServiceDB = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+        executorServiceDB.execute(new Runnable() {
+            @Override
+            public void run() {
+
+            corePractitionerProfileDatabase.getCorePractitionerProfilDAO().addCorePractitionerProfil(practitionerProfil);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("RoomDB", "Added person to db");
+                    }
+                });
+            }
+        });
+    }
+
+
+
+    // Create New Patient / Practitioner
+
+    public void createTestPatientForLogInOnlyOnce(){
+        CorePatientProfil patientRoomDB0 = new CorePatientProfil(10, "0", "0", "test0", "turboVorname", "Dr",
+                "male", "2000-01-01", "Patientenstrasse 1", "Graz", "Stmk", "8052", "AUT");
+        CorePatientProfil patientRoomDB1 = new CorePatientProfil(30, "1", "1", "test1", "turboVorname", "Dr",
+                "male", "2000-01-01", "Patientenstrasse 1", "Graz", "Stmk", "8052", "AUT");
+        addPersonInBackground(patientRoomDB0);
+        addPersonInBackground(patientRoomDB1);
+    }
+    public void createTestPractitionerForLogInOnlyOnce(){
+        CorePractitionerProfil practitionerProfil = new CorePractitionerProfil(1,"1","1.2.40.0.34.3.2.0","Test","Turbo","Dr.","133","" +
+                "DrStrasse1","Graz","8020","AUT");
+        addPractitionerInBackground(practitionerProfil);
+    }
+
+    // Backend ENDE
+    //--------------------------------------------------------------------------------------------
 
 }
