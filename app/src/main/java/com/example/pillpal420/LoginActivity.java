@@ -39,10 +39,15 @@ public class LoginActivity extends AppCompatActivity {
 
         corePatientProfileDatabase = CorePatientProfileDatabase.getDatabase(getApplicationContext());
         //derweil nicht wichtig
-        /*CorePatientProfil patientRoomDB = new CorePatientProfil(1, "100", "1234", "turbotoll", "turboVorname", "Dr",
+    /*    CorePatientProfil patientRoomDB0 = new CorePatientProfil(10, "0", "0", "test0", "turboVorname", "Dr",
                 "male", "2000-01-01", "Patientenstrasse 1", "Graz", "Stmk", "8052", "AUT");
-        addPersonInBackground(patientRoomDB);*/
+        CorePatientProfil patientRoomDB1 = new CorePatientProfil(30, "1", "1", "test1", "turboVorname", "Dr",
+                "male", "2000-01-01", "Patientenstrasse 1", "Graz", "Stmk", "8052", "AUT");
+        addPersonInBackground(patientRoomDB0);
+        addPersonInBackground(patientRoomDB1);
+        */
         // Fetch patient login information
+
         fetchPatientLogInInformation(1); // Assuming the patient ID is 1 for testing
 
         loginButton.setOnClickListener(v -> {
@@ -51,9 +56,13 @@ public class LoginActivity extends AppCompatActivity {
 
             if (corePatientProfil != null) {
                 if (validateLogin(vornameCheck, svnCheck)) {
+                    // passing the User relative Path to patient zum server.
 
                     Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
-                    loginIntent.putExtra("USER_ID",svnCheck );
+                    loginIntent.putExtra("USER_ID",corePatientProfil.getId() );
+                    Log.d(LogTag.ROOM_DB.getTag(), String.valueOf(corePatientProfil.getIdRoomDB()));
+
+
                     startActivity(loginIntent);
                     finish();
                 } else {

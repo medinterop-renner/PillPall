@@ -51,6 +51,8 @@ import com.example.pillpal420.documentation.LogTag;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+    // backend
+    String relativePathPatientIDServer;
 
 
     private static final int CAM_REQUEST = 24;
@@ -87,11 +89,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             // backend
         // Retrieve the data passed from LoginActivity
-        String userId = getIntent().getStringExtra("USER_ID"); // Default value -1 if no data
+       relativePathPatientIDServer = getIntent().getStringExtra("USER_ID"); // Default value -1 if no data
 
 
 
-        Log.d(LogTag.LOG_IN.getTag(), userId );
+        Log.d(LogTag.LOG_IN.getTag(), relativePathPatientIDServer );
 
     }
     //Kamera Permission
@@ -165,6 +167,10 @@ private ActivityResultLauncher<Intent> storageLauncher =
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Fragment_nav1()).commit();
 
         }else if(item.getItemId() == R.id.nav_scan){
+
+            // hier User ID - relativePathPatientIDServer übergeben.
+            // also diesen String übergeben: relativePathPatientIDServer er muss in Fragment_nav2 abrufbar sein und für den rest bitte in nav 2 weiter lesen.
+            Log.d(LogTag.FULL_PRESCRIPTION.getTag(), relativePathPatientIDServer);
 
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Fragment_nav2()).commit();
 

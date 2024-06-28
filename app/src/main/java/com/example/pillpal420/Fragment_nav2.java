@@ -37,6 +37,12 @@ public class Fragment_nav2 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
+
+
+
+
        // List<FullPrescriptionDataModel> fullPrescriptionDataModels = new ArrayList<>();
        // fullPrescriptionDataModels = createTestFullPrescriptionDataModels();
         //Log.d("Rezept", fullPrescriptionDataModels.get(0).toString());
@@ -64,6 +70,10 @@ public class Fragment_nav2 extends Fragment {
             }
         });
 
+        // Intent get intent -- string
+
+
+        // Hier muss relativePathPatientIDServer abgefragt werden aus Intent und dann in der  fetchFullPrescriptions als Übergabeparameter übergeben werden.
         // UI Testing hier auscommenten
         fetchFullPrescriptions();
 
@@ -158,6 +168,9 @@ public class Fragment_nav2 extends Fragment {
 
     //triggermethode der fullmedreq auslöst
     private void fetchFullPrescriptions() {
+
+        // Hier muss dieser String ankommen -> Also in übergabe parameter String relativePathPatientIDServer
+        // dann String patientId = relativePathPatientIDServer
         String patientId = "1599"; // Globale ID Einfügen!!!!
         fullPrescriptionViewModel.fetchFullPrescriptions(patientId);
     }
