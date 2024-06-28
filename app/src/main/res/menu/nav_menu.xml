@@ -9,19 +9,24 @@
         <item
             android:id="@+id/nav_home"
             android:icon = "@drawable/nav_home"
-            android:title="Home"/>
+            android:title="Scan"/>
         <item
             android:id="@+id/nav_scan"
             android:icon = "@drawable/nav_scan"
-            android:title="Scan"/>
+            android:title="Rezept"/>
         <item
             android:id="@+id/nav_inventur"
             android:icon = "@drawable/nav_inventur"
             android:title="Inventur"/>
         <item
+            android:id="@+id/nav_whisper"
+            android:icon="@drawable/nav_whisper"
+            android:title="Whisper"/>
+        <item
             android:id="@+id/nav_help"
             android:icon = "@drawable/nav_help"
             android:title="Hilfe"/>
+
 
 
 

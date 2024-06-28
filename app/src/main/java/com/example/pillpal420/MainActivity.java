@@ -152,21 +152,25 @@ private ActivityResultLauncher<Intent> storageLauncher =
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        if(item.getItemId() == R.id.nav_home){
+        if (item.getItemId() == R.id.nav_home) {
 
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Fragment_nav1()).commit();
 
-        }else if(item.getItemId() == R.id.nav_scan){
+        } else if (item.getItemId() == R.id.nav_scan) {
 
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Fragment_nav2()).commit();
 
-        }else if(item.getItemId() == R.id.nav_inventur){
+        } else if (item.getItemId() == R.id.nav_inventur) {
 
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Fragment_nav3()).commit();
 
-        }else if(item.getItemId() == R.id.nav_help){
+        } else if (item.getItemId() == R.id.nav_help) {
 
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Fragment_nav4()).commit();
+
+        }else if (item.getItemId() == R.id.nav_whisper){
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Whisper()).commit();
 
         }else if(item.getItemId() == R.id.nav_logout){
 
