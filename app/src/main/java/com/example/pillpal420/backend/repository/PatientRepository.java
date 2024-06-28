@@ -29,7 +29,7 @@ public class PatientRepository {
 
     public void getPatient(String patientId, PatientCallback callback) {
         OkHttpClient client = new OkHttpClient();
-        String urlPatient = "http://10.0.2.2:8080/hapi-fhir-jpaserver/fhir/Patient/" + patientId;
+        String urlPatient = "http://192.168.0.2:8080/hapi-fhir-jpaserver/fhir/Patient/" + patientId;
 
         Request request = new Request.Builder()
                 .url(urlPatient)
@@ -64,7 +64,7 @@ public class PatientRepository {
         JSONObject json = parser. createPostPatientResource(patientDataModel);
         RequestBody body = RequestBody.create(json.toString(), MediaType.parse("application/fhir+json"));
 
-        String url = "http://10.0.2.2:8080/hapi-fhir-jpaserver/fhir/Patient";//id
+        String url = "http://192.168.0.2:8080/hapi-fhir-jpaserver/fhir/Patient";//id
 
         Request request = new Request.Builder()
                 .url(url)

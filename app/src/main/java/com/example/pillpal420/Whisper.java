@@ -23,7 +23,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.pillpal420.backend.dataModels.FullPrescriptionDataModel;
 import com.example.pillpal420.backend.dataModels.MedicationRequestDataModel;
 import com.example.pillpal420.backend.dataModels.PatientDataModel;
+import com.example.pillpal420.backend.repository.MedicationRequestRepository;
 import com.example.pillpal420.backend.viewModels.FullPrescriptionViewModel;
+import com.example.pillpal420.backend.viewModels.MedicationRequestViewModel;
 import com.example.pillpal420.backend.viewModels.WhisperViewModel;
 import com.example.pillpal420.documentation.LogTag;
 
@@ -44,14 +46,12 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
 public class Whisper extends Fragment {
 
     static String speechToFHIRString;
 
-    private MedicationRequestDataModel medicationRequestDataModel;
- private WhisperViewModel whisperViewModel;
-
+    private static MedicationRequestDataModel medicationRequestDataModel;
+    private WhisperViewModel whisperViewModel;
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private static final int REQUEST_STORAGE_PERMISSION = 201;
@@ -86,50 +86,26 @@ public class Whisper extends Fragment {
 
         filePath = getActivity().getExternalFilesDir(Environment.DIRECTORY_MUSIC) + "/" + FILE_NAME;
 
-        startRecordButton.setOnClickListener(v -> {
-
-                startRecording();
-
-        });
-
+        startRecordButton.setOnClickListener(v -> startRecording());
         stopRecordButton.setOnClickListener(v -> stopRecording());
-
         saveButton.setOnClickListener(v -> saveRecording());
-
         resetButton.setOnClickListener(v -> resetRecording());
-
         sendButton.setOnClickListener(v -> sendFileToServer());
 
-
-       whisperViewModel = new ViewModelProvider(this).get(WhisperViewModel.class);
+        whisperViewModel = new ViewModelProvider(this).get(WhisperViewModel.class);
         whisperViewModel.getPatientLiveData().observe(getViewLifecycleOwner(), new Observer<PatientDataModel>() {
             @Override
             public void onChanged(PatientDataModel patientDataModel) {
-                Log.d("Testing",patientDataModel.toString());
+                Log.d("Testing", patientDataModel.toString());
+                // You can update UI with the patient data here
+
+
+                postMedReqtoServer(patientDataModel);
             }
         });
-
-/*
-        fullPrescriptionViewModel = new ViewModelProvider(this).get(FullPrescriptionViewModel.class);
-
-        fullPrescriptionViewModel.getFullPrescriptionLiveData().observe(getViewLifecycleOwner(), new Observer<List<FullPrescriptionDataModel>>() {
-            @Override
-            public void onChanged(List<FullPrescriptionDataModel> fullPrescriptionDataModels) {
-                if (fullPrescriptionDataModels != null) {
-                    displayFullPrescriptionDataModels(fullPrescriptionDataModels);
-
-
-                }
-            }
-        });
-*/
 
         return whispView;
-
-
     }
-
-
 
     private void startRecording() {
         recorder = new MediaRecorder();
@@ -207,17 +183,12 @@ public class Whisper extends Fragment {
                             try {
                                 JSONObject jsonResponse = new JSONObject(responseBody);
                                 final String message = jsonResponse.getString("message");
-                                 MedicationRequestDataModel med = parseToFHIRMedicationRequest(message);
+                                medicationRequestDataModel= parseToFHIRMedicationRequest(message);
 
-                                 WhisperViewModel whisperViewModel1 = new WhisperViewModel();
-                              whisperViewModel1.fetchPatientData(med.getSubject());
-
-
+                                // Use the same ViewModel instance
                                 getActivity().runOnUiThread(() -> {
-                                    // Hier wird der String übergeben ....
-                                    statusText.setText(message);
-
-
+                                    whisperViewModel.fetchPatientData(medicationRequestDataModel.getSubject());
+                                    statusText.setText("Fetched patient data for subject: " + medicationRequestDataModel.getSubject());
                                 });
                             } catch (Exception e) {
                                 Log.e("MainActivity", "JSON Parsing error: " + e.getMessage());
@@ -245,7 +216,6 @@ public class Whisper extends Fragment {
                 startRecording();
             } else {
                 Toast.makeText(getActivity(), "Permission to record audio is required", Toast.LENGTH_SHORT).show();
-
             }
         } else if (requestCode == REQUEST_STORAGE_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -256,74 +226,77 @@ public class Whisper extends Fragment {
         }
     }
 
-    public MedicationRequestDataModel parseToFHIRMedicationRequest(String speechToTextString){
-
-        // Define the regex to match valid characters (letters and numbers)
-        Log.d("Test","before testing: " + speechToTextString );
-       // String regex = "[a-zA-Z0-9]+";
+    public MedicationRequestDataModel parseToFHIRMedicationRequest(String speechToTextString) {
         List<String> parts = new ArrayList<>();
         StringBuilder currentPart = new StringBuilder();
 
-        // Iterate through each character in the string
         for (char c : speechToTextString.toCharArray()) {
-
             if (Character.isLetterOrDigit(c)) {
-                // Append valid characters to the current part
                 currentPart.append(c);
             } else {
                 if (currentPart.length() > 0) {
-                    // Add the current part to the list if it's non-empty
                     parts.add(currentPart.toString());
                     currentPart.setLength(0);
                 }
             }
         }
-        // Add the last part if it's non-empty
+
         if (currentPart.length() > 0) {
             parts.add(currentPart.toString());
         }
-        Log.d("Test"," " + parts.size());
-        for(int i = 0; i < parts.size(); i++){
 
-            if (parts.get(i) !=null) {
-                Log.d("Test", parts.get(i));
-            }else {
-                Log.d("Test","Last part was: " + parts.get(i-1));
-            }
-        }
-
-        // Ensure we have exactly 9 parts after parsing
         if (parts.size() != 9) {
-            Log.d("Test","failed");
+            Log.d("Test", "failed");
             throw new IllegalArgumentException("Input string does not contain the correct number of values.");
         }
 
-        // Extract values based on their positions
+
         String identifiereMedID = parts.get(0);
         String identifiereMedIDGroup = parts.get(1);
         String aspCode = parts.get(2);
         String displayMedication = parts.get(3);
-        String requester = parts.get(4);
-        String subjectReference = parts.get(5);
+        String requester = parts.get(4).replaceAll("[^0-9]", "");
+
+        String subjectReference = parts.get(5).replaceAll("[^a-zA-Z]", "");
+        String frequency = parts.get(7).replaceAll("[^0-9]", "");
         String patientInstruction = parts.get(6);
-        String frequency = parts.get(7);
+        if (parts.get(8).equalsIgnoreCase("morning")) {
+            parts.set(8, "MORN");
+        } else if (parts.get(8).equalsIgnoreCase("evening")) {
+            parts.set(8, "EVE");
+        }
+
         String when = parts.get(8);
 
-        // Create the DosageInstruction object
         MedicationRequestDataModel.DosageInstruction dosageInstruction = new MedicationRequestDataModel.DosageInstruction(patientInstruction, frequency, when);
         List<MedicationRequestDataModel.DosageInstruction> dosageInstructionList = new ArrayList<>();
         dosageInstructionList.add(dosageInstruction);
 
-
-        // Create and return the MedicationRequestDataModel object
-
-        MedicationRequestDataModel medicationRequestDataModel = new MedicationRequestDataModel("3", identifiereMedID, identifiereMedIDGroup, aspCode,
-                displayMedication, requester, subjectReference, dosageInstructionList);
+        MedicationRequestDataModel medicationRequestDataModel = new MedicationRequestDataModel("3", identifiereMedID, identifiereMedIDGroup, aspCode, displayMedication, requester, subjectReference, dosageInstructionList);
 
         Log.d(LogTag.WHISPER.getTag(), medicationRequestDataModel.toString());
-        return  medicationRequestDataModel;
+        return medicationRequestDataModel;
     }
 
+   public void postMedReqtoServer(PatientDataModel patientDataModel){
+        medicationRequestDataModel.setSubjectReference(patientDataModel.getId());
+        Log.d(LogTag.WHISPER.getTag(),"shorty before posting to server: "+ medicationRequestDataModel.toString());
 
 
-  }
+       MedicationRequestViewModel viewModel = new ViewModelProvider(this).get(MedicationRequestViewModel.class);
+       viewModel.postMedicationRequest(medicationRequestDataModel).observe(this, new Observer<MedicationRequestDataModel>() {
+           @Override
+           public void onChanged(MedicationRequestDataModel result) {
+               if (result != null) {
+                   Log.d("MedicationRequest", "MedicationRequest posted successfully: " + result.toString());
+                  // Here kann man noch im scan dings das displayn
+                   statusText.setText(medicationRequestDataModel.toString());
+               } else {
+                   Log.d("MedicationRequest", "Failed to post MedicationRequest");
+               }
+           }
+       });
+
+
+   }
+}

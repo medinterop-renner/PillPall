@@ -35,7 +35,7 @@ public class PractitionerRepository {
     public void getPractitioner(String practitionerID, PractitionerCallback callback){
 
         OkHttpClient client = new OkHttpClient();
-        String urlPractitioner = "http://10.0.2.2:8080/hapi-fhir-jpaserver/fhir/Practitioner/"+ practitionerID;
+        String urlPractitioner = "http://192.168.0.2:8080/hapi-fhir-jpaserver/fhir/Practitioner/"+ practitionerID;
 
         Request request = new Request.Builder()
                 .url(urlPractitioner)
@@ -68,7 +68,7 @@ public class PractitionerRepository {
 
         JSONObject json = parser.createPostPractitionerResource(practitionerDataModel);
         RequestBody body = RequestBody.create(json.toString(), MediaType.parse("application/fhir+json"));
-        String url = "http://10.0.2.2:8080/hapi-fhir-jpaserver/fhir/Practitioner";
+        String url = "http://192.168.0.2:8080/hapi-fhir-jpaserver/fhir/Practitioner";
 
         Request request = new Request.Builder()
                 .url(url)

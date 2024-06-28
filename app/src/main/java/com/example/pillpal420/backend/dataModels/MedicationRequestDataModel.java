@@ -5,6 +5,8 @@ import java.util.List;
 
 public class MedicationRequestDataModel {
 
+
+
     private String id;
     private String identifiereMedID;
     private String identifiereMedIDGroup;
@@ -57,6 +59,14 @@ public class MedicationRequestDataModel {
 
     public List<DosageInstruction> getDosageInstructions() {
         return dosageInstructions;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setSubjectReference(String subjectReference) {
+        this.subjectReference = subjectReference;
     }
 
     @Override

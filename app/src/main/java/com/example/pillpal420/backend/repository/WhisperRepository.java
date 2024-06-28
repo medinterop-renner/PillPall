@@ -44,6 +44,8 @@ public class WhisperRepository {
                     String responseBody = response.body().string();
                     Log.d(LogTag.WHISPER.getTag(), responseBody.toString());
                     PatientDataModel patientDataModel = new Parser().createPatient(responseBody);
+
+                    Log.d(LogTag.WHISPER.getTag(), patientDataModel.toString());
                     callback.onResponse(patientDataModel);
                 }
             }

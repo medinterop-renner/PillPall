@@ -16,6 +16,11 @@ import java.util.List;
 
 public class Parser {
 
+    /**
+     * Parses the JSON response to create a PatientDataModel object.
+     * @param jsonResponse The JSON response string.
+     * @return The PatientDataModel object.
+     */
     public PatientDataModel createPatient(String jsonResponse) {
         PatientDataModel patientDataModel = null;
         Log.d(LogTag.PATIENT.name(), "Parsing JSON for getRequest");
@@ -23,15 +28,30 @@ public class Parser {
             // Parse the JSON response string into a JSONObject
             JSONObject jsonObject = new JSONObject(jsonResponse);
 
-            String id = jsonObject.getString("id");
+            JSONObject patientResource;
 
-            JSONArray svnArray = jsonObject.getJSONArray("identifier");
+            // Check if the response is a bundle
+            if (jsonObject.has("resourceType") && "Bundle".equals(jsonObject.getString("resourceType"))) {
+                JSONArray entryArray = jsonObject.getJSONArray("entry");
+                if (entryArray.length() > 0) {
+                    JSONObject entryObject = entryArray.getJSONObject(0);
+                    patientResource = entryObject.getJSONObject("resource");
+                } else {
+                    throw new JSONException("No entries found in the bundle");
+                }
+            } else {
+                // Assume it's a single patient resource
+                patientResource = jsonObject;
+            }
+
+            String id = patientResource.getString("id");
+
+            JSONArray svnArray = patientResource.getJSONArray("identifier");
             JSONObject svnObject = svnArray.getJSONObject(0);
             String sVN = svnObject.getString("value");
 
-
             // Get the JSONArray associated with the key "name"
-            JSONArray nameArray = jsonObject.getJSONArray("name");
+            JSONArray nameArray = patientResource.getJSONArray("name");
 
             // Get the first JSONObject from the "name" array
             JSONObject nameObject = nameArray.getJSONObject(0);
@@ -46,10 +66,10 @@ public class Parser {
                 JSONArray prefixArray = nameObject.getJSONArray("prefix");
                 prefixValue = prefixArray.getString(0);
             }
-            String gender = jsonObject.getString("gender");
-            String birthDate = jsonObject.getString("birthDate");
+            String gender = patientResource.getString("gender");
+            String birthDate = patientResource.getString("birthDate");
 
-            JSONArray addressArray = jsonObject.getJSONArray("address");
+            JSONArray addressArray = patientResource.getJSONArray("address");
             JSONObject addressObject = addressArray.getJSONObject(0);
 
             JSONArray lineArray = addressObject.getJSONArray("line");
@@ -60,21 +80,15 @@ public class Parser {
             String postalCode = addressObject.getString("postalCode");
             String country = addressObject.getString("country");
 
-
-
-
-            patientDataModel = new PatientDataModel(id,sVN, family, givenName, prefixValue,gender
-            ,birthDate,line,city,state,postalCode,country);
+            patientDataModel = new PatientDataModel(id, sVN, family, givenName, prefixValue, gender, birthDate, line, city, state, postalCode, country);
 
         } catch (JSONException e) {
-            Log.d(LogTag.PATIENT.name(),"Error while parsing json for get Request");
+            Log.d(LogTag.PATIENT.name(), "Error while parsing json for get Request");
             throw new RuntimeException(e);
         }
-
-
-        Log.d(LogTag.PATIENT.name(),"PatientDataModel successfully parsed for get");
         return patientDataModel;
     }
+
     public JSONObject createPostPatientResource(PatientDataModel patientDataModel) {
         JSONObject json = new JSONObject();
         try {
@@ -256,8 +270,8 @@ public class Parser {
             medication.put("concept", concept);
             json.put("medication", medication);
 
-            json.put("requester", new JSONObject().put("reference", medicationRequest.getRequester()));
-            json.put("subject", new JSONObject().put("reference", medicationRequest.getSubject()));
+            json.put("requester", new JSONObject().put("reference","Practitioner/" + medicationRequest.getRequester()));
+            json.put("subject", new JSONObject().put("reference","Patient/" + medicationRequest.getSubject()));
 
             JSONArray dosageInstructionArray = new JSONArray();
             for (MedicationRequestDataModel.DosageInstruction instruction : medicationRequest.getDosageInstructions()) {

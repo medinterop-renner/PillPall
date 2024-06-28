@@ -34,7 +34,7 @@ public class MedicationRequestRepository {
 
     public void getMedicationRequest(String patientId, MedicationRequestCallback medicationRequestCallback){
         OkHttpClient client = new OkHttpClient();
-        String urlMedicationRequest = "http://10.0.2.2:8080/hapi-fhir-jpaserver/fhir/MedicationRequest?subject="+patientId;
+        String urlMedicationRequest = "http://192.168.0.2:8080/hapi-fhir-jpaserver/fhir/MedicationRequest?subject="+patientId;
 
         Request request = new Request.Builder()
                 .url(urlMedicationRequest)
@@ -67,7 +67,7 @@ public class MedicationRequestRepository {
         JSONObject json = parser.createPostMedicationRequest(medicationRequest);
         Log.d(LogTag.MEDICATION_REQUEST.name(),"Raw json from server: "+ json.toString());
         RequestBody body = RequestBody.create(json.toString(), MediaType.parse("application/fhir+json"));
-        String url = "http://10.0.2.2:8080/hapi-fhir-jpaserver/fhir/MedicationRequest";
+        String url = "http://192.168.0.2:8080/hapi-fhir-jpaserver/fhir/MedicationRequest";
 
         Request request = new Request.Builder()
                 .url(url)

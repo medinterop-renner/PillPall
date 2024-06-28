@@ -24,7 +24,7 @@ import okhttp3.Response;
 
 public class FullPrescriptionRepository {
 
-    private String serverAddress = "10.0.2.2:8080";
+    private String serverAddress = "192.168.0.2:8080";
     private String urlFetchBundleForOnePatientWithAllMedicationDataRequests = "http://" + serverAddress + "/hapi-fhir-jpaserver/fhir/MedicationRequest?subject=";
     private OkHttpClient client = new OkHttpClient();
     private Parser parser = new Parser();
@@ -106,7 +106,7 @@ public class FullPrescriptionRepository {
     }
 
     private PatientDataModel fetchPatient(String patientReference) throws IOException {
-        String urlPatient = "http://10.0.2.2:8080/hapi-fhir-jpaserver/fhir/" + patientReference;
+        String urlPatient = "http://192.168.0.2:8080/hapi-fhir-jpaserver/fhir/" + patientReference;
 
         Request request = new Request.Builder().url(urlPatient).build();
         Response response = client.newCall(request).execute();
@@ -119,7 +119,7 @@ public class FullPrescriptionRepository {
     }
 
     private PractitionerDataModel fetchPractitioner(String practitionerReference) throws IOException {
-        String urlPractitioner = "http://10.0.2.2:8080/hapi-fhir-jpaserver/fhir/" + practitionerReference;
+        String urlPractitioner = "http://192.168.0.2:8080/hapi-fhir-jpaserver/fhir/" + practitionerReference;
 
         Request request = new Request.Builder().url(urlPractitioner).build();
         Response response = client.newCall(request).execute();
