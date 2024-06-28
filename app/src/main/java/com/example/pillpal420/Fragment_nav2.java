@@ -53,7 +53,6 @@ public class Fragment_nav2 extends Fragment {
         }
 
 
-
        // List<FullPrescriptionDataModel> fullPrescriptionDataModels = new ArrayList<>();
        // fullPrescriptionDataModels = createTestFullPrescriptionDataModels();
         //Log.d("Rezept", fullPrescriptionDataModels.get(0).toString());

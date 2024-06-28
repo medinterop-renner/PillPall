@@ -101,7 +101,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
             //Android 11 oder darüber
             return Environment.isExternalStorageManager();
-
         }else{
             //Unter Android 11
             int write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);

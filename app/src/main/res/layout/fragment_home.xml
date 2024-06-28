@@ -6,14 +6,33 @@
     android:layout_height="match_parent"
     tools:context="com.example.pillpal420.Fragment_nav1">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Home Fragment"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"
-        android:textColor="@color/green"
+    <ImageView
+        android:id="@+id/scanImgView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_above="@id/scanBtn"
+        android:scaleType="centerCrop"
+        android:contentDescription="Taken picture"
         />
+
+    <Button
+        android:id="@+id/scanBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Scan"
+        android:layout_centerInParent="true"
+        android:textColor="@color/white"
+        android:layout_alignParentBottom="true"
+        />
+
+    <TextView
+        android:id="@+id/scanTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/scanImgView"
+        android:layout_marginBottom="16dp"
+        android:text="Hier kommt der gescannte Text"
+        />
+
 
 </RelativeLayout>

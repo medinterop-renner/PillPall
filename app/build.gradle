@@ -50,6 +50,9 @@ dependencies {
 
     // ChatGPT 4 text Anbindung
 
+    //MLK Toolkit
+    implementation 'com.google.mlkit:text-recognition:16.0.0'
+
 
 
 }
