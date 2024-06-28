@@ -1,6 +1,8 @@
 package com.example.pillpal420;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -84,11 +86,22 @@ public class LoginActivity extends AppCompatActivity {
                     // passing the User relative Path to patient zum server.
 
                     Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
-                    loginIntent.putExtra("USER_ID",corePatientProfil.getId() );
+                    loginIntent.putExtra("USER_ID",corePatientProfil.getId());
+                    startActivity(loginIntent);
+
+                    //ID an andere Fragments übergeben
+                    String loginID = corePatientProfil.getId();
+                    Bundle bundle = new Bundle();
+                    //IDkey very importante
+                    bundle.putString("IDkey", loginID);
+
+                    //Hier genau das für andere Fragments tun wenn nötig
+                    Fragment_nav2 frag2 = new Fragment_nav2();
+                    frag2.setArguments(bundle);
+
+                    //LogCat -.-
                     Log.d(LogTag.ROOM_DB.getTag(), String.valueOf(corePatientProfil.getIdRoomDB()));
 
-
-                    startActivity(loginIntent);
                     finish();
                 } else {
                     Toast.makeText(LoginActivity.this, "Fehler: falscher Benutzername oder Passwort", Toast.LENGTH_SHORT).show();

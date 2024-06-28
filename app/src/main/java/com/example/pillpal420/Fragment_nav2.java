@@ -31,7 +31,7 @@ public class Fragment_nav2 extends Fragment {
     private FullPrescriptionViewModel fullPrescriptionViewModel;
 
 
-
+    String id;
 
     private RecyclerView rezeptRecView;
     private RezeptAdapter rezeptAdapter;
@@ -40,8 +40,11 @@ public class Fragment_nav2 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-
+        //Login ID String von Login Activity holen
+        Bundle arg = getArguments();
+        if (arg != null){
+             id = arg.getString("IDkey");
+        }
 
 
 
@@ -173,7 +176,7 @@ public class Fragment_nav2 extends Fragment {
 
         // Hier muss dieser String ankommen -> Also in übergabe parameter String relativePathPatientIDServer
         // dann String patientId = relativePathPatientIDServer
-        String patientId = "1599"; // Globale ID Einfügen!!!!
+        String patientId = id; // Globale ID Einfügen!!!!
         fullPrescriptionViewModel.fetchFullPrescriptions(patientId);
     }
 
