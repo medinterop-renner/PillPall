@@ -65,7 +65,7 @@ public class Fragment_nav3 extends Fragment {
                 addPicTags(picUri);
                 savePics();
             }else{
-                Toast.makeText(getActivity(), "Fehler beim Bild machen", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.pic_error, Toast.LENGTH_SHORT).show();
             }
         });
 

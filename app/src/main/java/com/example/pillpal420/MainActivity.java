@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
     }
-    //Permission Request weil Android 14 mich nicht mag :(
+    //Permission Request weil Android 14 mich nicht mag :( add Mic Permission!!!
     public boolean checkStoragePermissions(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
             //Android 11 oder darüber
@@ -141,7 +141,7 @@ private ActivityResultLauncher<Intent> storageLauncher =
                     if(Environment.isExternalStorageManager()){
 
                     }else{
-                        Toast.makeText(MainActivity.this, "Zugriff nicht gewährt",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, R.string.access_denied,Toast.LENGTH_SHORT).show();
                     }
                 }
             });

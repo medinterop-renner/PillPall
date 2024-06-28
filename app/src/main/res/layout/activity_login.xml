@@ -9,14 +9,14 @@
         android:id="@+id/editPatientId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Family Name"
+        android:hint="@string/family_name"
         android:inputType="text" />
 
     <EditText
         android:id="@+id/editPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="SVN"
+        android:hint="@string/svn"
         android:inputType="textPassword"
         android:layout_marginTop="8dp" />
 

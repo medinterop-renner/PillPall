@@ -55,7 +55,7 @@ public class Fragment_nav1 extends Fragment {
             if(result){
                 processImg(picUri);
             }else{
-                Toast.makeText(getActivity(), "Bild nicht gemacht", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.pic_nottaken, Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -101,7 +101,7 @@ public class Fragment_nav1 extends Fragment {
 
             }).addOnFailureListener(e -> {
                 Log.e(TAG, "Text nicht erkannt", e);
-                Toast.makeText(getActivity(),"Text nicht erkannt", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),R.string.text_notfound, Toast.LENGTH_SHORT).show();
             });
 
         }catch(IOException e){

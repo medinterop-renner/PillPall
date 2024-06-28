@@ -9,15 +9,15 @@
         <item
             android:id="@+id/nav_home"
             android:icon = "@drawable/nav_home"
-            android:title="Scan"/>
+            android:title="@string/nav_home"/>
         <item
             android:id="@+id/nav_scan"
             android:icon = "@drawable/nav_scan"
-            android:title="Rezept"/>
+            android:title="@string/nav_scan"/>
         <item
             android:id="@+id/nav_inventur"
             android:icon = "@drawable/nav_inventur"
-            android:title="Inventur"/>
+            android:title="@string/nav_inventur"/>
         <item
             android:id="@+id/nav_whisper"
             android:icon="@drawable/nav_whisper"
@@ -25,7 +25,7 @@
         <item
             android:id="@+id/nav_help"
             android:icon = "@drawable/nav_help"
-            android:title="Hilfe"/>
+            android:title="@string/nav_help"/>
 
 
 
