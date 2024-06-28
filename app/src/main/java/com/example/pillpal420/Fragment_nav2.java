@@ -26,6 +26,8 @@ public class Fragment_nav2 extends Fragment {
 
 
     //  BACKEND !!
+
+    // String patientId = "1599"; // Globale ID Einfügen!!!!
     private FullPrescriptionViewModel fullPrescriptionViewModel;
 
 

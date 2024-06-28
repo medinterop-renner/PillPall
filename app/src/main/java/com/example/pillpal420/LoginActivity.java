@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.pillpal420.backend.CorePatientDataCallback;
+import com.example.pillpal420.backend.CorePractitionerDataCallback;
 import com.example.pillpal420.backend.roomDB.CorePatientProfil;
 import com.example.pillpal420.backend.roomDB.CorePatientProfileDatabase;
 import com.example.pillpal420.backend.roomDB.CorePractitionerProfil;
@@ -29,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private CorePractitionerProfileDatabase corePractitionerProfileDatabase;
 
-    private CorePractitionerProfil practitionerProfil;
+    private CorePractitionerProfil corePractitionerProfil;
 
     private EditText vorname;
     private EditText svnNummer;
@@ -49,16 +50,24 @@ public class LoginActivity extends AppCompatActivity {
 
 
         corePatientProfileDatabase = CorePatientProfileDatabase.getDatabase(getApplicationContext());
+        corePractitionerProfileDatabase = CorePractitionerProfileDatabase.getDatabase(getApplicationContext());
         // ADD Patient to room db for Login
         // createTestPatientForLogInOnlyOnce();
 
         //ADD Practitioner to room db for Login
+
        //createTestPractitionerForLogInOnlyOnce();
+
+        // createTestPractitionerForLogInOnlyOnce();
+
 
 
         // Fetch patient login information
 
         fetchPatientLogInInformation(1); // Assuming the patient ID is 1 for testing
+
+        // Fetch Practitioner login info
+        fetchPractitionerLogInInformation(1);
 
 
 
@@ -107,36 +116,8 @@ public class LoginActivity extends AppCompatActivity {
     //--------------------------------------------------------------------------------------------
     // backend Magic
 
-    private void fetchPatientLogInInformation(int idRoomDB) {
-        getPatientFromDB(idRoomDB, new CorePatientDataCallback() {
-            @Override
-            public void onPatientDataLoaded(CorePatientProfil patient) {
-                corePatientProfil = patient;
-                Log.d(LogTag.ROOM_DB.getTag(), "Retrieved person from db: " + patient.toString());
-            }
 
-            @Override
-            public void onDataNotAvailable() {
-                Log.d(LogTag.ROOM_DB.getTag(), "No person found in db with id: " + idRoomDB);
-            }
-        });
-    }
 
-    private void getPatientFromDB(int idRoomDB, CorePatientDataCallback callback) {
-        ExecutorService executorServiceDB = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
-        executorServiceDB.execute(() -> {
-            CorePatientProfil patient = corePatientProfileDatabase.getCorePatientProfilDAO().getCorePatientProfil(idRoomDB);
-            handler.post(() -> {
-                if (patient != null) {
-                    Log.d(LogTag.ROOM_DB.getTag(), "Request Succesfull");
-                    callback.onPatientDataLoaded(patient);
-                } else {
-                    callback.onDataNotAvailable();
-                }
-            });
-        });
-    }
     public void addPersonInBackground(CorePatientProfil patientRoomDB) {
         ExecutorService executorServiceDB = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
@@ -153,12 +134,23 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+    private void getPatientFromDB(int idRoomDB, CorePatientDataCallback callback) {
+        ExecutorService executorServiceDB = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+        executorServiceDB.execute(() -> {
+            CorePatientProfil patient = corePatientProfileDatabase.getCorePatientProfilDAO().getCorePatientProfil(idRoomDB);
+            handler.post(() -> {
+                if (patient != null) {
+                    Log.d(LogTag.ROOM_DB.getTag(), "Request Succesfull");
+                    callback.onPatientDataLoaded(patient);
+                } else {
+                    callback.onDataNotAvailable();
+                }
+            });
+        });
+    }
 
-
-    // -------------------------------------------------
-    // Practitioner
-
-    private void fetchPractitionerLogInInformation(int idRoomDB) {
+    private void fetchPatientLogInInformation(int idRoomDB) {
         getPatientFromDB(idRoomDB, new CorePatientDataCallback() {
             @Override
             public void onPatientDataLoaded(CorePatientProfil patient) {
@@ -170,6 +162,43 @@ public class LoginActivity extends AppCompatActivity {
             public void onDataNotAvailable() {
                 Log.d(LogTag.ROOM_DB.getTag(), "No person found in db with id: " + idRoomDB);
             }
+        });
+    }
+
+    // -------------------------------------------------
+    // Practitioner
+
+    private void fetchPractitionerLogInInformation(int idRoomDB) {
+       getPractitionerFromDB(idRoomDB, new CorePractitionerDataCallback() {
+
+           @Override
+           public void onPractitionerDataLoaded(CorePractitionerProfil practitionerProfil) {
+             corePractitionerProfil = practitionerProfil;
+             Log.d(LogTag.ROOM_DB.getTag(), "Retrieved person from DB: " + practitionerProfil.toString());
+
+           }
+
+           @Override
+           public void onDataNotAvailable() {
+               Log.d(LogTag.ROOM_DB.getTag(), "No Practitioner found in db with id: " + idRoomDB);
+           }
+       });
+    }
+
+    private void getPractitionerFromDB(int idRoomDB, CorePractitionerDataCallback callback) {
+        ExecutorService executorServiceDB = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+        executorServiceDB.execute(() -> {
+            CorePractitionerProfil practitionerProfil = corePractitionerProfileDatabase.getCorePractitionerProfilDAO().getCorePractitionerProfil(idRoomDB);
+
+            handler.post(() -> {
+                if (practitionerProfil != null) {
+                    Log.d(LogTag.ROOM_DB.getTag(), "Request Succesfull");
+                    callback.onPractitionerDataLoaded(practitionerProfil);
+                } else {
+                    callback.onDataNotAvailable();
+                }
+            });
         });
     }
 
@@ -201,7 +230,7 @@ public class LoginActivity extends AppCompatActivity {
         CorePatientProfil patientRoomDB1 = new CorePatientProfil(30, "1", "1", "test1", "turboVorname", "Dr",
                 "male", "2000-01-01", "Patientenstrasse 1", "Graz", "Stmk", "8052", "AUT");
         addPersonInBackground(patientRoomDB0);
-        addPersonInBackground(patientRoomDB1);
+       // addPersonInBackground(patientRoomDB1);
     }
     public void createTestPractitionerForLogInOnlyOnce(){
         CorePractitionerProfil practitionerProfil = new CorePractitionerProfil(1,"1","1.2.40.0.34.3.2.0","Test","Turbo","Dr.","133","" +
