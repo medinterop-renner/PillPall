@@ -23,7 +23,7 @@ import com.example.pillpal420.documentation.LogTag;
 import java.util.ArrayList;
 import java.util.List;
 
-//Scan Fragment
+//Rezept Fragment
 public class Fragment_nav2 extends Fragment {
 
 

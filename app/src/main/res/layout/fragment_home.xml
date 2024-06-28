@@ -22,12 +22,13 @@
             />
 
 
+
     </ScrollView>
     <Button
         android:id="@+id/scanBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Scan"
+        android:text="@string/nav_home"
         android:layout_centerInParent="true"
         android:textColor="@color/white"
         android:layout_alignParentBottom="true"

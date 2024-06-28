@@ -14,20 +14,20 @@
         android:id="@+id/startRecordButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Start Recording"/>
+        android:text="@string/start_record"/>
 
     <Button
         android:id="@+id/stopRecordButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Stop Recording"
+        android:text="@string/stop_record"
         android:enabled="false"/>
 
     <Button
         android:id="@+id/saveButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save Recording"
+        android:text="@string/save_record"
         android:enabled="false"/>
 
     <Button
@@ -41,7 +41,7 @@
         android:id="@+id/sendButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Send Recording"
+        android:text="@string/send_record"
         android:enabled="false"/>
 
     <TextView

@@ -1,12 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">PillPal420</string>
+    <string name="app_name">PillPal</string>
     <string name="open_navdrawer">Open Navigation Drawer</string>
     <string name="close_navdrawer">Close Navigation Drawer</string>
     <string name="nav_logout">Logout</string>
     <string name="nav_help">Help</string>
-    <string name="nav_home">Home</string>
+    <string name="nav_home">Scan</string>
     <string name="nav_inventur">Inventory</string>
-    <string name="nav_scan">Scan</string>
+    <string name="nav_scan">Prescriptions</string>
     <string name="header_desc">Welcome!</string>
+    <string name="pic_error">Error while taking picture!</string>
+    <string name="text_notfound">Text not found</string>
+    <string name="pic_nottaken">Picture not taken!</string>
+    <string name="access_denied">Access denied!</string>
+    <string name="family_name">Family name</string>
+    <string name="svn">Social Security Number</string>
+    <string name="take_picture">Take Picture</string>
+    <string name="start_record">Start Recording</string>
+    <string name="stop_record">Stop Recording</string>
+    <string name="save_record">Save Recording</string>
+    <string name="send_record">Send Recording</string>
+    <string name="edit_name">Name</string>
+    <string name="edit_expiry">Expiry Date</string>
+    <string name="delete">Delete</string>
 </resources>
