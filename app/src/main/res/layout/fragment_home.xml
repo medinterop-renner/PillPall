@@ -6,15 +6,23 @@
     android:layout_height="match_parent"
     tools:context="com.example.pillpal420.Fragment_nav1">
 
-    <ImageView
-        android:id="@+id/scanImgView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="0dp"
         android:layout_above="@id/scanBtn"
-        android:scaleType="centerCrop"
-        android:contentDescription="Taken picture"
-        />
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="16dp">
+        <TextView
+            android:id="@+id/scanTextView"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_above="@id/scanImgView"
+            android:layout_marginBottom="16dp"
+            android:text="Hier kommt der gescannte Text"
+            />
 
+
+    </ScrollView>
     <Button
         android:id="@+id/scanBtn"
         android:layout_width="match_parent"
@@ -25,13 +33,13 @@
         android:layout_alignParentBottom="true"
         />
 
-    <TextView
-        android:id="@+id/scanTextView"
+    <ImageView
+        android:id="@+id/scanImgView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/scanImgView"
-        android:layout_marginBottom="16dp"
-        android:text="Hier kommt der gescannte Text"
+        android:layout_height="300dp"
+        android:layout_above="@id/scanBtn"
+        android:scaleType="centerCrop"
+        android:contentDescription="Taken picture"
         />
 
 

@@ -109,6 +109,4 @@ public class Fragment_nav3 extends Fragment {
         }
     }
 
-
-
 }

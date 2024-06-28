@@ -38,6 +38,9 @@ public class Fragment_nav1 extends Fragment {
     private TextView scanTextView;
     private ActivityResultLauncher<Uri> scanPicLauncher;
 
+    public static String finalString;
+    //Consti this urs ^
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -90,8 +93,10 @@ public class Fragment_nav1 extends Fragment {
 
             recognizer.process(img).addOnSuccessListener(visionText -> {
                 displayText(visionText);
-                //diese Methode brauchen wir
-                //getStringFromScan(visionText);
+
+                //mach diese String
+                getStringFromScan(visionText);
+                //zeig String in TextView
                 scanImgView.setImageURI(uri);
 
             }).addOnFailureListener(e -> {
@@ -114,7 +119,6 @@ public class Fragment_nav1 extends Fragment {
     //CONSTI DA IS DEIN STRING LES GOOOOOOOO
     private void getStringFromScan(Text visionText){
         StringBuilder text = new StringBuilder();
-        String finalString;
 
         for (Text.TextBlock block : visionText.getTextBlocks()){
             text.append(block.getText());
@@ -123,5 +127,4 @@ public class Fragment_nav1 extends Fragment {
         finalString = text.toString();
     //-------------------------------------------------------------
     }
-
 }
