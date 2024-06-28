@@ -53,15 +53,12 @@ public class LoginActivity extends AppCompatActivity {
         // createTestPatientForLogInOnlyOnce();
 
         //ADD Practitioner to room db for Login
-        createTestPractitionerForLogInOnlyOnce();
+       //createTestPractitionerForLogInOnlyOnce();
 
 
         // Fetch patient login information
 
         fetchPatientLogInInformation(1); // Assuming the patient ID is 1 for testing
-
-
-
 
 
 
