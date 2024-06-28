@@ -5,22 +5,16 @@
     android:padding="16dp">
 
     <Button
-        android:id="@+id/picBtn"
+        android:id="@+id/invPicBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Take Picture"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
-
-    <ScrollView
+    <ImageView
+        android:id="@+id/invImgView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/picBtn">
+        android:layout_above="@+id/invPicBtn"/>
 
-        <LinearLayout
-            android:id="@+id/linPicLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
 </RelativeLayout>
