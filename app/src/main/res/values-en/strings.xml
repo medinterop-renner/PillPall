@@ -24,5 +24,7 @@
     <string name="edit_expiry">Expiry Date</string>
     <string name="delete">Delete</string>
     <string name="login">Login</string>
+    <string name="jsonparsingerror">"Wrong Input. Please exactly follow the Instructions "</string>
+
 
 </resources>

@@ -1,8 +1,6 @@
 package com.example.pillpal420;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,33 +9,17 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.example.pillpal420.backend.CorePatientDataCallback;
-import com.example.pillpal420.backend.CorePractitionerDataCallback;
 import com.example.pillpal420.backend.roomDB.CorePatientProfil;
 import com.example.pillpal420.backend.roomDB.CorePatientProfileDatabase;
-import com.example.pillpal420.backend.roomDB.CorePractitionerProfil;
-import com.example.pillpal420.backend.roomDB.CorePractitionerProfileDatabase;
 import com.example.pillpal420.documentation.LogTag;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class LoginActivity extends AppCompatActivity {
 
-    // ROOM DB Anbindung
     private CorePatientProfileDatabase corePatientProfileDatabase;
-
-    public CorePatientProfil getCorePatientProfil() {
-        return corePatientProfil;
-    }
-
-  static  private CorePatientProfil corePatientProfil;
-
-
-    private CorePractitionerProfileDatabase corePractitionerProfileDatabase;
-
-    private CorePractitionerProfil corePractitionerProfil;
+    private CorePatientProfil corePatientProfil;
 
     private EditText vorname;
     private EditText svnNummer;
@@ -52,204 +34,95 @@ public class LoginActivity extends AppCompatActivity {
         svnNummer = findViewById(R.id.editPassword);
         loginButton = findViewById(R.id.loginButton);
 
-        //--------------------------------------------------------------------------------------------
-        // Backend beginning
-
-
         corePatientProfileDatabase = CorePatientProfileDatabase.getDatabase(getApplicationContext());
-        corePractitionerProfileDatabase = CorePractitionerProfileDatabase.getDatabase(getApplicationContext());
-        // ADD Patient to room db for Login
-        //createTestPatientForLogInOnlyOnce();
 
-        //ADD Practitioner to room db for Login
-
-       //createTestPractitionerForLogInOnlyOnce();
-
-        // createTestPractitionerForLogInOnlyOnce();
-
-
-
-        // Fetch patient login information
-
-        fetchPatientLogInInformation(1); // Assuming the patient ID is 1 for testing
-
-        // Fetch Practitioner login info
-    //    fetchPractitionerLogInInformation(1);
-
-
-
-        // Back end Ende
-
-        //--------------------------------------------------------------------------------------------
+        Log.d(LogTag.LOG_IN.getTag(), "Checking if the test patient needs to be created");
+        checkAndCreateTestPatient();
 
         loginButton.setOnClickListener(v -> {
-            Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(loginIntent);
-            finish();
-
-            /*
             String vornameCheck = vorname.getText().toString();
             String svnCheck = svnNummer.getText().toString();
 
-            if (corePatientProfil != null) {
-                if (validateLogin(vornameCheck, svnCheck)) {
-                    // passing the User relative Path to patient zum server.
-// Hier den intent reingeben...
+            Log.d(LogTag.LOG_IN.getTag(), "Attempting to fetch patient login information");
+            fetchPatientLogInInformation(1, new CorePatientDataCallback() {
+                @Override
+                public void onPatientDataLoaded(CorePatientProfil patient) {
+                    corePatientProfil = patient;
+                    Log.d(LogTag.LOG_IN.getTag(), "Patient data loaded from database: " + patient.toString());
 
-                    // Hier log in activity ....
-
-
-                } else {
-                    Toast.makeText(LoginActivity.this, "Fehler: falscher Benutzername oder Passwort", Toast.LENGTH_SHORT).show();
+                    if (validateLogin(vornameCheck, svnCheck)) {
+                        Log.d(LogTag.LOG_IN.getTag(), "Login validated successfully. Navigating to MainActivity.");
+                        Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(loginIntent);
+                        finish();
+                    } else {
+                        Log.d(LogTag.LOG_IN.getTag(), "Login validation failed. Incorrect username or password.");
+                        Toast.makeText(LoginActivity.this, "Fehler: falscher Benutzername oder Passwort", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            } else {
-                Toast.makeText(LoginActivity.this, "Patientendaten nicht verfügbar", Toast.LENGTH_SHORT).show();
-            } */
+
+                @Override
+                public void onDataNotAvailable() {
+                    Log.d(LogTag.LOG_IN.getTag(), "Patient data not available in the database.");
+                    Toast.makeText(LoginActivity.this, "Patientendaten nicht verfügbar", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
-
-
-// back end
-// pass id to main activity
-
-
-
-
     }
 
+    private void checkAndCreateTestPatient() {
+        fetchPatientLogInInformation(1, new CorePatientDataCallback() {
+            @Override
+            public void onPatientDataLoaded(CorePatientProfil patient) {
+                corePatientProfil = patient;  // Patient exists, no need to create
+                Log.d(LogTag.LOG_IN.getTag(), "Test patient already exists in the database.");
+            }
 
+            @Override
+            public void onDataNotAvailable() {
+                // Patient does not exist, create a test patient
+                Log.d(LogTag.LOG_IN.getTag(), "Test patient not found in the database. Creating a new test patient.");
+                createTestPatientForLogInOnlyOnce();
+            }
+        });
+    }
 
     private boolean validateLogin(String vornameCheck, String svnCheck) {
-        return vornameCheck.equals(corePatientProfil.getFamily()) && svnCheck.equals(corePatientProfil.getIdentifierSocialSecurityNum());
+        boolean isValid = vornameCheck.equals(corePatientProfil.getFamily()) && svnCheck.equals(corePatientProfil.getIdentifierSocialSecurityNum());
+        Log.d(LogTag.LOG_IN.getTag(), "Login validation result: " + isValid);
+        return isValid;
     }
-
-    //--------------------------------------------------------------------------------------------
-    // backend Magic
-
-
 
     public void addPersonInBackground(CorePatientProfil patientRoomDB) {
         ExecutorService executorServiceDB = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
-        executorServiceDB.execute(new Runnable() {
-            @Override
-            public void run() {
-                corePatientProfileDatabase.getCorePatientProfilDAO().addCorePatientProfil(patientRoomDB);
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d(LogTag.ROOM_DB.getTag(), "Added Patient to DB");
-                    }
-                });
-            }
+        executorServiceDB.execute(() -> {
+            corePatientProfileDatabase.getCorePatientProfilDAO().addCorePatientProfil(patientRoomDB);
+            handler.post(() -> Log.d(LogTag.LOG_IN.getTag(), "Added Patient to DB"));
         });
     }
-    private void getPatientFromDB(int idRoomDB, CorePatientDataCallback callback) {
+
+    private void fetchPatientLogInInformation(int idRoomDB, CorePatientDataCallback callback) {
         ExecutorService executorServiceDB = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
         executorServiceDB.execute(() -> {
             CorePatientProfil patient = corePatientProfileDatabase.getCorePatientProfilDAO().getCorePatientProfil(idRoomDB);
             handler.post(() -> {
                 if (patient != null) {
-                    Log.d(LogTag.ROOM_DB.getTag(), "Request Succesfull");
+                    Log.d(LogTag.LOG_IN.getTag(), "Successfully fetched patient data from database.");
                     callback.onPatientDataLoaded(patient);
                 } else {
+                    Log.d(LogTag.LOG_IN.getTag(), "No patient data found in database for id: " + idRoomDB);
                     callback.onDataNotAvailable();
                 }
             });
         });
     }
 
-    private void fetchPatientLogInInformation(int idRoomDB) {
-        getPatientFromDB(idRoomDB, new CorePatientDataCallback() {
-            @Override
-            public void onPatientDataLoaded(CorePatientProfil patient) {
-                corePatientProfil = patient;
-                Log.d(LogTag.ROOM_DB.getTag(), "Retrieved person from db: " + patient.toString());
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                Log.d(LogTag.ROOM_DB.getTag(), "No person found in db with id: " + idRoomDB);
-            }
-        });
-    }
-
-    // -------------------------------------------------
-    // Practitioner
-
-    private void fetchPractitionerLogInInformation(int idRoomDB) {
-       getPractitionerFromDB(idRoomDB, new CorePractitionerDataCallback() {
-
-           @Override
-           public void onPractitionerDataLoaded(CorePractitionerProfil practitionerProfil) {
-             corePractitionerProfil = practitionerProfil;
-             Log.d(LogTag.ROOM_DB.getTag(), "Retrieved person from DB: " + practitionerProfil.toString());
-
-           }
-
-           @Override
-           public void onDataNotAvailable() {
-               Log.d(LogTag.ROOM_DB.getTag(), "No Practitioner found in db with id: " + idRoomDB);
-           }
-       });
-    }
-
-    private void getPractitionerFromDB(int idRoomDB, CorePractitionerDataCallback callback) {
-        ExecutorService executorServiceDB = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
-        executorServiceDB.execute(() -> {
-            CorePractitionerProfil practitionerProfil = corePractitionerProfileDatabase.getCorePractitionerProfilDAO().getCorePractitionerProfil(idRoomDB);
-
-            handler.post(() -> {
-                if (practitionerProfil != null) {
-                    Log.d(LogTag.ROOM_DB.getTag(), "Request Succesfull");
-                    callback.onPractitionerDataLoaded(practitionerProfil);
-                } else {
-                    callback.onDataNotAvailable();
-                }
-            });
-        });
-    }
-
-    public void addPractitionerInBackground(CorePractitionerProfil practitionerProfil) {
-        ExecutorService executorServiceDB = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
-        executorServiceDB.execute(new Runnable() {
-            @Override
-            public void run() {
-
-            corePractitionerProfileDatabase.getCorePractitionerProfilDAO().addCorePractitionerProfil(practitionerProfil);
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d("RoomDB", "Added person to db");
-                    }
-                });
-            }
-        });
-    }
-
-
-
-    // Create New Patient / Practitioner
-
-    public void createTestPatientForLogInOnlyOnce(){
-        CorePatientProfil patientRoomDB0 = new CorePatientProfil(1, "1599", "0", "0", "turboVorname", "Dr",
+    public void createTestPatientForLogInOnlyOnce() {
+        CorePatientProfil patientRoomDB0 = new CorePatientProfil(1, "1599", "0", "Tom", "turbo", "Dr",
                 "male", "2000-01-01", "Patientenstrasse 1", "Graz", "Stmk", "8052", "AUT");
-      /*  CorePatientProfil patientRoomDB1 = new CorePatientProfil(30, "1", "1", "test1", "turboVorname", "Dr",
-                "male", "2000-01-01", "Patientenstrasse 1", "Graz", "Stmk", "8052", "AUT");
-        */
         addPersonInBackground(patientRoomDB0);
-
-       // addPersonInBackground(patientRoomDB1);
+        Log.d(LogTag.LOG_IN.getTag(), "Test patient created and added to database.");
     }
-    public void createTestPractitionerForLogInOnlyOnce(){
-        CorePractitionerProfil practitionerProfil = new CorePractitionerProfil(1,"1","1.2.40.0.34.3.2.0","Test","Turbo","Dr.","133","" +
-                "DrStrasse1","Graz","8020","AUT");
-        addPractitionerInBackground(practitionerProfil);
-    }
-
-    // Backend ENDE
-    //--------------------------------------------------------------------------------------------
-
 }
