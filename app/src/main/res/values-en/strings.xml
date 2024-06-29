@@ -23,4 +23,6 @@
     <string name="edit_name">Name</string>
     <string name="edit_expiry">Expiry Date</string>
     <string name="delete">Delete</string>
+    <string name="login">Login</string>
+
 </resources>

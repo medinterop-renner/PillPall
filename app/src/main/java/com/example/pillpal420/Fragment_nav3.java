@@ -126,7 +126,7 @@ public class Fragment_nav3 extends Fragment {
             EditText editName = view.findViewById(R.id.editName);
             EditText editExpiryDate = view.findViewById(R.id.editExpiryDate);
 
-            // funktioniert nicht: Uri picUri = imgView.getStringURI(); -->
+            //funktioniert nicht: Uri picUri = imgView.getStringURI(); -->
             String imgUriString = (String) imgView.getTag();
             Uri picUri = Uri.parse(imgUriString);
             String editName22 = editName.getText().toString();

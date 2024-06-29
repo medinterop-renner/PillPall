@@ -22,7 +22,5 @@
     <string name="edit_name">Name</string>
     <string name="edit_expiry">Ablaufdatum</string>
     <string name="delete">Löschen</string>
-
-
-
+    <string name="login">Anmelden</string>
 </resources>

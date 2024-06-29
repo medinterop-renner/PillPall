@@ -18,6 +18,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -106,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.RECORD_AUDIO}, MIC_REQUEST);
 
         }
-
     }
     //Permission Request weil Android 14 mich nicht mag :( add Mic Permission!!!
     public boolean checkStoragePermissions(){
@@ -186,7 +187,7 @@ private ActivityResultLauncher<Intent> storageLauncher =
 
         }else if(item.getItemId() == R.id.nav_logout){
 
-            Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
+            logoutDialog();
 
         }
 
@@ -194,5 +195,19 @@ private ActivityResultLauncher<Intent> storageLauncher =
         return true;
     }
 
+    private void logoutDialog(){
+
+        new AlertDialog.Builder(this).setTitle("Logout").setMessage("Wollen Sie sich wirklich abmelden?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).setNegativeButton(android.R.string.no,null).setIcon(android.R.drawable.ic_dialog_alert).show();
+
+    }
 
 }
