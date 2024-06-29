@@ -193,7 +193,9 @@ public class Whisper extends Fragment {
                                 });
                             } catch (Exception e) {
                                 Log.e("MainActivity", "JSON Parsing error: " + e.getMessage());
-                                getActivity().runOnUiThread(() -> statusText.setText("Upload failed: JSON Parsing error"));
+
+
+                                getActivity().runOnUiThread(() -> statusText.setText(R.string.jsonparsingerror));
                             }
                         } else {
                             Log.e("MainActivity", "Server Error: " + response.message());
