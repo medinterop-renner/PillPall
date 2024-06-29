@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +55,8 @@ public class Fragment_nav3 extends Fragment {
     private Uri picUri;
     private LinearLayout invLinLayout;
     private ActivityResultLauncher<Uri> invPicLauncher;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -111,9 +115,24 @@ public class Fragment_nav3 extends Fragment {
             invLinLayout.removeView(addTagView);
             savePics();
         });
+        //eif Predefined method für EditText love it
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                savePics();
+            }
+            @Override
+            public void afterTextChanged(Editable s) {}
+        };
 
+        editName.addTextChangedListener(textWatcher);
+        editExpiryDate.addTextChangedListener(textWatcher);
         invLinLayout.addView(addTagView);
     }
+
+
 
     private void savePics(){
         SharedPreferences sharedPref = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
