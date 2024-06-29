@@ -23,6 +23,11 @@
             android:icon="@drawable/nav_whisper"
             android:title="Whisper"/>
         <item
+            android:id="@+id/nav_f5"
+            android:icon="@drawable/nav_f5"
+            android:title="Chatbot"
+            />
+        <item
             android:id="@+id/nav_help"
             android:icon = "@drawable/nav_help"
             android:title="@string/nav_help"/>
