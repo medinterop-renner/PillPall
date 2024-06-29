@@ -46,7 +46,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 //Inventur Fragment
 public class Fragment_nav3 extends Fragment {
     private static final String invTAG = "InvFragment";
@@ -55,8 +54,6 @@ public class Fragment_nav3 extends Fragment {
     private Uri picUri;
     private LinearLayout invLinLayout;
     private ActivityResultLauncher<Uri> invPicLauncher;
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -78,7 +75,6 @@ public class Fragment_nav3 extends Fragment {
         loadPics();
         return invView;
     }
-
     private void openCam(){
         savePics();
         File picFile = null;
@@ -92,7 +88,6 @@ public class Fragment_nav3 extends Fragment {
             invPicLauncher.launch(picUri);
         }
     }
-
     private File createPicFile() throws IOException{
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String picFileName = "JPEG_" + timeStamp + "_";
@@ -100,7 +95,6 @@ public class Fragment_nav3 extends Fragment {
 
         return File.createTempFile(picFileName, ".jpg", storageDir);
     }
-
     private void addPicTags(Uri picUri){
         View addTagView = getLayoutInflater().inflate(R.layout.inventory_item, invLinLayout, false);
 
@@ -126,13 +120,10 @@ public class Fragment_nav3 extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {}
         };
-
         editName.addTextChangedListener(textWatcher);
         editExpiryDate.addTextChangedListener(textWatcher);
         invLinLayout.addView(addTagView);
     }
-
-
 
     private void savePics(){
         SharedPreferences sharedPref = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -162,7 +153,6 @@ public class Fragment_nav3 extends Fragment {
                 e.printStackTrace();
             }
         }
-
         editor.putString(KEY_PICS, jsonArr.toString());
         editor.apply();
     }

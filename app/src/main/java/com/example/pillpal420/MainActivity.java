@@ -53,9 +53,7 @@ import com.example.pillpal420.documentation.LogTag;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
-    // backend
-
-
+    //backend
 
     private static final int CAMMIC_REQUEST = 24;
     private static final int REQUEST_PERMISSIONS = 123;
@@ -86,8 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             cammicPermission();
             if(!checkStoragePermissions()){
                 reqStoragePermission();
-                }
-
+            }
     }
     //Kamera Permission
     private void cammicPermission(){
@@ -134,7 +131,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                                                                             REQUEST_PERMISSIONS);
         }
     }
-
     //lambda anstatt new ActivityResultCallback<ActivityResult>()
 private ActivityResultLauncher<Intent> storageLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), o -> {
@@ -197,7 +193,5 @@ private ActivityResultLauncher<Intent> storageLauncher =
                         finish();
                     }
                 }).setNegativeButton(android.R.string.no,null).setIcon(android.R.drawable.ic_dialog_alert).show();
-
     }
-
 }

@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 
 //Hilfe Fragment
 public class Fragment_nav4 extends Fragment {
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

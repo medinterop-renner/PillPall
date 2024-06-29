@@ -6,14 +6,27 @@
     android:layout_height="match_parent"
     tools:context="com.example.pillpal420.Fragment_nav4">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomButton"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/scrollableTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/help_description"
+            android:textSize="16sp"/>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/bottomButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hilfe Fragment"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"
-        android:textColor="@color/green"
-        />
+        android:text="E-Mail"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"/>
 
 </RelativeLayout>

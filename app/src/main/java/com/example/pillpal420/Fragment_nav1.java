@@ -40,13 +40,10 @@ import okhttp3.Response;
 
 //Scan Fragment Magic
 public class Fragment_nav1 extends Fragment {
-
-
     private Uri picUri;
     private ImageView scanImgView;
     private TextView scanTextView;
     private ActivityResultLauncher<Uri> scanPicLauncher;
-
     public static String finalString;
     //Consti this urs ^
 
@@ -87,7 +84,6 @@ public class Fragment_nav1 extends Fragment {
             scanPicLauncher.launch(picUri);
         }
     }
-
     private File createImageFile() throws IOException{
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String scanFileName = "JPEG_" + timeStamp + "_";
@@ -136,11 +132,7 @@ public class Fragment_nav1 extends Fragment {
         //!!!! EINZIGER STRING SONST NIX ANGREIFEN/VERWENDEN !!!!!
         finalString = text.toString();
 
-
         Vision vision = new Vision(finalString);
     //-------------------------------------------------------------
     }
-
-
-
 }
