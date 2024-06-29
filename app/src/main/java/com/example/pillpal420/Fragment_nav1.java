@@ -8,6 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import com.example.pillpal420.documentation.LogTag;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
@@ -120,6 +121,7 @@ public class Fragment_nav1 extends Fragment {
         for(Text.TextBlock block : visionText.getTextBlocks()){
             resultText.append(block.getText()).append("\n");
         }
+        Log.d(LogTag.VISION.getTag(), resultText.toString());
         scanTextView.setText(resultText.toString());
     }
 

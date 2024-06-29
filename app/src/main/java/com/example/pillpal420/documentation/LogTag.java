@@ -10,6 +10,7 @@ public enum LogTag {
 
     LOG_IN("LogIn"),
 
+    VISION("Vision"),
     WHISPER("Whisper"),
     DOSAGE_INSTRUCTION("DosageInstructions");
 
