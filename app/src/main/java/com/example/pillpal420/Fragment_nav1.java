@@ -29,6 +29,13 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 //Scan Fragment Magic
 public class Fragment_nav1 extends Fragment {
 
@@ -125,6 +132,36 @@ public class Fragment_nav1 extends Fragment {
         }
         //!!!! EINZIGER STRING SONST NIX ANGREIFEN/VERWENDEN !!!!!
         finalString = text.toString();
+        Log.d("Testing",finalString);
+
+        sendTextToServer(finalString);
     //-------------------------------------------------------------
+    }
+
+
+    private void sendTextToServer(String text) {
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = RequestBody.create(mediaType, text);
+        Request request = new Request.Builder()
+                .url("http://192.168.0.2:8000/upload")
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e(TAG, "Error sending text to server: " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    Log.e(TAG, "Server returned error: " + response.message());
+                } else {
+                    Log.d(TAG, "Server response: " + response.body().string());
+                }
+            }
+        });
     }
 }
