@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private static final int CAM_REQUEST = 24;
+    private static final int MIC_REQUEST = 25;
     private static final int REQUEST_PERMISSIONS = 123;
     private DrawerLayout dLayout;
     @Override
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Fragment_nav1()).commit();
             navView.setCheckedItem(R.id.nav_home);
         }
+            micPermission();
             camPermission();
             if(!checkStoragePermissions()){
                 reqStoragePermission();
@@ -95,6 +97,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, CAM_REQUEST);
 
         }
+    }
+
+    private void micPermission(){
+
+        if(ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED){
+
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.RECORD_AUDIO}, MIC_REQUEST);
+
+        }
+
     }
     //Permission Request weil Android 14 mich nicht mag :( add Mic Permission!!!
     public boolean checkStoragePermissions(){
