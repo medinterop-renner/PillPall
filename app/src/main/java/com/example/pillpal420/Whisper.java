@@ -49,8 +49,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 public class Whisper extends Fragment {
 
-    static String speechToFHIRString;
-
     private static MedicationRequestDataModel medicationRequestDataModel;
     private WhisperViewModel whisperViewModel;
 
