@@ -8,6 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import com.example.pillpal420.backend.aiInterface.Vision;
 import com.example.pillpal420.documentation.LogTag;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
@@ -40,7 +41,7 @@ import okhttp3.Response;
 //Scan Fragment Magic
 public class Fragment_nav1 extends Fragment {
 
-    private static final String TAG = "Fragment_nav1";
+
     private Uri picUri;
     private ImageView scanImgView;
     private TextView scanTextView;
@@ -79,7 +80,7 @@ public class Fragment_nav1 extends Fragment {
         try{
             scanPicFile = createImageFile();
         }catch(IOException e){
-            Log.e(TAG, "File create error", e);
+            Log.e(LogTag.MLKIT.getTag(), "File create error", e);
         }
         if(scanPicFile != null){
             picUri = FileProvider.getUriForFile(getActivity(), "com.example.pillpal420.fileprovider", scanPicFile);
@@ -108,7 +109,7 @@ public class Fragment_nav1 extends Fragment {
                 scanImgView.setImageURI(uri);
 
             }).addOnFailureListener(e -> {
-                Log.e(TAG, "Text nicht erkannt", e);
+                Log.e(LogTag.MLKIT.getTag(), "Text nicht erkannt", e);
                 Toast.makeText(getActivity(),R.string.text_notfound, Toast.LENGTH_SHORT).show();
             });
 
@@ -121,7 +122,7 @@ public class Fragment_nav1 extends Fragment {
         for(Text.TextBlock block : visionText.getTextBlocks()){
             resultText.append(block.getText()).append("\n");
         }
-        Log.d(LogTag.VISION.getTag(), resultText.toString());
+        Log.d(LogTag.MLKIT.getTag(), "Before Processing" + resultText.toString());
         scanTextView.setText(resultText.toString());
     }
 
@@ -134,36 +135,12 @@ public class Fragment_nav1 extends Fragment {
         }
         //!!!! EINZIGER STRING SONST NIX ANGREIFEN/VERWENDEN !!!!!
         finalString = text.toString();
-        Log.d("Testing",finalString);
 
-        sendTextToServer(finalString);
+
+        Vision vision = new Vision(finalString);
     //-------------------------------------------------------------
     }
 
 
-    private void sendTextToServer(String text) {
-        OkHttpClient client = new OkHttpClient();
-        MediaType mediaType = MediaType.parse("text/plain");
-        RequestBody body = RequestBody.create(mediaType, text);
-        Request request = new Request.Builder()
-                .url("http://192.168.0.2:8000/upload")
-                .post(body)
-                .build();
 
-        client.newCall(request).enqueue(new okhttp3.Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.e(TAG, "Error sending text to server: " + e.getMessage());
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    Log.e(TAG, "Server returned error: " + response.message());
-                } else {
-                    Log.d(TAG, "Server response: " + response.body().string());
-                }
-            }
-        });
-    }
 }

@@ -11,6 +11,8 @@ public enum LogTag {
     LOG_IN("LogIn"),
 
     VISION("Vision"),
+
+    MLKIT("MLKit"),
     WHISPER("Whisper"),
     DOSAGE_INSTRUCTION("DosageInstructions");
 
