@@ -69,6 +69,10 @@ public class MedicationRequestDataModel {
         this.subjectReference = subjectReference;
     }
 
+    public void setRequester(String requester) {
+        this.requester = requester;
+    }
+
     @Override
     public String toString() {
         StringBuilder dosageInstructionsStr = new StringBuilder();

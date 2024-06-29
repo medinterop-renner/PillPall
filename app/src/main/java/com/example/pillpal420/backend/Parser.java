@@ -179,6 +179,7 @@ public class Parser {
     public MedicationRequestDataModel parseMedicationRequest(JSONObject resource) throws JSONException {
         String id = resource.getString("id");
 
+
         // Extract eMedID and eMedIDGroup from identifier
         String eMedID = "";
         String eMedIDGroup = "";
@@ -304,36 +305,68 @@ public class Parser {
 
         try {
             JSONObject jsonObject = new JSONObject(jsonResponse);
-            String id = jsonObject.getString("id");
 
-            JSONArray oidIdentifierArray = jsonObject.getJSONArray("identifier");
+            JSONObject practitionerResource;
+
+
+            if (jsonObject.has("resourceType") && "Bundle".equals(jsonObject.getString("resourceType"))) {
+                JSONArray entryArray = jsonObject.getJSONArray("entry");
+                Log.d(LogTag.VISION.getTag(), "entry extracted");
+                if (entryArray.length() > 0) {
+                    JSONObject entryObject = entryArray.getJSONObject(0);
+                    practitionerResource = entryObject.getJSONObject("resource");
+                    Log.d(LogTag.VISION.getTag(), "resource extracted");
+                } else {
+                    Log.d(LogTag.VISION.getTag(), "No entries found in the bundle");
+                    throw new JSONException("No entries found in the bundle");
+                }
+            } else {
+                // Assume it's a single patient resource
+                practitionerResource = jsonObject;
+            }
+
+            Log.d(LogTag.VISION.getTag(), "1");
+
+            String id = practitionerResource.getString("id");
+            Log.d(LogTag.VISION.getTag(), "2");
+
+            JSONArray oidIdentifierArray = practitionerResource.getJSONArray("identifier");
             JSONObject oidObject = oidIdentifierArray.getJSONObject(0);
             String oidPractitioner = oidObject.getString("value");
+            Log.d(LogTag.VISION.getTag(), "3");
 
             // Getting Practitioner Name
-            JSONArray nameArray = jsonObject.getJSONArray("name");
+            JSONArray nameArray = practitionerResource.getJSONArray("name");
             JSONObject nameObject = nameArray.getJSONObject(0);
+
+            Log.d(LogTag.VISION.getTag(), "4");
 
             String family = nameObject.getString("family");
             String given = nameObject.getString("given");
             String suffix = nameObject.getString("suffix");
 
+            Log.d(LogTag.VISION.getTag(), "5");
+
             // Getting Practitioner digits
 
-            JSONArray telecomArray = jsonObject.getJSONArray("telecom");
+            JSONArray telecomArray = practitionerResource.getJSONArray("telecom");
             JSONObject telecomObject = telecomArray.getJSONObject(0);
 
             String telecom = telecomObject.getString("value");
-
+            Log.d(LogTag.VISION.getTag(), "6");
             // Getting Address
 
-            JSONArray addressArray = jsonObject.getJSONArray("address");
+            JSONArray addressArray = practitionerResource.getJSONArray("address");
             JSONObject addressObject = addressArray.getJSONObject(0);
+
+            Log.d(LogTag.VISION.getTag(), "7");
 
             String line = addressObject.getString("line");
             String city = addressObject.getString("city");
             String postalCode = addressObject.getString("postalCode");
             String country = addressObject.getString("country");
+
+            Log.d(LogTag.VISION.getTag(), "8");
 
             Log.d(LogTag.PRACTITIONER.getTag(),id +" " + family+" " + given + " " + suffix+ " " +telecom+ " " +line+ " " +city+ " " +postalCode+ " " +country);
 
