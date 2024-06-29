@@ -171,6 +171,10 @@ private ActivityResultLauncher<Intent> storageLauncher =
 
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Whisper()).commit();
 
+        }else if(item.getItemId() == R.id.nav_f5){
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Fragment_nav5()).commit();
+
         }else if(item.getItemId() == R.id.nav_logout){
 
             logoutDialog();

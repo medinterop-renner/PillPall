@@ -23,6 +23,9 @@
     <string name="edit_expiry">Ablaufdatum</string>
     <string name="delete">Löschen</string>
     <string name="login">Anmelden</string>
+    <string name="patheader">Patienten Informationen:</string>
+    <string name="pracheader">Arzt Informationen:</string>
+    <string name="medheader">Medikament:</string>
     <string name="jsonparsingerror">Fehlerhafte Eingabe. Bitte folgen Sie genau den Anweisungen!</string>
     <string name="choosemail">Wählen Sie Ihren Mail Anbieter:</string>
     <string name="whisp_desc"> <b>Bitte folgen Sie dieser Anleitung: </b>1. eMedID 2. eMedID Group 3. ASP CODE 4. Medican \n5. Requester 6. Subject 7. Patient instructions 8. Frequency  9. When</string>

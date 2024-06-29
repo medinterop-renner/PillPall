@@ -9,12 +9,30 @@
     android:elevation="4dp"
     >
 
+
+    <TextView
+        android:id="@+id/patientHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/patheader"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:paddingTop="8dp"/>
+
     <TextView
         android:id="@+id/patientView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
         android:paddingTop="4dp"/>
+
+    <TextView
+        android:id="@+id/practicionerHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pracheader"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:paddingTop="16dp"/>
 
     <TextView
         android:id="@+id/practicionerView"
@@ -23,9 +41,17 @@
         android:paddingTop="4dp"/>
 
     <TextView
+        android:id="@+id/medicationHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/medheader"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:paddingTop="16dp"/>
+
+    <TextView
         android:id="@+id/medicationView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="4dp"/>
-
 </LinearLayout>
