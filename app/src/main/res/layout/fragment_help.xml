@@ -7,14 +7,14 @@
     tools:context="com.example.pillpal420.Fragment_nav4">
 
     <ScrollView
-        android:id="@+id/scrollView"
+        android:id="@+id/helpScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottomButton"
+        android:layout_above="@+id/eMailBtn"
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/scrollableTextView"
+            android:id="@+id/helpTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/help_description"
@@ -22,7 +22,7 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/bottomButton"
+        android:id="@+id/eMailBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="E-Mail"
