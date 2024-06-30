@@ -52,9 +52,6 @@ public class Whisper extends Fragment {
 
     private static MedicationRequestDataModel medicationRequestDataModel;
     private WhisperViewModel whisperViewModel;
-
-    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
-    private static final int REQUEST_STORAGE_PERMISSION = 201;
     private static final String LOG_TAG = "AudioRecordTest";
     private static final String FILE_NAME = "recorded_audio.mp3";
 
@@ -72,6 +69,23 @@ public class Whisper extends Fragment {
     private OkHttpClient client = new OkHttpClient();
     public static final MediaType MEDIA_TYPE_MP3 = MediaType.parse("audio/mpeg");
 
+    /**
+     * Funktion:
+     * 1. Initialisierung der Buttons und TextView sowie des filePaths um die Aufnahmen zu speichern
+     * 2. setOnClickListener für alle Buttons um Aufzeichnung zu starten, stoppen, speichern, erneuern und schicken
+     * 3. Observer für LiveData, der auf Änderungen der Patientendaten reagiert
+     *    --> bei Änderung wird ein Log geschrieben und ein medicationRequest durchgeführt
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return whispView oder null
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -97,7 +111,6 @@ public class Whisper extends Fragment {
             @Override
             public void onChanged(PatientDataModel patientDataModel) {
                 Log.d("Testing", patientDataModel.toString());
-                // You can update UI with the patient data here
 
 
                 postMedReqtoServer(patientDataModel);
@@ -107,6 +120,18 @@ public class Whisper extends Fragment {
         return whispView;
     }
 
+    /**
+     * Hier wird die Tonaufnahme gestartet
+     *
+     * Funktion:
+     * 1. Initialisierung einer neuen MediaRecorder Instanz
+     * 2. Handy-Mikrofon wird als Aufnahmequelle gesetzt
+     * 3. Output-Format wird auf MPEG-4 gesetzt
+     * 4. Audio-Encoder wird auf AAC gesetzt
+     * 5. Pfad des Output-Files wird gesetzt
+     * 6. Der Recorder wird vorbereitet und die Aufnahme gestarter
+     * 7. Aktualisieren der UI Elemente
+     */
     private void startRecording() {
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -127,6 +152,16 @@ public class Whisper extends Fragment {
         statusText.setText("Recording...");
     }
 
+    /**
+     *Stoppt die Aufnahme
+     *
+     * Funktion:
+     * 1. Stoppt die MediaRecorder-Aufnahme
+     * 2. Beendet den MediaRecorder
+     * 3. setzt die Instanz des MediaRecorders zurück
+     * 4. isRecording wird auf false gesetzt --> Aufnahme ist gestoppt
+     * 5. Aktualisieren der UI Elemente
+     */
     private void stopRecording() {
         recorder.stop();
         recorder.release();
@@ -137,6 +172,9 @@ public class Whisper extends Fragment {
         statusText.setText("Recording stopped.");
     }
 
+    /**
+     * Hier wird die UI Aktualisiert um anzuzeigen dass die Aufnahme gespeichert wurde
+     */
     private void saveRecording() {
         saveButton.setEnabled(false);
         resetButton.setEnabled(true);
@@ -144,6 +182,9 @@ public class Whisper extends Fragment {
         statusText.setText("Recording saved.");
     }
 
+    /**
+     * Hier wird die UI aktualisiert um anzuzeigen dass eine neue Aufnahme möglich ist
+     */
     private void resetRecording() {
         startRecordButton.setEnabled(true);
         stopRecordButton.setEnabled(false);
@@ -153,6 +194,20 @@ public class Whisper extends Fragment {
         statusText.setText("Ready to record again.");
     }
 
+    /**
+     * Hier wird das die Aufnahme an den Server geschickt
+     *
+     * Es wird ein neuer Thread erstellt um die Auhnahme an die Server URL zu schicken. Es wird eine multipart HTTP Request mit der Aufnahme erstellt
+     * und gesendet.
+     *
+     * Funktion:
+     * 1. Erstellung eines Files für die Aufnahme
+     * 2. Erstellen eines MultipartBody mit der Aufnahme
+     * 3. Erstellen einer HTTP POST request
+     * 4. Senden der Request über OKHttpClient
+     *    --> ist diese erfolgreich wird die UI mit den erhaltenen Patientendaten gefüllt
+     *    --> ist diese nicht erfolgreich wird ein Log und ein Toast erstellt der auf den Fehler hinweist
+     */
     private void sendFileToServer() {
         new Thread(() -> {
             try {
@@ -210,6 +265,20 @@ public class Whisper extends Fragment {
         }).start();
     }
 
+    /**
+     * Hier wird der speech-to-text String an ein FHIR-konformes MedicationRequestDataModel übergeben
+     *
+     * Funktion:
+     * 1. Teilt den speechToTextString auf um ihn weiterverarbeiten zu können
+     * 2. Überprüfung ob die List die vorgeschriebene Größe hat
+     * 3. Extrahieren und Verarbeiten der einzelnen Teile um ein MedicationRequestDataModel zu bekommen
+     *    - Erstellt ein DosageInstruction Objekt und fügt es der Liste hinzu
+     *    - Erstellt MedicationRequestDataModel und fügt die einzelnen Teile und die DosageINstruction hinzu
+     * 4. Log für das erstellte MedicationRequestDataModel
+     *
+     * @param speechToTextString String der von der Speech-To-Text Verarbeitung entsteht
+     * @return MedicationRequestDataModel
+     */
     public MedicationRequestDataModel parseToFHIRMedicationRequest(String speechToTextString) {
         List<String> parts = new ArrayList<>();
         StringBuilder currentPart = new StringBuilder();
@@ -262,6 +331,16 @@ public class Whisper extends Fragment {
         return medicationRequestDataModel;
     }
 
+    /**
+     * Schickt die MedicationRequest zum Server
+     *
+     * Funktion:
+     * 1. Setzen der SubjectReference als Patienten ID
+     * 2. Erstellen einer Instanz des MedicationRequestViewModel
+     * 3. Schickt die MedicationRequest und kontrolliert das Ergebnis
+     *
+     * @param patientDataModel ist das Patienten Modell das die ID beinhaltet
+     */
     public void postMedReqtoServer(PatientDataModel patientDataModel) {
         medicationRequestDataModel.setSubjectReference(patientDataModel.getId());
         Log.d(LogTag.WHISPER.getTag(), "shorty before posting to server: " + medicationRequestDataModel.toString());

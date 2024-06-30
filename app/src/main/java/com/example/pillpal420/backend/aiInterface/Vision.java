@@ -48,7 +48,13 @@ public class Vision {
         sendTextToServer(scannedText);
     }
 
-
+    /**
+     * Hier wird der gescannte Text zur Verarbeitung an den Server geschickt
+     *
+     * Funktion:
+     * 1. Erstellen einer OkHttpClient Instanz
+     * @param scannedText
+     */
     private void sendTextToServer(String scannedText) {
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("text/plain");
@@ -210,14 +216,6 @@ public class Vision {
                 Log.d(LogTag.VISION.getTag(), "new medication request posted");
             }
         });
-
-
-
-
-
-
-
-
 
 
     }
