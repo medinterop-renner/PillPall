@@ -54,6 +54,29 @@ public class Fragment_nav3 extends Fragment {
     private Uri picUri;
     private LinearLayout invLinLayout;
     private ActivityResultLauncher<Uri> invPicLauncher;
+
+    /**
+     * Hier wird das "fragment_inventur.xml" layout inflated
+     *
+     * Funktion:
+     * 1. Button und LinearLayout werden initialisiert
+     * 2. Ein ActivityResultLauncher wird erstellt um ein Bild machen zu können
+     * --> wird ein Bild erfolgreich aufgenommen wird {@link #addPicTags(Uri)} aufgerufen um dem Bild Tags hinzufügen zu können,
+     *     zusätzlich wird {@link #savePics()} aufgerufen um das Bild in der View zu speichern
+     * --> wird kein Bild aufgenommen wird ein Toast erstellt der dem User/der Userin mitteilt, dass ein Fehler aufgetreten ist
+     * 3. ein setOnClickListener wird erstellt der die {@link #openCam()} Methode aufruft
+     * 4. {@link #loadPics()} wird aufgerufen um die vorhandenen Bilder zu laden
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return invView oder null
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -75,6 +98,17 @@ public class Fragment_nav3 extends Fragment {
         loadPics();
         return invView;
     }
+
+    /**
+     * Hier wird die Kamera geöffnet um ein Bild zu machen
+     *
+     * Funktion:
+     * 1. die Methode {@link #savePics()} wird aufgerufen um die bestehenden Bilder zu speichern
+     * 2. Es wird ein File für die Speicherung des Bilds mithilfe der {@link #createPicFile()} Methode erstellt
+     * 3. Entsteht eine IOException wird diese im Log ausgegebn
+     * 4. Die Kamera wird geöffnet und das gemachte Bild wird im erstellten File gespeichert
+     */
+
     private void openCam(){
         savePics();
         File picFile = null;
@@ -88,6 +122,18 @@ public class Fragment_nav3 extends Fragment {
             invPicLauncher.launch(picUri);
         }
     }
+
+    /**
+     * Hier erstellen wir ein temporäres File um dann in {@link #openCam()} ein Bild darin speichern zu können
+     *
+     * Funktion:
+     * 1. Erstellung der Strings, "timeStamp" für ein SimpleDateFormat, scanFileName um den Namen des Files zu erstellen
+     * 2. das File "storageDir" erhält das ExternalFilesDirectory für Bilder
+     *
+     * @return temporäres File mit dem Namen, dem Suffix und dem ExternalFilesDirectory
+     * @throws IOException wird in {@link #openCam()} behandelt
+     */
+
     private File createPicFile() throws IOException{
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String picFileName = "JPEG_" + timeStamp + "_";
@@ -95,6 +141,18 @@ public class Fragment_nav3 extends Fragment {
 
         return File.createTempFile(picFileName, ".jpg", storageDir);
     }
+
+    /**
+     * Hinzufügen von einer neuen View mit Bild und Tags zum layout
+     *
+     * Funktion:
+     * 1. Initialisierung der ImageView, 2 EditText und eines Buttons
+     * 2. Hinzufügen der Uri zur ImageView und taggen der ImageView mit dem Uri String
+     * 3. onClickListener für den deleteBtn um Bild+Tags vom LinearLayout löschen zu können + erneutes speichern durch {@link #savePics()}
+     * 4. TextWatcher hinzufügen um die Texte in den EditText durch {@link #savePics()} speichern zu können, wenn sie verändert werden
+     * 5. Hinzufügen der View zum Layout
+     * @param picUri Uri des Bildes was zur View hinzugefügt werden soll
+     */
     private void addPicTags(Uri picUri){
         View addTagView = getLayoutInflater().inflate(R.layout.inventory_item, invLinLayout, false);
 
@@ -109,7 +167,7 @@ public class Fragment_nav3 extends Fragment {
             invLinLayout.removeView(addTagView);
             savePics();
         });
-        //eif Predefined method für EditText love it
+
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -124,6 +182,20 @@ public class Fragment_nav3 extends Fragment {
         editExpiryDate.addTextChangedListener(textWatcher);
         invLinLayout.addView(addTagView);
     }
+
+    /**
+     * Hier speichern wir die Bilder und zugehörigen Tags in einer SharedPreference als JSON string
+     *
+     * Funktion:
+     * 1. Erstellung einer SharedPreference um die Daten speichern zu können
+     * 2. Erstellung eines SharedPreferences.Editor um Änderungen vornehmen zu können
+     * 3. durch eine for-Schleife wird:
+     *    - Die ImageView sowie die Tags für jede View geholt
+     *    - Uri der ImageView wird geholt
+     *    - Wandelt die EditText in Strings
+     *    - speichert jedes JSON Objekt im JSON Array
+     *    - speichert das JSON Array als String in der Shared Preference
+     */
 
     private void savePics(){
         SharedPreferences sharedPref = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -157,6 +229,20 @@ public class Fragment_nav3 extends Fragment {
         editor.apply();
     }
 
+    /**
+     * Lädt die gespeicherten Daten aus der SharedPreference und zeigt sie im Layout an
+     *
+     * Funktion:
+     * 1. holt die SharedPreferences Instanz um auf die gespeicherten Daten zugreifen zu können
+     * 2. holt den JSON string der die Referenz zu den Bildern und Tags darstellt
+     * 3. Überprüft ob der JSON String leer ist oder nicht
+     *    --> wenn JSON String nicht leer ist:
+     *        - bekommt das JSON Array durch den JSON String
+     *        - extrahiert die Uri des Bildes für jedes JSON Objekt
+     *        - durch {@link #addPicTags(Uri)} werden die Bilder und Tags zum Layout hinzugefügt
+     *        - Zeigt den extrahierten Text in den EditText an
+     * 4. Verarbeitung aller JSONExceptions
+     */
     private void loadPics(){
         SharedPreferences sharedPref = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         String jsonPics = sharedPref.getString(KEY_PICS, "");

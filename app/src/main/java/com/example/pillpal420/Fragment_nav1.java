@@ -134,7 +134,10 @@ public class Fragment_nav1 extends Fragment {
      * 1. Erstellung eines InputImage mit dem FilePath der Uri des Bildes
      * 2. Initialisierung des TextRecognizer
      * 3. Verarbeitung des Bildes mithilfe des TextRecognizer
-     * 4. onSuccessListener:
+     * 4. onSuccessListener: der erkannte Text wird mithilfe der {@link #displayText(Text)} angezeigt
+     * 5. zusätzlich wird die Methode {@link #getStringFromScan(Text)} aufgerufen
+     * 6. onFailureListener: es wird ein Eintrag im Log erstellt und dem User/der Userin ein Toast gezeigt, dass kein Text erkannt werden konnte
+     * 7. catch IOException die auftreten könnte
      *
      * @param uri ist die Uri des Bildes woraus wir den Text extrahieren wollen
      */
@@ -160,6 +163,14 @@ public class Fragment_nav1 extends Fragment {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Zeigt den extrahierten Text in einer TextView
+     *
+     * Die Textblöcke werden in einen StringBuilder gespeichert und anschließend in einen String gespeichert
+     *
+     * @param visionText ist das Text Objekt das in {@link #processImg(Uri)} erstellt wurde
+     */
     private void displayText(Text visionText){
         StringBuilder resultText = new StringBuilder();
         for(Text.TextBlock block : visionText.getTextBlocks()){
@@ -169,6 +180,15 @@ public class Fragment_nav1 extends Fragment {
         scanTextView.setText(resultText.toString());
     }
 
+    /**
+     * Wandelt die Textblöcke in einen String um, um weiterverarbeitet werden zu können
+     *
+     * Die Textblöcke werden in einen StringBuilder gespeichert und anschließend in einen String gespeichert
+     *
+     * Zusätzlich wird ein Vision Objekt initialisiert das den finalen String übergeben bekommt
+     *
+     * @param visionText ist das Text Objekt das in {@link #processImg(Uri)} erstellt wurde
+     */
 
     private void getStringFromScan(Text visionText){
         StringBuilder text = new StringBuilder();
