@@ -88,15 +88,16 @@ public class Fragment_nav5 extends Fragment {
                     getActivity().runOnUiThread(() -> botTextView.setText("Error: " + response.message()));
                 } else {
                     String responseBody = response.body().string();
+
+
                     Log.d("Testing",responseBody);
 
                     // Removing escape characters and decoding Unicode characters
                     responseBody = responseBody.replace("\\", "");
                     responseBody = responseBody.replace("\n", "");
+                    responseBody = responseBody.replace("\"","");
 
                     // Decoding Unicode escape sequences
-                   responseBody = replaceUnicodeEscapeSequences(responseBody);
-
 
                     String finalResponseBody = responseBody;
                     getActivity().runOnUiThread(() -> botTextView.setText(finalResponseBody));
@@ -115,17 +116,4 @@ public class Fragment_nav5 extends Fragment {
         });
     }
 
-    public static String replaceUnicodeEscapeSequences(String input) {
-        Pattern pattern = Pattern.compile("\\\\u([0-9A-Fa-f]{4})");
-        Matcher matcher = pattern.matcher(input);
-        StringBuffer result = new StringBuffer();
-
-        while (matcher.find()) {
-            String unicodeChar = String.valueOf((char) Integer.parseInt(matcher.group(1), 16));
-            matcher.appendReplacement(result, unicodeChar);
-        }
-        matcher.appendTail(result);
-
-        return result.toString();
-    }
 }

@@ -22,6 +22,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+/**
+ * Die FullPrescriptionRepository Klasse ist dafür da um daten von den Rezepten vom Server zu bekommen und sie zu processen.
+ * Es fetched FHIR R5 MedicationRequests und gruppiert sie nach dem group identifier der von der ELGAGmbH vorgegeben wird. Es leitet die
+ * raw json values an die Parser Klasse weiter die FullPrescriptionModels parsed. Hier werden Patient und Practitioner Daten processed.
+ */
 public class FullPrescriptionRepository {
 
     private String serverAddress = "192.168.0.2:8080";
