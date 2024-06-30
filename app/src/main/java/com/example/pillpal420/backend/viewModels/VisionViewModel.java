@@ -10,6 +10,9 @@ import com.example.pillpal420.backend.dataModels.PractitionerDataModel;
 import com.example.pillpal420.backend.repository.VisionRepository;
 import com.example.pillpal420.documentation.LogTag;
 
+/**
+ * Diese Klasse wird erst für ein späteres Feature in der App vorgedacht und soll daher nicht gelöscht werden!
+ */
 public class VisionViewModel extends ViewModel {
 
     private MutableLiveData<PractitionerDataModel> practitionerLiveData;

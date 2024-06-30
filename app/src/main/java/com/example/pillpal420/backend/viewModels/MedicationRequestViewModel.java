@@ -15,15 +15,34 @@ public class MedicationRequestViewModel extends ViewModel {
     private MutableLiveData<List<MedicationRequestDataModel>> medicationRequestDataModelMutableLiveData;
 private MedicationRequestRepository medicationRequestRepository;
 
-public MedicationRequestViewModel(){
+    /**
+     * Konstruktor
+     */
+    public MedicationRequestViewModel(){
     medicationRequestDataModelMutableLiveData = new MutableLiveData<>();
     medicationRequestRepository = new MedicationRequestRepository();
 }
 
+    /**
+     * Getter für medicationRequestDataModelMutableLiveData
+     * @return medicationRequestDataModelMutableLiveData
+     */
     public LiveData<List<MedicationRequestDataModel>> getMedicationRequestDataModelMutableLiveData() {
         return medicationRequestDataModelMutableLiveData;
     }
-public void fetchMedicationRequest(String patientId){
+
+    /**
+     * Erhält eine MedicationRequest basierend auf der übergebenen ID
+     *
+     * Funktion:
+     * 1. Ruft die getMedicationRequest Methode basierend auf der patientId auf
+     * 2. Callback:
+     *    --> erfolgreich: aktualisiert die medicationRequestDataModelMutableLiveData mit den erhaltenen medicationRequestDataModel
+     *    --> nicht erfolgreich: Log und printStackTrace
+     *
+     * @param patientId ID des Patienten dessen MedicationRequest erhalten werden soll
+     */
+    public void fetchMedicationRequest(String patientId){
     medicationRequestRepository.getMedicationRequest(patientId, new MedicationRequestRepository.MedicationRequestCallback() {
         @Override
         public void onResponse(List<MedicationRequestDataModel> medicationRequestDataModel) {
@@ -40,6 +59,11 @@ public void fetchMedicationRequest(String patientId){
     });
     }
 
+    /**
+     * 
+     * @param medicationRequest
+     * @return
+     */
     public LiveData<MedicationRequestDataModel> postMedicationRequest(MedicationRequestDataModel medicationRequest) {
     Log.d("MedicationRequest","Posting Medication Request, in ViewModel class");
 

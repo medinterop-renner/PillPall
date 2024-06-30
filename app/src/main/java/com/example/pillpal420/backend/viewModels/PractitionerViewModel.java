@@ -9,6 +9,9 @@ import androidx.lifecycle.ViewModel;
 import com.example.pillpal420.backend.dataModels.PractitionerDataModel;
 import com.example.pillpal420.backend.repository.PractitionerRepository;
 
+/**
+ * Diese Klasse ist für ein späteres Feature in der App gedacht und soll deshalb nicht gelöscht werden!
+ */
 public class PractitionerViewModel extends ViewModel {
 
     private MutableLiveData<PractitionerDataModel> practitionerLiveData;
@@ -16,7 +19,7 @@ public class PractitionerViewModel extends ViewModel {
 
     public PractitionerViewModel(){
         practitionerLiveData = new MutableLiveData<>();
-        practitionerRepository = new PractitionerRepository(); // here is an argument (server adress expected how do i handle this )
+        practitionerRepository = new PractitionerRepository();
     }
 
     public LiveData<PractitionerDataModel> getPractitionerLiveData(){

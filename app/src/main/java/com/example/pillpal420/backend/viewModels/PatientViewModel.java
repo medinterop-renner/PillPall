@@ -10,6 +10,9 @@ import androidx.lifecycle.ViewModel;
 import com.example.pillpal420.backend.dataModels.PatientDataModel;
 import com.example.pillpal420.backend.repository.PatientRepository;
 
+/**
+ * Diese Klasse ist für ein späteres Feature in der App gedacht und soll deshalb nicht gelöscht werden!
+ */
 public class PatientViewModel extends ViewModel {
     private MutableLiveData<PatientDataModel> patientLiveData;
     private PatientRepository repository;
