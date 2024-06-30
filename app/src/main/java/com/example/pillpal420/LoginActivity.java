@@ -26,7 +26,6 @@ public class LoginActivity extends AppCompatActivity {
      */
     private CorePatientProfileDatabase corePatientProfileDatabase;
     private CorePatientProfil corePatientProfil;
-
     private EditText vorname;
     private EditText svnNummer;
     private Button loginButton;

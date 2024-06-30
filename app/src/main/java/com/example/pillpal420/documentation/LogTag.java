@@ -1,5 +1,8 @@
 package com.example.pillpal420.documentation;
 
+/**
+ * Enums für LogCat übersicht. Debugging.
+ */
 public enum LogTag {
 
     FULL_PRESCRIPTION("FullPrescriptionDataModel"),
