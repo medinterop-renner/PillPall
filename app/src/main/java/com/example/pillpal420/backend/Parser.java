@@ -262,11 +262,11 @@ public class Parser {
         Log.d(LogTag.MEDICATION_REQUEST.name(), "Successfully Created med req.");
         return json;
     }
-
     /**
+     * Parsed die JSON Response vom FHIR server um eein PractitionerDataModel für die Verwendung in UI und Code zu erstellen.
      *
-     * @param jsonResponse
-     * @return
+     * @param jsonResponse The JSON response from the FHIR R5 Server.
+     * @return A valid PractitionerDataModel object.
      */
     public PractitionerDataModel createPractitioner(String jsonResponse) {
         PractitionerDataModel practitioner = null;
@@ -339,11 +339,12 @@ public class Parser {
         }
         return practitioner;
     }
-
     /**
+     * Erstellt ein JSON object das dem HL7 FHIR R5 coreIG practitioner Resource entspricht.
+     * Es wird aus einem PractitionerDataModel erstellt.
      *
-     * @param practitioner
-     * @return
+     * @param practitioner A practitionerDataModel object
+     * @return A valid FHIR R5 JSON Object representing the Practitioner resource.
      */
     public JSONObject createPostPractitionerResource(PractitionerDataModel practitioner) {
         JSONObject json = new JSONObject();
