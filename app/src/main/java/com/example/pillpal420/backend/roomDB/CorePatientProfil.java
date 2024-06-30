@@ -7,13 +7,18 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+/**
+ * definiert den table name in dem CorePatientProfils objects gespeichert werden.
+ */
 @Entity(tableName = "CorePatientProfil")
 public class CorePatientProfil {
-
-@ColumnInfo(name = "idRoomDB")
-@PrimaryKey(autoGenerate = true)
-private int idRoomDB;
-@ColumnInfo(name = "id")
+    /**
+     * definiert idRoomDB als primaryKey für den table CorePatientProfil
+     */
+    @ColumnInfo(name = "idRoomDB")
+    @PrimaryKey(autoGenerate = true)
+    private int idRoomDB;
+    @ColumnInfo(name = "id")
     private String id;
     @ColumnInfo(name = "identifierSocialSecurityNum")
     private String identifierSocialSecurityNum;
@@ -39,8 +44,8 @@ private int idRoomDB;
 
     private String postalCode;
 
-@Ignore
-    public CorePatientProfil(){
+    @Ignore
+    public CorePatientProfil() {
 
     }
 
@@ -48,9 +53,9 @@ private int idRoomDB;
     /**
      * Konstruktor
      */
-    public CorePatientProfil(int idRoomDB,String id, String identifierSocialSecurityNum, String family, String given,
+    public CorePatientProfil(int idRoomDB, String id, String identifierSocialSecurityNum, String family, String given,
                              String prefix, String gender, String birthDate,
-                            String line, String city, String state, String postalCode, String country){
+                             String line, String city, String state, String postalCode, String country) {
         this.idRoomDB = idRoomDB;
         this.id = id;
         this.identifierSocialSecurityNum = identifierSocialSecurityNum;
@@ -69,6 +74,7 @@ private int idRoomDB;
 
     /**
      * Getter für idRoomDB
+     *
      * @return idRoomDB
      */
     public int getIdRoomDB() {
@@ -77,6 +83,7 @@ private int idRoomDB;
 
     /**
      * Setter für idRoomDB
+     *
      * @param idRoomDB
      */
     public void setIdRoomDB(int idRoomDB) {
@@ -85,6 +92,7 @@ private int idRoomDB;
 
     /**
      * Getter für ID
+     *
      * @return id
      */
     public String getId() {
@@ -93,6 +101,7 @@ private int idRoomDB;
 
     /**
      * Setter für id
+     *
      * @param id
      */
     public void setId(String id) {
@@ -101,6 +110,7 @@ private int idRoomDB;
 
     /**
      * Getter für identifierSocialSecurityNum
+     *
      * @return identifierSocialSecurityNum
      */
     public String getIdentifierSocialSecurityNum() {
@@ -109,6 +119,7 @@ private int idRoomDB;
 
     /**
      * Setter für identifierSocialSecurityNum
+     *
      * @param identifierSocialSecurityNum
      */
     public void setIdentifierSocialSecurityNum(String identifierSocialSecurityNum) {
@@ -117,6 +128,7 @@ private int idRoomDB;
 
     /**
      * Getter für family
+     *
      * @return family
      */
     public String getFamily() {
@@ -125,6 +137,7 @@ private int idRoomDB;
 
     /**
      * Setter für family
+     *
      * @param family
      */
     public void setFamily(String family) {
@@ -133,6 +146,7 @@ private int idRoomDB;
 
     /**
      * Getter für given
+     *
      * @return given
      */
     public String getGiven() {
@@ -141,6 +155,7 @@ private int idRoomDB;
 
     /**
      * Setter für given
+     *
      * @param given
      */
     public void setGiven(String given) {
@@ -149,6 +164,7 @@ private int idRoomDB;
 
     /**
      * Getter für prefix
+     *
      * @return prefix
      */
     public String getPrefix() {
@@ -157,6 +173,7 @@ private int idRoomDB;
 
     /**
      * Setter für prefix
+     *
      * @param prefix
      */
     public void setPrefix(String prefix) {
@@ -165,6 +182,7 @@ private int idRoomDB;
 
     /**
      * Getter für gender
+     *
      * @return gender
      */
     public String getGender() {
@@ -173,6 +191,7 @@ private int idRoomDB;
 
     /**
      * Setter für gender
+     *
      * @param gender
      */
     public void setGender(String gender) {
@@ -181,6 +200,7 @@ private int idRoomDB;
 
     /**
      * Getter für birthDate
+     *
      * @return birthDate
      */
     public String getBirthDate() {
@@ -189,6 +209,7 @@ private int idRoomDB;
 
     /**
      * Setter für birthDate
+     *
      * @param birthDate
      */
     public void setBirthDate(String birthDate) {
@@ -197,6 +218,7 @@ private int idRoomDB;
 
     /**
      * Getter für line
+     *
      * @return line
      */
     public String getLine() {
@@ -205,6 +227,7 @@ private int idRoomDB;
 
     /**
      * Setter für line
+     *
      * @param line
      */
     public void setLine(String line) {
@@ -213,6 +236,7 @@ private int idRoomDB;
 
     /**
      * Getter für city
+     *
      * @return city
      */
     public String getCity() {
@@ -221,6 +245,7 @@ private int idRoomDB;
 
     /**
      * Setter für city
+     *
      * @param city
      */
     public void setCity(String city) {
@@ -229,6 +254,7 @@ private int idRoomDB;
 
     /**
      * Getter für state
+     *
      * @return state
      */
     public String getState() {
@@ -237,6 +263,7 @@ private int idRoomDB;
 
     /**
      * Setter für state
+     *
      * @param state
      */
     public void setState(String state) {
@@ -245,6 +272,7 @@ private int idRoomDB;
 
     /**
      * Getter für country
+     *
      * @return country
      */
     public String getCountry() {
@@ -253,6 +281,7 @@ private int idRoomDB;
 
     /**
      * Setter für country
+     *
      * @param country
      */
     public void setCountry(String country) {
@@ -261,6 +290,7 @@ private int idRoomDB;
 
     /**
      * Getter für postalCode
+     *
      * @return postalCode
      */
     public String getPostalCode() {
@@ -269,6 +299,7 @@ private int idRoomDB;
 
     /**
      * Setter für postalCode
+     *
      * @param postalCode
      */
     public void setPostalCode(String postalCode) {
@@ -277,13 +308,14 @@ private int idRoomDB;
 
     /**
      * Hier wird ein String aus allen Strings gebildet und ausgegeben
+     *
      * @return String des Objekts
      */
     @NonNull
     @Override
     public String toString() {
         return "{" +
-                "primarKey="  + idRoomDB +
+                "primarKey=" + idRoomDB +
                 "id='" + id + '\'' +
                 ", Sozialversicherungsnummer='" + identifierSocialSecurityNum + '\'' +
                 ", family='" + family + '\'' +

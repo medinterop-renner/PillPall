@@ -6,9 +6,14 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+/**
+ * definiert den DB table in dem die corepractitionerprofils gespeichert sind
+ */
 @Entity(tableName = "CorePractitionerProfil")
 public class CorePractitionerProfil {
-
+    /**
+     * definiert idRoomDb als primary key für den CorePractitionerProfiles gespeichert werden.
+     */
     @ColumnInfo(name = "idRoomDB")
     @PrimaryKey(autoGenerate = true)
     private int idRoomDB;
@@ -44,7 +49,8 @@ public class CorePractitionerProfil {
     private String country;
 
     @Ignore
-    public CorePractitionerProfil() {}
+    public CorePractitionerProfil() {
+    }
 
     /**
      * Konstruktor
@@ -67,6 +73,7 @@ public class CorePractitionerProfil {
 
     /**
      * Getter für idRoomDB
+     *
      * @return idRoomDB
      */
     public int getIdRoomDB() {
@@ -75,6 +82,7 @@ public class CorePractitionerProfil {
 
     /**
      * Setter für idRoomDB
+     *
      * @param idRoomDB
      */
     public void setIdRoomDB(int idRoomDB) {
@@ -83,6 +91,7 @@ public class CorePractitionerProfil {
 
     /**
      * Getter für id
+     *
      * @return id
      */
     public String getId() {
@@ -91,6 +100,7 @@ public class CorePractitionerProfil {
 
     /**
      * Setter für id
+     *
      * @param id
      */
     public void setId(String id) {
@@ -99,6 +109,7 @@ public class CorePractitionerProfil {
 
     /**
      * Getter für oidPracticioner
+     *
      * @return oidPracticioner
      */
     public String getOidPractitioner() {
@@ -107,6 +118,7 @@ public class CorePractitionerProfil {
 
     /**
      * Setter für oidPracticioner
+     *
      * @param oidPractitioner
      */
     public void setOidPractitioner(String oidPractitioner) {
@@ -115,6 +127,7 @@ public class CorePractitionerProfil {
 
     /**
      * Getter für family
+     *
      * @return family
      */
     public String getFamily() {
@@ -123,6 +136,7 @@ public class CorePractitionerProfil {
 
     /**
      * Setter für family
+     *
      * @param family
      */
     public void setFamily(String family) {
@@ -131,6 +145,7 @@ public class CorePractitionerProfil {
 
     /**
      * Getter für given
+     *
      * @return given
      */
     public String getGiven() {
@@ -139,6 +154,7 @@ public class CorePractitionerProfil {
 
     /**
      * Setter für given
+     *
      * @param given
      */
     public void setGiven(String given) {
@@ -147,6 +163,7 @@ public class CorePractitionerProfil {
 
     /**
      * Getter für suffix
+     *
      * @return suffix
      */
     public String getSuffix() {
@@ -155,6 +172,7 @@ public class CorePractitionerProfil {
 
     /**
      * Setter für suffix
+     *
      * @param suffix
      */
     public void setSuffix(String suffix) {
@@ -163,6 +181,7 @@ public class CorePractitionerProfil {
 
     /**
      * Getter für telecom
+     *
      * @return telecom
      */
     public String getTelecom() {
@@ -171,6 +190,7 @@ public class CorePractitionerProfil {
 
     /**
      * Setter für telecom
+     *
      * @param telecom
      */
     public void setTelecom(String telecom) {
@@ -179,6 +199,7 @@ public class CorePractitionerProfil {
 
     /**
      * Getter für line
+     *
      * @return line
      */
     public String getLine() {
@@ -187,6 +208,7 @@ public class CorePractitionerProfil {
 
     /**
      * Setter für line
+     *
      * @param line
      */
     public void setLine(String line) {
@@ -195,6 +217,7 @@ public class CorePractitionerProfil {
 
     /**
      * Getter für city
+     *
      * @return city
      */
     public String getCity() {
@@ -203,6 +226,7 @@ public class CorePractitionerProfil {
 
     /**
      * Setter für city
+     *
      * @param city
      */
     public void setCity(String city) {
@@ -211,6 +235,7 @@ public class CorePractitionerProfil {
 
     /**
      * Getter für postalCode
+     *
      * @return
      */
     public String getPostalCode() {
@@ -219,6 +244,7 @@ public class CorePractitionerProfil {
 
     /**
      * Setter für postalCode
+     *
      * @param postalCode
      */
     public void setPostalCode(String postalCode) {
@@ -227,6 +253,7 @@ public class CorePractitionerProfil {
 
     /**
      * Getter für country
+     *
      * @return country
      */
     public String getCountry() {
@@ -235,6 +262,7 @@ public class CorePractitionerProfil {
 
     /**
      * Setter für country
+     *
      * @param country
      */
     public void setCountry(String country) {
