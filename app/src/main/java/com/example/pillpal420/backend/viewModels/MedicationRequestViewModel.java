@@ -49,21 +49,21 @@ private MedicationRequestRepository medicationRequestRepository;
             medicationRequestDataModelMutableLiveData.postValue(medicationRequestDataModel);
             Log.d("MedicationRequest","MedicationRequest posted to live Data");
         }
-
         @Override
         public void onFailure(Exception e) {
             Log.d("Testing","An Error occurred when getting the medicationRequest ");
                 e.printStackTrace();
-
         }
     });
     }
+
 
     /**
      * 
      * @param medicationRequest
      * @return
      */
+
     public LiveData<MedicationRequestDataModel> postMedicationRequest(MedicationRequestDataModel medicationRequest) {
     Log.d("MedicationRequest","Posting Medication Request, in ViewModel class");
 
