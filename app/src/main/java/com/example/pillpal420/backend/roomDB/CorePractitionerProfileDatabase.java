@@ -14,7 +14,8 @@ public abstract class CorePractitionerProfileDatabase extends RoomDatabase {
 
     private static volatile CorePractitionerProfileDatabase INSTANCE;
     /**
-     * Erhält ein Element aus der CorePracticionerProfileDatabase
+     * Erhält ein Element aus der CorePracticionerProfileDatabase hier wird das SINGLETON pattern defined.
+     * Das singleton pattern stellt sicher das nur eine instanz von der CorePractitionerProfileDB erstellt wird.
      *
      * Funktion:
      * 1. Überprüfen ob die Instance null ist
