@@ -10,7 +10,6 @@ import java.util.List;
  * Sie enthält Informationen über die PatientInnen, die ÄrztInnen und die verschiedenen verschriebenen Medikamente.
  */
 public class FullPrescriptionDataModel {
-
     private PatientDataModel patientDataModel;
     private PractitionerDataModel practitionerDataModel;
     private List<MedicationRequestDataModelForFullPrescription> medicationRequestDataModelForFullPrescription;
@@ -26,19 +25,13 @@ public class FullPrescriptionDataModel {
         this.practitionerDataModel = practitionerDataModel;
         this.medicationRequestDataModelForFullPrescription = medicationRequestDataModelForFullPrescription;
     }
-
     public PatientDataModel getPatientDataModel() {
         return patientDataModel;
     }
-
     public PractitionerDataModel getPractitionerDataModel() {
         return practitionerDataModel;
     }
-
-    public List<MedicationRequestDataModelForFullPrescription> getMedicationRequestDataModelForFullPrescription() {
-        return medicationRequestDataModelForFullPrescription;
-    }
-
+    public List<MedicationRequestDataModelForFullPrescription> getMedicationRequestDataModelForFullPrescription() {return medicationRequestDataModelForFullPrescription;}
     /**
      * Returned einen String der die Klasse Textuell beschreibt.
      * Diese Funktion wird verwendet um ein Rezept in der UI anzeigen zu lassen.
