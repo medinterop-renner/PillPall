@@ -69,7 +69,6 @@ public class MedicationRequestRepository {
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 medicationRequestCallback.onFailure(e);
             }
-
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 if (!response.isSuccessful()) {
@@ -107,7 +106,6 @@ public class MedicationRequestRepository {
                 liveData.postValue(null);
                 e.printStackTrace();
             }
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try {
