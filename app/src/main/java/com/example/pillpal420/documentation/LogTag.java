@@ -13,6 +13,7 @@ public enum LogTag {
     LOG_IN("LogIn"),
     VISION("Vision"),
     MLKIT("MLKit"),
+    CHAT_BOT("Chatbot"),
     WHISPER("Whisper"),
     DOSAGE_INSTRUCTION("DosageInstructions");
 
