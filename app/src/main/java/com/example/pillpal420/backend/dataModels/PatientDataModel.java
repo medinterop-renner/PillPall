@@ -1,25 +1,41 @@
 package com.example.pillpal420.backend.dataModels;
 
+import androidx.annotation.NonNull;
 
+/**
+ * Klasse die die FHIR R5 HL7 Austria core implementation Guide Patient resource repräsentiert.
+ */
 public class PatientDataModel {
     private String id;
-
     private String identifierSocialSecurityNum;
     private String family;
     private String given;
     private String prefix;
-
     private String gender;
     private String birthDate;
-
     private String line;
     private String city;
     private String state;
     private String country;
-
     private String postalCode;
 
-
+    /**
+     * Konstruktor für die PatientDataModel Class.
+     * Er wird gebraucht um Objekte von PatientDataModels zu erstellen.
+     *
+     * @param id String with unique Identifier for the server.
+     * @param identifierSocialSecurityNum socialsecuritynumber.
+     * @param family family Name.
+     * @param given given Name.
+     * @param prefix titel of the patient.
+     * @param gender gender of the patient.
+     * @param birthDate birthdate of the patient.
+     * @param line street name and number of the address.
+     * @param city Name of the city.
+     * @param state Name of the state.
+     * @param postalCode PostalCode of the patient.
+     * @param country Country of the patient.
+     */
     public PatientDataModel(String id, String identifierSocialSecurityNum, String family, String given, String prefix, String gender, String birthDate,
                             String line, String city, String state, String postalCode, String country) {
         this.id = id;
@@ -34,7 +50,6 @@ public class PatientDataModel {
         this.state = state;
         this.postalCode = postalCode;
         this.country = country;
-
     }
 
     public String getId() {
@@ -85,24 +100,30 @@ public class PatientDataModel {
         return postalCode;
     }
 
+    /**
+     * Gebraucht um PatientDataModels besser für UI und Logging zu visualisieren
+     * Repräsentiert ein PatientDataModel.
+     *
+     * @return A String that holds the values of PatientDataModels.
+     */
+    @NonNull
     @Override
     public String toString() {
         String ansprech;
-        if (gender.equals("female")){
+        if (gender.equals("female")) {
             ansprech = "Frau";
         } else if (gender.equals("male")) {
             ansprech = "Herr";
-        }else{
+        } else {
             ansprech = "";
         }
-        if (prefix == null){
+        if (prefix == null) {
             prefix = "";
         }
         return
                 "Sozialversicherungsnummer: " + identifierSocialSecurityNum + " \n" +
-                        "Name: " + " " +ansprech+ ". " + prefix + " " + family + " " + given + "\n" +
+                        "Name: " + " " + ansprech + ". " + prefix + " " + family + " " + given + "\n" +
                         "Geboren am: " + birthDate + "\n" +
                         "Addresse: " + line + " " + city + " " + postalCode + " " + state + " " + country;
-
     }
 }
