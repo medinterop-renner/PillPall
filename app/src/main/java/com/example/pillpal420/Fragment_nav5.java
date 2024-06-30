@@ -31,7 +31,6 @@ import okhttp3.Response;
 /**
  * Diese Klasse wird verwendet um mit einem eigens trainiertem AI model zu kommunizieren das die Funktion eines HelpDesks hat.
  * Für 1st level customer support. Es wird über ein Python Server ein LLM angesprochen die speziell darauf trainiert ist.
- *
  */
 public class Fragment_nav5 extends Fragment {
     private String serverAddress = "192.168.0.2:8000";
@@ -41,15 +40,13 @@ public class Fragment_nav5 extends Fragment {
     private OkHttpClient client;
 
     /**
-     *
-     * @param inflater The LayoutInflater object that can be used to inflate
-     * any views in the fragment,
-     * @param container If non-null, this is the parent view that the fragment's
-     * UI should be attached to.  The fragment should not add the view itself,
-     * but this can be used to generate the LayoutParams of the view.
+     * @param inflater           The LayoutInflater object that can be used to inflate
+     *                           any views in the fragment,
+     * @param container          If non-null, this is the parent view that the fragment's
+     *                           UI should be attached to.  The fragment should not add the view itself,
+     *                           but this can be used to generate the LayoutParams of the view.
      * @param savedInstanceState If non-null, this fragment is being re-constructed
-     * from a previous saved state as given here.
-     *
+     *                           from a previous saved state as given here.
      * @return view null or
      */
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,7 +81,7 @@ public class Fragment_nav5 extends Fragment {
                 MediaType.parse("application/json; charset=utf-8")
         );
         Request request = new Request.Builder()
-                .url("http://"+serverAddress+"/chat")
+                .url("http://" + serverAddress + "/chat")
                 .post(body)
                 .build();
         client.newCall(request).enqueue(new Callback() {
@@ -93,6 +90,7 @@ public class Fragment_nav5 extends Fragment {
                 Log.e(LogTag.CHAT_BOT.getTag(), "Error sending message: " + e.getMessage());
                 getActivity().runOnUiThread(() -> botTextView.setText("Failed to send message."));
             }
+
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {

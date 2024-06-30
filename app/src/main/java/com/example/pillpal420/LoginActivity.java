@@ -19,11 +19,10 @@ import com.example.pillpal420.documentation.LogTag;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * LogInActivity handled den user login. Es überprüft ob bereits ein Patienten- User profil (CorePatientProfil) in der RoomDB erstellt wurde.
+ */
 public class LoginActivity extends AppCompatActivity {
-
-    /**
-     *
-     */
     private CorePatientProfileDatabase corePatientProfileDatabase;
     private CorePatientProfil corePatientProfil;
     private EditText vorname;

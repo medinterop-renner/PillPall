@@ -293,40 +293,33 @@ public class Whisper extends Fragment {
                 }
             }
         }
-
         if (currentPart.length() > 0) {
             parts.add(currentPart.toString());
         }
-
         if (parts.size() != 9) {
             Log.d("Test", "failed");
             throw new IllegalArgumentException("Input string does not contain the correct number of values.");
         }
-
-
         String identifiereMedID = parts.get(0);
         String identifiereMedIDGroup = parts.get(1);
         String aspCode = parts.get(2);
         String displayMedication = parts.get(3);
         String requester = parts.get(4).replaceAll("[^0-9]", "");
-
         String subjectReference = parts.get(5).replaceAll("[^a-zA-Z]", "");
-        String frequency = parts.get(7).replaceAll("[^0-9]", "");
         String patientInstruction = parts.get(6);
+        String frequency = parts.get(7);
+        frequency = "2";
+        Log.d(LogTag.WHISPER.getTag(),frequency );
         if (parts.get(8).equalsIgnoreCase("morning")) {
             parts.set(8, "MORN");
         } else if (parts.get(8).equalsIgnoreCase("evening")) {
             parts.set(8, "EVE");
         }
-
         String when = parts.get(8);
-
         MedicationRequestDataModel.DosageInstruction dosageInstruction = new MedicationRequestDataModel.DosageInstruction(patientInstruction, frequency, when);
         List<MedicationRequestDataModel.DosageInstruction> dosageInstructionList = new ArrayList<>();
         dosageInstructionList.add(dosageInstruction);
-
         MedicationRequestDataModel medicationRequestDataModel = new MedicationRequestDataModel("3", identifiereMedID, identifiereMedIDGroup, aspCode, displayMedication, requester, subjectReference, dosageInstructionList);
-
         Log.d(LogTag.WHISPER.getTag(), medicationRequestDataModel.toString());
         return medicationRequestDataModel;
     }
