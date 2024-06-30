@@ -70,14 +70,14 @@ public class MedicationRequestDataModel {
             dosageInstructionsStr.append(instruction.toString()).append("\n");
         }
         return "MedicationRequestDataModel: " +
-                "id= " + id +
-                "identifiereMedID= " + identifiereMedID +
-                "identifiereMedIDGroup= " + identifiereMedIDGroup +
-                "aspCode= " + aspCode +
-                "displayMedication= " + displayMedication +
-                "requester= " + requester +
-                "subjectReference= " + subjectReference +
-                "dosageInstructions= " + dosageInstructionsStr.toString();
+                " id= " + id +
+                " identifiereMedID= " + identifiereMedID +
+                " identifiereMedIDGroup= " + identifiereMedIDGroup +
+                " aspCode= " + aspCode +
+                " displayMedication= " + displayMedication +
+                " requester= " + requester +
+                " subjectReference= " + subjectReference +
+                " dosageInstructions= " + dosageInstructionsStr.toString();
     }
     /**
      * Innere Klasse um FHIR R5 HL7 Austria eMedikamention medicationRequest besser darstellen zu können.
