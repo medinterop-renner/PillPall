@@ -51,47 +51,26 @@ public class PatientDataModel {
         this.postalCode = postalCode;
         this.country = country;
     }
-
     public String getId() {
-        return id;
-    }
-
+        return id;}
     public String getFamily() {
-        return family;
-    }
-
+        return family;}
     public String getGiven() {
-        return given;
-    }
-
+        return given;}
     public String getPrefix() {
-        return prefix;
-    }
-
+        return prefix;}
     public String getIdentifierSocialSecurityNum() {
-        return identifierSocialSecurityNum;
-    }
-
+        return identifierSocialSecurityNum;}
     public String getGender() {
-        return gender;
-    }
-
+        return gender;}
     public String getBirthDate() {
-        return birthDate;
-    }
-
+        return birthDate;}
     public String getLine() {
-        return line;
-    }
-
+        return line;}
     public String getCity() {
-        return city;
-    }
-
+        return city;}
     public String getState() {
-        return state;
-    }
-
+        return state;}
     public String getCountry() {
         return country;
     }

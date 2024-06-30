@@ -45,31 +45,23 @@ public class PractitionerDataModel {
         this.country = country;
     }
     public String getId() {
-        return id;
-    }
+        return id;}
     public String getOidPractitioner(){return oidPractitioner;}
     public String getFamily() {
-        return family;
-    }
+        return family;}
     public String getGiven() {
-        return given;
-    }
+        return given;}
     public String getSuffix() {
-        return suffix;
-    }
+        return suffix;}
     public String getTelecom() {
-        return telecom;
-    }
+        return telecom;}
     public String getLine() {
-        return line;
-    }
+        return line;}
     public String getCity() {
-        return city;
-    }
+        return city;}
     public String getPostalCode(){return postalCode;}
     public String getCountry() {
-        return country;
-    }
+        return country;}
     /**
      * Gibt einen schön formatierten String für Logging statements und gebrauch in der UI Wieder.
      * Die Standard toString methode wird somit überschrieben.
