@@ -35,15 +35,15 @@ public class PatientViewModel extends ViewModel {
 
             @Override
             public void onFailure(Exception e) {
-                Log.d("Patient","Error while fetchingPatientData");
+                Log.d("Patient", "Error while fetchingPatientData");
                 e.printStackTrace();
             }
         });
     }
 
-    public LiveData<PatientDataModel> postPatientRessource(PatientDataModel patientDataModel){
-        Log.d("Patient","2. Preparing to post patient ressource from view Model");
+    public LiveData<PatientDataModel> postPatientRessource(PatientDataModel patientDataModel) {
+        Log.d("Patient", "2. Preparing to post patient ressource from view Model");
 
-       return repository.postPatientRessource(patientDataModel);
+        return repository.postPatientRessource(patientDataModel);
     }
 }

@@ -64,6 +64,7 @@ public class PatientRepository {
             public void onFailure(Call call, IOException e) {
                 callback.onFailure(e);
             }
+
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
@@ -100,6 +101,7 @@ public class PatientRepository {
                 liveData.postValue(null);
                 e.printStackTrace();
             }
+
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 if (!response.isSuccessful()) {

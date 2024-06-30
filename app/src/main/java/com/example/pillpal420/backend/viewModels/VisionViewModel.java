@@ -18,14 +18,16 @@ public class VisionViewModel extends ViewModel {
     private MutableLiveData<PractitionerDataModel> practitionerLiveData;
     private VisionRepository repository;
 
-    public VisionViewModel(){
+    public VisionViewModel() {
         practitionerLiveData = new MutableLiveData<>();
         repository = new VisionRepository();
     }
 
-    public LiveData<PractitionerDataModel> getPractitionerLiveData(){return practitionerLiveData;}
+    public LiveData<PractitionerDataModel> getPractitionerLiveData() {
+        return practitionerLiveData;
+    }
 
-    public void fetchPatientData(String familyNameForFHIRSearch){
+    public void fetchPatientData(String familyNameForFHIRSearch) {
         repository.searchPatientWithNameGetBackPatientObject(familyNameForFHIRSearch, new VisionRepository.VisionCallback() {
             @Override
             public void onResponse(PractitionerDataModel practitionerDataModel) {
@@ -35,8 +37,8 @@ public class VisionViewModel extends ViewModel {
 
             @Override
             public void onFailure(Exception e) {
-            Log.d(LogTag.VISION.getTag(), "Error while fetching da Doktor");
-            e.printStackTrace();
+                Log.d(LogTag.VISION.getTag(), "Error while fetching da Doktor");
+                e.printStackTrace();
             }
         });
     }

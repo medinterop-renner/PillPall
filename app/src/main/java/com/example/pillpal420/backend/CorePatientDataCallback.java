@@ -9,6 +9,7 @@ import com.example.pillpal420.backend.roomDB.CorePatientProfil;
 public interface CorePatientDataCallback {
     /**
      * wird aufgerufen wenn corepatientprofile data erfolgreich aus der DB retrieved wird.
+     *
      * @param patient loaded corepatientprofil
      */
     void onPatientDataLoaded(CorePatientProfil patient);

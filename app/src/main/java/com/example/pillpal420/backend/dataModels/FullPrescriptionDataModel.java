@@ -13,11 +13,12 @@ public class FullPrescriptionDataModel {
     private PatientDataModel patientDataModel;
     private PractitionerDataModel practitionerDataModel;
     private List<MedicationRequestDataModelForFullPrescription> medicationRequestDataModelForFullPrescription;
+
     /**
      * Der Constructior der Klasse. Er wird verwendet um ein vollständiges FullPrescriptionDataModel zu erstellen.
      *
-     * @param patientDataModel                             the data model representing the patient.
-     * @param practitionerDataModel                        the data model representing the practitioner.
+     * @param patientDataModel                              the data model representing the patient.
+     * @param practitionerDataModel                         the data model representing the practitioner.
      * @param medicationRequestDataModelForFullPrescription the list of medication requests associated with this prescription.
      */
     public FullPrescriptionDataModel(PatientDataModel patientDataModel, PractitionerDataModel practitionerDataModel, List<MedicationRequestDataModelForFullPrescription> medicationRequestDataModelForFullPrescription) {
@@ -25,16 +26,23 @@ public class FullPrescriptionDataModel {
         this.practitionerDataModel = practitionerDataModel;
         this.medicationRequestDataModelForFullPrescription = medicationRequestDataModelForFullPrescription;
     }
+
     public PatientDataModel getPatientDataModel() {
         return patientDataModel;
     }
+
     public PractitionerDataModel getPractitionerDataModel() {
         return practitionerDataModel;
     }
-    public List<MedicationRequestDataModelForFullPrescription> getMedicationRequestDataModelForFullPrescription() {return medicationRequestDataModelForFullPrescription;}
+
+    public List<MedicationRequestDataModelForFullPrescription> getMedicationRequestDataModelForFullPrescription() {
+        return medicationRequestDataModelForFullPrescription;
+    }
+
     /**
      * Returned einen String der die Klasse Textuell beschreibt.
      * Diese Funktion wird verwendet um ein Rezept in der UI anzeigen zu lassen.
+     *
      * @return a string representation of the FullPrescriptionDataModel object.
      */
     @NonNull

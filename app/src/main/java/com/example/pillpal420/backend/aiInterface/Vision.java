@@ -44,21 +44,21 @@ public class Vision {
 
     private String scannedText;
 
-    public Vision(String scannedText){
+    public Vision(String scannedText) {
         this.scannedText = scannedText;
         sendTextToServer(scannedText);
     }
 
     /**
      * Hier wird der gescannte Text zur Verarbeitung an den Server geschickt
-     *
+     * <p>
      * Funktion:
      * 1. Erstellen einer OkHttpClient Instanz
      * 2. MediaType wird auf einfachen Text gesetzt und ein RequestBody mit dem gescannten Text erstellt
      * 3. Erstellen eines HTTP POST requests
      * 4. Der Request wird geschickt
-     *    --> ist dieser erfolgreich wird {@link #parseAndVerifyMedicationRequestResourceFromPython(String)} aufgerufen um die weitere Verarbeitung durchzuführen
-     *    --> ist dieser nicht erfolgreich wird ein Log erstellt
+     * --> ist dieser erfolgreich wird {@link #parseAndVerifyMedicationRequestResourceFromPython(String)} aufgerufen um die weitere Verarbeitung durchzuführen
+     * --> ist dieser nicht erfolgreich wird ein Log erstellt
      *
      * @param scannedText der eingescannte Text der an den Server übergeben werden soll
      */
@@ -67,7 +67,7 @@ public class Vision {
         MediaType mediaType = MediaType.parse("text/plain");
         RequestBody body = RequestBody.create(mediaType, scannedText);
         Request request = new Request.Builder()
-                .url("http://"+serverAddressPython+"/upload")
+                .url("http://" + serverAddressPython + "/upload")
                 .post(body)
                 .build();
 
@@ -84,7 +84,7 @@ public class Vision {
                 } else {
                     String fhirResourcePreParsing = response.body().string();
                     Log.d(LogTag.VISION.getTag(), "Server response: " + fhirResourcePreParsing);
-                   parseAndVerifyMedicationRequestResourceFromPython(fhirResourcePreParsing);
+                    parseAndVerifyMedicationRequestResourceFromPython(fhirResourcePreParsing);
 
                 }
             }
@@ -93,7 +93,7 @@ public class Vision {
 
     /**
      * Hier wird die FHIR MEdicationRequest aus dem JSON String erstellt, der vom Server erhalten wurde
-     *
+     * <p>
      * Funktion:
      * 1. Verarbeiten des JSON Strings um das message-Objekt und das entry-Array zu erhalten
      * 2. Verarbeitet das entry-Array um die relevanten Felder zu extrahieren
@@ -158,7 +158,6 @@ public class Vision {
                 JSONObject timing = dosageInstruction.getJSONObject("timing");
 
 
-
                 JSONObject repeat = timing.getJSONObject("repeat");
                 String frequency = repeat.getString("frequency");
 
@@ -166,21 +165,17 @@ public class Vision {
                 String when = whenArray.getString(0);
 
 
-
                 List<MedicationRequestDataModel.DosageInstruction> dosageInstructionsList = new ArrayList<>();
 
-                MedicationRequestDataModel.DosageInstruction dosageInstructionDataModel = new MedicationRequestDataModel.DosageInstruction(patientInstruction,frequency,when);
+                MedicationRequestDataModel.DosageInstruction dosageInstructionDataModel = new MedicationRequestDataModel.DosageInstruction(patientInstruction, frequency, when);
                 dosageInstructionsList.add(dosageInstructionDataModel);
 
 
-
-
                 MedicationRequestDataModel medicationRequestDataModel = new MedicationRequestDataModel(
-                        "1",identifierValue,groupIdentifierValue,aspCode,displayMedication,requesterReference,subjectReference,dosageInstructionsList);
+                        "1", identifierValue, groupIdentifierValue, aspCode, displayMedication, requesterReference, subjectReference, dosageInstructionsList);
 
 
-
-                Log.d(LogTag.VISION.getTag(),medicationRequestDataModel.toString());
+                Log.d(LogTag.VISION.getTag(), medicationRequestDataModel.toString());
 
                 createMedicationRequestWithAcurateData(medicationRequestDataModel);
             }
@@ -191,7 +186,7 @@ public class Vision {
 
     /**
      * Hier wird ein MedicationRequest mit "richtigen" Daten erstellt und an den FHIR Server geschickt
-     *
+     * <p>
      * Funktion:
      * 1. Erhalten der Patient Data und der Practicioner Data
      * 2. Aktualisieren des MedicationRequestDataModel mit den "richtigen" Patient und Practicioner Daten
@@ -202,16 +197,15 @@ public class Vision {
      *
      * @param medicationRequestDataModel enthält die ursprünglichen MedicationRequest Daten
      */
-    public void createMedicationRequestWithAcurateData(MedicationRequestDataModel medicationRequestDataModel){
+    public void createMedicationRequestWithAcurateData(MedicationRequestDataModel medicationRequestDataModel) {
 
         PatientDataModel patientDataModel;
         PractitionerDataModel practitionerDataModel;
 
 
-
         try {
             patientDataModel = fetchPatient(medicationRequestDataModel.getSubject());
-            practitionerDataModel= fetchPractitioner(medicationRequestDataModel.getRequester());
+            practitionerDataModel = fetchPractitioner(medicationRequestDataModel.getRequester());
 
 
         } catch (IOException e) {
@@ -226,7 +220,7 @@ public class Vision {
         JSONObject json = parser.createPostMedicationRequest(medicationRequestDataModel);
 
 
-        Log.d(LogTag.MEDICATION_REQUEST.name(),"Raw json from server: "+ json.toString());
+        Log.d(LogTag.MEDICATION_REQUEST.name(), "Raw json from server: " + json.toString());
         RequestBody body = RequestBody.create(json.toString(), MediaType.parse("application/fhir+json"));
         String url = "http://192.168.0.2:8080/hapi-fhir-jpaserver/fhir/MedicationRequest";
 
@@ -238,7 +232,7 @@ public class Vision {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-            e.printStackTrace();
+                e.printStackTrace();
             }
 
             @Override
@@ -252,12 +246,12 @@ public class Vision {
 
     /**
      * Erhält PatientData vom FHIR Server abhängig von der gegebenen patientReference
-     *
+     * <p>
      * Funktion:
      * 1. Erstellen der URL für die FHIR Serverabfrage mit der patientReference
      * 2. Erstellen und senden einer HTTP GET Request zum FHIR Server
      * 3. Überprüfung der Antwort
-     *    --> wenn nicht erfolgreich -> IOException
+     * --> wenn nicht erfolgreich -> IOException
      * 4. Erstellen eines Strings aus dem responsebody
      * 5. Erstellung eines PatientDataModel aus den Daten des responsebody
      *
@@ -267,7 +261,7 @@ public class Vision {
      */
     private PatientDataModel fetchPatient(String patientReference) throws IOException {
         Log.d(LogTag.VISION.getTag(), "Fetching ID for Patient");
-        String urlPatient = " http://"+ serverAddressFHIR +"/hapi-fhir-jpaserver/fhir/Patient?family=" + patientReference;
+        String urlPatient = " http://" + serverAddressFHIR + "/hapi-fhir-jpaserver/fhir/Patient?family=" + patientReference;
 
         Request request = new Request.Builder().url(urlPatient).build();
         Response response = client.newCall(request).execute();
@@ -281,12 +275,12 @@ public class Vision {
 
     /**
      * Erhält PatientData vom FHIR Server abhängig von der gegebenen practicionerReference
-     *
+     * <p>
      * Funktion:
      * 1. Erstellen der URL für die FHIR Serverabfrage mit der patientReference
      * 2. Erstellen und senden einer HTTP GET Request zum FHIR Server
      * 3. Überprüfung der Antwort
-     *    --> wenn nicht erfolgreich -> IOException
+     * --> wenn nicht erfolgreich -> IOException
      * 4. Erstellen eines Strings aus dem responsebody
      * 5. Erstellung eines PracticionerDataModel aus den Daten des responsebody
      *
@@ -296,7 +290,7 @@ public class Vision {
      */
     private PractitionerDataModel fetchPractitioner(String practitionerReference) throws IOException {
         Log.d(LogTag.VISION.getTag(), "Fetching ID for Practitioner");
-        String urlPractitioner = " http://"+ serverAddressFHIR +"/hapi-fhir-jpaserver/fhir/Practitioner?family=" + practitionerReference;
+        String urlPractitioner = " http://" + serverAddressFHIR + "/hapi-fhir-jpaserver/fhir/Practitioner?family=" + practitionerReference;
 
         Request request = new Request.Builder().url(urlPractitioner).build();
         Response response = client.newCall(request).execute();
@@ -309,4 +303,4 @@ public class Vision {
     }
 
 
-    }
+}

@@ -13,16 +13,18 @@ public abstract class CorePractitionerProfileDatabase extends RoomDatabase {
     public abstract CorePractitionerProfilDAO getCorePractitionerProfilDAO();
 
     private static volatile CorePractitionerProfileDatabase INSTANCE;
+
     /**
      * Erhält ein Element aus der CorePracticionerProfileDatabase
-     *
+     * <p>
      * Funktion:
      * 1. Überprüfen ob die Instance null ist
-     *    --> Instance ist null: synchronisieren der CorePracticionerProfilDatabase Klasse
-     *        erneutes Überprufen der Instanz
-     *    --> Instanz ist immmernoch null: Initialisieren der Datenbank mit Name und Klasse
+     * --> Instance ist null: synchronisieren der CorePracticionerProfilDatabase Klasse
+     * erneutes Überprufen der Instanz
+     * --> Instanz ist immmernoch null: Initialisieren der Datenbank mit Name und Klasse
      * 2. Hinzufügen eines Callbacks zum Datenbank-Builder
      * 3. Erstellen der Datenbank und hinzufügen zu Instance
+     *
      * @param context Context um die Datenbank zu Initialisieren
      * @return ein Element der CorePracticionerProfilDatabase
      */

@@ -13,18 +13,19 @@ import java.util.List;
 
 public class MedicationRequestViewModel extends ViewModel {
     private MutableLiveData<List<MedicationRequestDataModel>> medicationRequestDataModelMutableLiveData;
-private MedicationRequestRepository medicationRequestRepository;
+    private MedicationRequestRepository medicationRequestRepository;
 
     /**
      * Konstruktor
      */
-    public MedicationRequestViewModel(){
-    medicationRequestDataModelMutableLiveData = new MutableLiveData<>();
-    medicationRequestRepository = new MedicationRequestRepository();
-}
+    public MedicationRequestViewModel() {
+        medicationRequestDataModelMutableLiveData = new MutableLiveData<>();
+        medicationRequestRepository = new MedicationRequestRepository();
+    }
 
     /**
      * Getter für medicationRequestDataModelMutableLiveData
+     *
      * @return medicationRequestDataModelMutableLiveData
      */
     public LiveData<List<MedicationRequestDataModel>> getMedicationRequestDataModelMutableLiveData() {
@@ -33,50 +34,49 @@ private MedicationRequestRepository medicationRequestRepository;
 
     /**
      * Erhält eine MedicationRequest basierend auf der übergebenen ID
-     *
+     * <p>
      * Funktion:
      * 1. Ruft die getMedicationRequest Methode basierend auf der patientId auf
      * 2. Callback:
-     *    --> erfolgreich: aktualisiert die medicationRequestDataModelMutableLiveData mit den erhaltenen medicationRequestDataModel
-     *    --> nicht erfolgreich: Log und printStackTrace
+     * --> erfolgreich: aktualisiert die medicationRequestDataModelMutableLiveData mit den erhaltenen medicationRequestDataModel
+     * --> nicht erfolgreich: Log und printStackTrace
      *
      * @param patientId ID des Patienten dessen MedicationRequest erhalten werden soll
      */
-    public void fetchMedicationRequest(String patientId){
-    medicationRequestRepository.getMedicationRequest(patientId, new MedicationRequestRepository.MedicationRequestCallback() {
-        @Override
-        public void onResponse(List<MedicationRequestDataModel> medicationRequestDataModel) {
-            medicationRequestDataModelMutableLiveData.postValue(medicationRequestDataModel);
-            Log.d("MedicationRequest","MedicationRequest posted to live Data");
-        }
-        @Override
-        public void onFailure(Exception e) {
-            Log.d("Testing","An Error occurred when getting the medicationRequest ");
+    public void fetchMedicationRequest(String patientId) {
+        medicationRequestRepository.getMedicationRequest(patientId, new MedicationRequestRepository.MedicationRequestCallback() {
+            @Override
+            public void onResponse(List<MedicationRequestDataModel> medicationRequestDataModel) {
+                medicationRequestDataModelMutableLiveData.postValue(medicationRequestDataModel);
+                Log.d("MedicationRequest", "MedicationRequest posted to live Data");
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.d("Testing", "An Error occurred when getting the medicationRequest ");
                 e.printStackTrace();
-        }
-    });
+            }
+        });
     }
 
 
     /**
      * Postet ein MedicationRequest und gibt ein LiveData Objekt zurück um das Ergebnis zu beobachten
-     *
+     * <p>
      * Funktion:
      * 1. Log für das posten der MedicationRequest
      * 2. Posten der MedicationRequest und return des LiveData Objekts
+     *
      * @param medicationRequest das MedicationRequestDataModel Objekt das geposted werden soll
      * @return LiveData Objekt das die Ergebnisse der post-Operation enthält
      */
 
     public LiveData<MedicationRequestDataModel> postMedicationRequest(MedicationRequestDataModel medicationRequest) {
-    Log.d("MedicationRequest","Posting Medication Request, in ViewModel class");
-
+        Log.d("MedicationRequest", "Posting Medication Request, in ViewModel class");
 
 
         return medicationRequestRepository.postMedicationRequest(medicationRequest);
     }
-
-
 
 
 }

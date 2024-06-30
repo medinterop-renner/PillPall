@@ -16,14 +16,15 @@ public abstract class CorePatientProfileDatabase extends RoomDatabase {
 
     /**
      * Erhält ein Element aus der CorePatientProfileDatabase
-     *
+     * <p>
      * Funktion:
      * 1. Überprüfen ob die Instance null ist
-     *    --> Instance ist null: synchronisieren der CorePatientProfilDatabase Klasse
-     *        erneutes Überprufen der Instanz
-     *    --> Instanz ist immmernoch null: Initialisieren der Datenbank mit Name und Klasse
+     * --> Instance ist null: synchronisieren der CorePatientProfilDatabase Klasse
+     * erneutes Überprufen der Instanz
+     * --> Instanz ist immmernoch null: Initialisieren der Datenbank mit Name und Klasse
      * 2. Hinzufügen eines Callbacks zum Datenbank-Builder
      * 3. Erstellen der Datenbank und hinzufügen zu Instance
+     *
      * @param context Context um die Datenbank zu Initialisieren
      * @return ein Element der CorePatientProfilDatabase
      */

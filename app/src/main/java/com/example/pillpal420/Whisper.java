@@ -1,7 +1,6 @@
 package com.example.pillpal420;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
+
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
@@ -11,21 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
-import com.example.pillpal420.backend.dataModels.FullPrescriptionDataModel;
 import com.example.pillpal420.backend.dataModels.MedicationRequestDataModel;
 import com.example.pillpal420.backend.dataModels.PatientDataModel;
-import com.example.pillpal420.backend.repository.MedicationRequestRepository;
-import com.example.pillpal420.backend.viewModels.FullPrescriptionViewModel;
 import com.example.pillpal420.backend.viewModels.MedicationRequestViewModel;
 import com.example.pillpal420.backend.viewModels.WhisperViewModel;
 import com.example.pillpal420.documentation.LogTag;
@@ -35,8 +25,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import okhttp3.Call;

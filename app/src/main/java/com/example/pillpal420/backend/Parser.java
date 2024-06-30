@@ -14,13 +14,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- */
 public class Parser {
 
     /**
      * Parsed die JSON Response vom FHIR R5 server um ein PatientDataModel zu erstellen
+     *
      * @param jsonResponse The JSON response string.
      * @return The PatientDataModel object.
      */
@@ -72,6 +70,7 @@ public class Parser {
         }
         return patientDataModel;
     }
+
     /**
      * Erstellt ein JSON Objekt um es an den FHIR R5 Server zu schicken.
      *
@@ -115,12 +114,13 @@ public class Parser {
             addressArray.put(addressObject);
             json.put("address", addressArray);
         } catch (JSONException e) {
-            Log.d(LogTag.PATIENT.name(),"Error while parsing JSON for post req");
+            Log.d(LogTag.PATIENT.name(), "Error while parsing JSON for post req");
             throw new RuntimeException(e);
         }
-        Log.d(LogTag.PATIENT.name(),"JSON parsed succeffully for postReq");
+        Log.d(LogTag.PATIENT.name(), "JSON parsed succeffully for postReq");
         return json;
     }
+
     /**
      * Parsed die JSON Response vom FHIR R5 server um eine Liste von MedicationResourceDataModels zu erstellen.
      * Es wird gebraucht um die Daten für diverse Funktionen zu verwenden und sie optimal für die UI aufzubereiten.
@@ -206,7 +206,7 @@ public class Parser {
                 dosageInstructions.add(new MedicationRequestDataModel.DosageInstruction(patientInstruction, frequency, when));
             }
         }
-     Log.d(LogTag.MEDICATION_REQUEST.name(), "MedicationRequest parsed successfully from get");
+        Log.d(LogTag.MEDICATION_REQUEST.name(), "MedicationRequest parsed successfully from get");
         return new MedicationRequestDataModel(id, eMedID, eMedIDGroup, aspCode, displayMedication, requester, subjectReference, dosageInstructions);
     }
 
@@ -241,8 +241,8 @@ public class Parser {
             concept.put("coding", codingArray);
             medication.put("concept", concept);
             json.put("medication", medication);
-            json.put("requester", new JSONObject().put("reference","Practitioner/" + medicationRequest.getRequester()));
-            json.put("subject", new JSONObject().put("reference","Patient/" + medicationRequest.getSubject()));
+            json.put("requester", new JSONObject().put("reference", "Practitioner/" + medicationRequest.getRequester()));
+            json.put("subject", new JSONObject().put("reference", "Patient/" + medicationRequest.getSubject()));
             JSONArray dosageInstructionArray = new JSONArray();
             for (MedicationRequestDataModel.DosageInstruction instruction : medicationRequest.getDosageInstructions()) {
                 JSONObject dosageInstructionObject = new JSONObject();
@@ -262,6 +262,7 @@ public class Parser {
         Log.d(LogTag.MEDICATION_REQUEST.name(), "Successfully Created med req.");
         return json;
     }
+
     /**
      * Parsed die JSON Response vom FHIR server um eein PractitionerDataModel für die Verwendung in UI und Code zu erstellen.
      *
@@ -339,6 +340,7 @@ public class Parser {
         }
         return practitioner;
     }
+
     /**
      * Erstellt ein JSON object das dem HL7 FHIR R5 coreIG practitioner Resource entspricht.
      * Es wird aus einem PractitionerDataModel erstellt.
@@ -352,10 +354,10 @@ public class Parser {
             json.put("resourceType", "Practitioner");
             JSONArray gdaIdentifierArray = new JSONArray();
             JSONObject gdaIdentifierObject = new JSONObject();
-            gdaIdentifierObject.put("system","urn:ietf:rfc:3986");
-            gdaIdentifierObject.put("value",practitioner.getOidPractitioner());
+            gdaIdentifierObject.put("system", "urn:ietf:rfc:3986");
+            gdaIdentifierObject.put("value", practitioner.getOidPractitioner());
             gdaIdentifierArray.put(gdaIdentifierObject);
-            json.put("identifier",gdaIdentifierArray);
+            json.put("identifier", gdaIdentifierArray);
             JSONObject nameObject = new JSONObject();
             nameObject.put("family", practitioner.getFamily());
             JSONArray givenArray = new JSONArray();
@@ -393,10 +395,10 @@ public class Parser {
             }
             json.put("gender", "female");
         } catch (JSONException e) {
-            Log.d(LogTag.PRACTITIONER.getTag(),"failure by parsing json for post request");
+            Log.d(LogTag.PRACTITIONER.getTag(), "failure by parsing json for post request");
             throw new RuntimeException(e);
         }
-        Log.d(LogTag.PRACTITIONER.getTag(),"json for post request successfully parsed");
+        Log.d(LogTag.PRACTITIONER.getTag(), "json for post request successfully parsed");
         return json;
     }
 }

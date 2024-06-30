@@ -3,7 +3,6 @@ package com.example.pillpal420.backend.repository;
 import android.util.Log;
 
 import com.example.pillpal420.backend.Parser;
-import com.example.pillpal420.backend.dataModels.PatientDataModel;
 import com.example.pillpal420.backend.dataModels.PractitionerDataModel;
 import com.example.pillpal420.documentation.LogTag;
 
@@ -34,15 +33,17 @@ public class VisionRepository {
 
         /**
          * wird abgerufen wenn error passiert beim fetching von Practitioner data
+         *
          * @param e Exception encountered during the process.
          */
         void onFailure(Exception e);
     }
 
     /**
-     *  Sucht den Arzt Practitioner anhand des Nachnamens durch.
+     * Sucht den Arzt Practitioner anhand des Nachnamens durch.
+     *
      * @param familyNameForFHIRSearch idofpatient for fetch request.
-     * @param callback callback to handle failure.
+     * @param callback                callback to handle failure.
      */
     public void searchPatientWithNameGetBackPatientObject(String familyNameForFHIRSearch, VisionCallback callback) {
         OkHttpClient client = new OkHttpClient();

@@ -88,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                 corePatientProfil = patient;  // Patient exists, no need to create
                 Log.d(LogTag.LOG_IN.getTag(), "Test patient already exists in the database.");
             }
+
             @Override
             public void onDataNotAvailable() {
                 // Patient does not exist, create a test patient
@@ -99,8 +100,9 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Validiert die Login credentials des users. Wenn Nachname und sozialversicherungsnummer in der RoomDB existieren und dem Input des users gleichen ist der Log in valide.
+     *
      * @param nachNameCheck the family name entered by the user
-     * @param svnCheck The social security number entered by the user
+     * @param svnCheck      The social security number entered by the user
      * @return true if the credentials match the data stored in roomdb CorePatientProfil, false otherwise.
      */
     private boolean validateLogin(String nachNameCheck, String svnCheck) {

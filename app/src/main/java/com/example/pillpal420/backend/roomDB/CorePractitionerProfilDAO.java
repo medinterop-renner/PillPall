@@ -12,6 +12,7 @@ public interface CorePractitionerProfilDAO {
 
     /**
      * Einfügen eines CorePracticionerProfil Obejekts in die Datenbank
+     *
      * @param corePractitionerProfil einzufügendes CorePracticionerProfil Obejekts
      */
     @Insert
@@ -19,6 +20,7 @@ public interface CorePractitionerProfilDAO {
 
     /**
      * Erhalten eines CorePracticionerProfil Obejekts von der Datenbank über den primaryKey
+     *
      * @param idRoomDB primaryKey
      * @return CorePracticionerProfil Obejekt für den passenden primaryKey
      */

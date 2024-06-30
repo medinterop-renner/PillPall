@@ -2,7 +2,6 @@ package com.example.pillpal420.backend.roomDB;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 /**
@@ -13,6 +12,7 @@ public interface CorePatientProfilDAO {
 
     /**
      * Fügt ein corePatientProfil Objekt zur Datenbank hinzu
+     *
      * @param corePatientProfil einzufügende Eintität
      */
     @Insert
@@ -20,12 +20,12 @@ public interface CorePatientProfilDAO {
 
     /**
      * Entnimmt ein CorePatientProfil aus der Datenbank durch den PrimaryKEy
+     *
      * @param idRoomDB primaryKey
      * @return CorePatientProfile
      */
     @Query("SELECT * FROM CorePatientProfil WHERE idRoomDB = :idRoomDB")
     CorePatientProfil getCorePatientProfil(int idRoomDB);
-
 
 
 }

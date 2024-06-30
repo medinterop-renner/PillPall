@@ -19,7 +19,6 @@ public class FullPrescriptionViewModel extends AndroidViewModel {
     private MutableLiveData<List<FullPrescriptionDataModel>> fullPrescriptionLiveData;
 
 
-
     public FullPrescriptionViewModel(@NonNull Application application) {
         super(application);
         repository = new FullPrescriptionRepository();
@@ -37,20 +36,21 @@ public class FullPrescriptionViewModel extends AndroidViewModel {
 
     /**
      * Erhält das FullPrescription Obkelt für eine gegebene patientId und aktualisiert das LiveData Objekt mit dem Ergebnis
-     *
+     * <p>
      * Funktion:
      * 1. Erhält sich die fullMedicationRequest für die gegebene patientId
      * 2. Callback:
-     *    --> erfolgreich: aktualisiert fullPrescriptionLiveData mit der erhaltenen Liste der FullPrescriptionDataModel Objekte
-     *    --> nicht erfolgreich: Log und printStackTrace, setzt fullPrescriptionLiveData auf nullgit
+     * --> erfolgreich: aktualisiert fullPrescriptionLiveData mit der erhaltenen Liste der FullPrescriptionDataModel Objekte
+     * --> nicht erfolgreich: Log und printStackTrace, setzt fullPrescriptionLiveData auf nullgit
+     *
      * @param patientId id des Patienten dessen FullPrescription erhalten werden soll
      */
     public void fetchFullPrescriptions(String patientId) {
         repository.getFullMedicationRequests(patientId, new FullPrescriptionRepository.FullPrescriptionRepositoryCallback() {
             @Override
             public void onResponse(List<FullPrescriptionDataModel> fullPrescriptionDataModels) {
-                Log.d(LogTag.FULL_PRESCRIPTION.getTag(),"successfully posted to live data");
-                        fullPrescriptionLiveData.postValue(fullPrescriptionDataModels);
+                Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "successfully posted to live data");
+                fullPrescriptionLiveData.postValue(fullPrescriptionDataModels);
             }
 
             @Override

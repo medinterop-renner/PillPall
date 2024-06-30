@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
 public class Fragment_nav4 extends Fragment {
     private static final String EMAIL_STRING = "support@pillpal.at";
+
     /**
      * Funktion:
      * 1. Initialisierung des Buttons

@@ -23,18 +23,18 @@ public class PatientDataModel {
      * Konstruktor für die PatientDataModel Class.
      * Er wird gebraucht um Objekte von PatientDataModels zu erstellen.
      *
-     * @param id String with unique Identifier for the server.
+     * @param id                          String with unique Identifier for the server.
      * @param identifierSocialSecurityNum socialsecuritynumber.
-     * @param family family Name.
-     * @param given given Name.
-     * @param prefix titel of the patient.
-     * @param gender gender of the patient.
-     * @param birthDate birthdate of the patient.
-     * @param line street name and number of the address.
-     * @param city Name of the city.
-     * @param state Name of the state.
-     * @param postalCode PostalCode of the patient.
-     * @param country Country of the patient.
+     * @param family                      family Name.
+     * @param given                       given Name.
+     * @param prefix                      titel of the patient.
+     * @param gender                      gender of the patient.
+     * @param birthDate                   birthdate of the patient.
+     * @param line                        street name and number of the address.
+     * @param city                        Name of the city.
+     * @param state                       Name of the state.
+     * @param postalCode                  PostalCode of the patient.
+     * @param country                     Country of the patient.
      */
     public PatientDataModel(String id, String identifierSocialSecurityNum, String family, String given, String prefix, String gender, String birthDate,
                             String line, String city, String state, String postalCode, String country) {
@@ -51,26 +51,47 @@ public class PatientDataModel {
         this.postalCode = postalCode;
         this.country = country;
     }
+
     public String getId() {
-        return id;}
+        return id;
+    }
+
     public String getFamily() {
-        return family;}
+        return family;
+    }
+
     public String getGiven() {
-        return given;}
+        return given;
+    }
+
     public String getPrefix() {
-        return prefix;}
+        return prefix;
+    }
+
     public String getIdentifierSocialSecurityNum() {
-        return identifierSocialSecurityNum;}
+        return identifierSocialSecurityNum;
+    }
+
     public String getGender() {
-        return gender;}
+        return gender;
+    }
+
     public String getBirthDate() {
-        return birthDate;}
+        return birthDate;
+    }
+
     public String getLine() {
-        return line;}
+        return line;
+    }
+
     public String getCity() {
-        return city;}
+        return city;
+    }
+
     public String getState() {
-        return state;}
+        return state;
+    }
+
     public String getCountry() {
         return country;
     }

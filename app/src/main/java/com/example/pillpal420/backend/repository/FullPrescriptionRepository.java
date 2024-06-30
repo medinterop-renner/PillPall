@@ -41,6 +41,7 @@ public class FullPrescriptionRepository {
      */
     public interface FullPrescriptionRepositoryCallback {
         void onResponse(List<FullPrescriptionDataModel> fullPrescriptionDataModels);
+
         void onFailure(Exception e);
     }
 
@@ -59,6 +60,7 @@ public class FullPrescriptionRepository {
                 Log.e(LogTag.FULL_PRESCRIPTION.getTag(), "Failed to fetch medication requests: " + e.getMessage());
                 fullPrescriptionRepositoryCallback.onFailure(e);
             }
+
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 if (!response.isSuccessful()) {

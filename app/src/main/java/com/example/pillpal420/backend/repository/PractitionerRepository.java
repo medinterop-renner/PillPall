@@ -21,15 +21,17 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
 /**
  * PractitionerRepository um HL7 FHIR R5 core Implementation Guide Practitioner Resourcen zum und vom Server zu schicken.
  */
 public class PractitionerRepository {
-String serverAddress = "192.168.0.2:8080";
+    String serverAddress = "192.168.0.2:8080";
+
     /**
      * Interface for Practitioner callbacks
      */
-    public interface PractitionerCallback{
+    public interface PractitionerCallback {
         /**
          * Wird gecalled wenn der ein Practitioner successfully gefatched wurde.
          *
@@ -49,11 +51,11 @@ String serverAddress = "192.168.0.2:8080";
      * Fetcht Practitioner data von dem FHIR R5 server für einen gewissen Practitioner per ID.
      *
      * @param practitionerID The ID of the practitioner for which the data is fetched.
-     * @param callback callback to handle the response or failure.
+     * @param callback       callback to handle the response or failure.
      */
-    public void getPractitioner(String practitionerID, PractitionerCallback callback){
+    public void getPractitioner(String practitionerID, PractitionerCallback callback) {
         OkHttpClient client = new OkHttpClient();
-        String urlPractitioner = "http://"+serverAddress+"/hapi-fhir-jpaserver/fhir/Practitioner/"+ practitionerID;
+        String urlPractitioner = "http://" + serverAddress + "/hapi-fhir-jpaserver/fhir/Practitioner/" + practitionerID;
         Request request = new Request.Builder()
                 .url(urlPractitioner)
                 .build();
@@ -62,15 +64,16 @@ String serverAddress = "192.168.0.2:8080";
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 callback.onFailure(e);
             }
+
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-            if(!response.isSuccessful()){
-                callback.onFailure(new IOException("Unexpected Stuff happend "+response ));
-            }else {
-                String responseBody = response.body().string();
-                PractitionerDataModel practitioner = new Parser().createPractitioner(responseBody);
-                callback.onResponse(practitioner);
-            }
+                if (!response.isSuccessful()) {
+                    callback.onFailure(new IOException("Unexpected Stuff happend " + response));
+                } else {
+                    String responseBody = response.body().string();
+                    PractitionerDataModel practitioner = new Parser().createPractitioner(responseBody);
+                    callback.onResponse(practitioner);
+                }
             }
         });
     }
@@ -81,13 +84,13 @@ String serverAddress = "192.168.0.2:8080";
      * @param practitionerDataModel Practitioner resource to be posted to the FHIR R5 server.
      * @return LiveData containing a PractitionerDataModel.
      */
-    public LiveData<PractitionerDataModel> postPractitionerRessource(PractitionerDataModel practitionerDataModel){
+    public LiveData<PractitionerDataModel> postPractitionerRessource(PractitionerDataModel practitionerDataModel) {
         MutableLiveData<PractitionerDataModel> liveData = new MutableLiveData<>();
         OkHttpClient client = new OkHttpClient();
         Parser parser = new Parser();
         JSONObject json = parser.createPostPractitionerResource(practitionerDataModel);
         RequestBody body = RequestBody.create(json.toString(), MediaType.parse("application/fhir+json"));
-        String url = "http://"+serverAddress+"/hapi-fhir-jpaserver/fhir/Practitioner";
+        String url = "http://" + serverAddress + "/hapi-fhir-jpaserver/fhir/Practitioner";
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)
@@ -98,18 +101,19 @@ String serverAddress = "192.168.0.2:8080";
                 liveData.postValue(null);
                 e.printStackTrace();
             }
+
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-            if (!response.isSuccessful()){
-                liveData.postValue(null);
-                throw new IOException("Got back Unexpected Code from Server " + response);
-            }else{
-                String responseBody = response.body().string();
-                Log.d(LogTag.PRACTITIONER.getTag(), "Got this back after posting to Server: " + responseBody);
-                PractitionerDataModel result = parser.createPractitioner(responseBody);
-                Log.d(LogTag.PRACTITIONER.getTag(),"practitioner successfully created from server response");
-                liveData.postValue(result);
-            }
+                if (!response.isSuccessful()) {
+                    liveData.postValue(null);
+                    throw new IOException("Got back Unexpected Code from Server " + response);
+                } else {
+                    String responseBody = response.body().string();
+                    Log.d(LogTag.PRACTITIONER.getTag(), "Got this back after posting to Server: " + responseBody);
+                    PractitionerDataModel result = parser.createPractitioner(responseBody);
+                    Log.d(LogTag.PRACTITIONER.getTag(), "practitioner successfully created from server response");
+                    liveData.postValue(result);
+                }
             }
         });
         return liveData;
