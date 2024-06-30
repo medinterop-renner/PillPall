@@ -38,32 +38,32 @@ public class Fragment_nav2 extends Fragment {
     private RecyclerView rezeptRecView;
     private RezeptAdapter rezeptAdapter;
     private List<FullPrescriptionDataModel> fullPrescriptionDataModels;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         //Login ID String von Login Activity holen
         Bundle arg = getArguments();
-        if (arg != null){
-             id = arg.getString("IDkey");
+        if (arg != null) {
+            id = arg.getString("IDkey");
 
-             Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "id passed to if statement"+ id);
-        }else {
+            Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "id passed to if statement" + id);
+        } else {
             Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "Id did not pass to fragment");
         }
 
 
-       // List<FullPrescriptionDataModel> fullPrescriptionDataModels = new ArrayList<>();
-       // fullPrescriptionDataModels = createTestFullPrescriptionDataModels();
+        // List<FullPrescriptionDataModel> fullPrescriptionDataModels = new ArrayList<>();
+        // fullPrescriptionDataModels = createTestFullPrescriptionDataModels();
         //Log.d("Rezept", fullPrescriptionDataModels.get(0).toString());
-       // Log.d("Rezept", fullPrescriptionDataModels.get(1).toString());
+        // Log.d("Rezept", fullPrescriptionDataModels.get(1).toString());
         //Log.d(LogTag.FULL_PRESCRIPTION.getTag(),"logging full prescription");
 
 
         View view = inflater.inflate(R.layout.fragment_scan, container, false);
         rezeptRecView = view.findViewById(R.id.scanRecView);
         rezeptRecView.setLayoutManager(new LinearLayoutManager(getContext()));
-
 
 
         // backend
@@ -91,8 +91,9 @@ public class Fragment_nav2 extends Fragment {
         return view;
 
     }
-// Liste aus methoden übergabe entfernen und in onCreateview aufrufen
-    private void displayFullPrescriptionDataModels(List<FullPrescriptionDataModel> fullPrescriptionDataModels){
+
+    // Liste aus methoden übergabe entfernen und in onCreateview aufrufen
+    private void displayFullPrescriptionDataModels(List<FullPrescriptionDataModel> fullPrescriptionDataModels) {
         //Hier Server Daten abfragen für Display unten
 
 
@@ -100,8 +101,8 @@ public class Fragment_nav2 extends Fragment {
 
         //Backend magic oben
 
-            rezeptAdapter = new RezeptAdapter(fullPrescriptionDataModels);
-            rezeptRecView.setAdapter(rezeptAdapter);
+        rezeptAdapter = new RezeptAdapter(fullPrescriptionDataModels);
+        rezeptRecView.setAdapter(rezeptAdapter);
 
 
     }
@@ -184,7 +185,6 @@ public class Fragment_nav2 extends Fragment {
         // dann String patientId = relativePathPatientIDServer
 
 
-
         LoginActivity loginActivity = new LoginActivity();
 //        String relativePathPatientReq = loginActivity.getCorePatientProfil().getId();
 
@@ -193,7 +193,6 @@ public class Fragment_nav2 extends Fragment {
 
         fullPrescriptionViewModel.fetchFullPrescriptions(testTestPatientRplacewithrelativePathPatientReq);
     }
-
 
 
 }

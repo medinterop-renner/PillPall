@@ -16,8 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/scanImgView"
-        android:layout_marginBottom="16dp"
-        android:text="Hier kommt der gescannte Text"/>
+        android:layout_marginBottom="16dp"/>
     </ScrollView>
     <Button
         android:id="@+id/scanBtn"

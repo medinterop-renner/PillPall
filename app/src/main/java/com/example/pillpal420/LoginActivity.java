@@ -1,6 +1,7 @@
 package com.example.pillpal420;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,10 +10,12 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.example.pillpal420.backend.CorePatientDataCallback;
 import com.example.pillpal420.backend.roomDB.CorePatientProfil;
 import com.example.pillpal420.backend.roomDB.CorePatientProfileDatabase;
 import com.example.pillpal420.documentation.LogTag;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

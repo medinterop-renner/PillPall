@@ -20,14 +20,13 @@ public class Fragment_nav4 extends Fragment {
      * 1. Initialisierung des Buttons
      * 2. setOnClickListener der die Methode {@link #openMail()} öffnet
      *
-     * @param inflater The LayoutInflater object that can be used to inflate
-     * any views in the fragment,
-     * @param container If non-null, this is the parent view that the fragment's
-     * UI should be attached to.  The fragment should not add the view itself,
-     * but this can be used to generate the LayoutParams of the view.
+     * @param inflater           The LayoutInflater object that can be used to inflate
+     *                           any views in the fragment,
+     * @param container          If non-null, this is the parent view that the fragment's
+     *                           UI should be attached to.  The fragment should not add the view itself,
+     *                           but this can be used to generate the LayoutParams of the view.
      * @param savedInstanceState If non-null, this fragment is being re-constructed
-     * from a previous saved state as given here.
-     *
+     *                           from a previous saved state as given here.
      * @return helpView oder null
      */
     @Override
@@ -44,14 +43,14 @@ public class Fragment_nav4 extends Fragment {
     }
 
     /**
-     *Hier öffnen wir den E-Mail Client und fügen unsere E-Mail-Adresse automatisch als Empfänger ein
-     *
+     * Hier öffnen wir den E-Mail Client und fügen unsere E-Mail-Adresse automatisch als Empfänger ein
+     * <p>
      * Funktion:
      * 1. Erstellen eines Intents mit {@link Intent#ACTION_SENDTO}
      * 2. putExtra um unsere E-Mail Adresse automatisch in das Empfänger Feld einzufügen
      * 3. Starten einer Activity die es dem User/der Userin erlaubt den Mail-Provider auszuwählen
      */
-    private void openMail(){
+    private void openMail() {
         Intent mailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", EMAIL_STRING, null));
         mailIntent.putExtra(Intent.EXTRA_SUBJECT, "Support Request");
         startActivity(Intent.createChooser(mailIntent, "Anbieter wählen:"));

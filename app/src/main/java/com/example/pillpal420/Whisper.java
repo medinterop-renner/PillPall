@@ -47,6 +47,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
 public class Whisper extends Fragment {
 
     private static MedicationRequestDataModel medicationRequestDataModel;
@@ -182,7 +183,7 @@ public class Whisper extends Fragment {
                             try {
                                 JSONObject jsonResponse = new JSONObject(responseBody);
                                 final String message = jsonResponse.getString("message");
-                                medicationRequestDataModel= parseToFHIRMedicationRequest(message);
+                                medicationRequestDataModel = parseToFHIRMedicationRequest(message);
 
                                 // Use the same ViewModel instance
                                 getActivity().runOnUiThread(() -> {
@@ -261,25 +262,25 @@ public class Whisper extends Fragment {
         return medicationRequestDataModel;
     }
 
-   public void postMedReqtoServer(PatientDataModel patientDataModel){
+    public void postMedReqtoServer(PatientDataModel patientDataModel) {
         medicationRequestDataModel.setSubjectReference(patientDataModel.getId());
-        Log.d(LogTag.WHISPER.getTag(),"shorty before posting to server: "+ medicationRequestDataModel.toString());
+        Log.d(LogTag.WHISPER.getTag(), "shorty before posting to server: " + medicationRequestDataModel.toString());
 
 
-       MedicationRequestViewModel viewModel = new ViewModelProvider(this).get(MedicationRequestViewModel.class);
-       viewModel.postMedicationRequest(medicationRequestDataModel).observe(this, new Observer<MedicationRequestDataModel>() {
-           @Override
-           public void onChanged(MedicationRequestDataModel result) {
-               if (result != null) {
-                   Log.d("MedicationRequest", "MedicationRequest posted successfully: " + result.toString());
-                  // Here kann man noch im scan dings das displayn
-                   statusText.setText(medicationRequestDataModel.toString());
-               } else {
-                   Log.d("MedicationRequest", "Failed to post MedicationRequest");
-               }
-           }
-       });
+        MedicationRequestViewModel viewModel = new ViewModelProvider(this).get(MedicationRequestViewModel.class);
+        viewModel.postMedicationRequest(medicationRequestDataModel).observe(this, new Observer<MedicationRequestDataModel>() {
+            @Override
+            public void onChanged(MedicationRequestDataModel result) {
+                if (result != null) {
+                    Log.d("MedicationRequest", "MedicationRequest posted successfully: " + result.toString());
+                    // Here kann man noch im scan dings das displayn
+                    statusText.setText(medicationRequestDataModel.toString());
+                } else {
+                    Log.d("MedicationRequest", "Failed to post MedicationRequest");
+                }
+            }
+        });
 
 
-   }
+    }
 }

@@ -90,12 +90,12 @@ public class Fragment_nav5 extends Fragment {
                     String responseBody = response.body().string();
 
 
-                    Log.d("Testing",responseBody);
+                    Log.d("Testing", responseBody);
 
                     // Removing escape characters and decoding Unicode characters
                     responseBody = responseBody.replace("\\", "");
                     responseBody = responseBody.replace("\n", "");
-                    responseBody = responseBody.replace("\"","");
+                    responseBody = responseBody.replace("\"", "");
 
                     // Decoding Unicode escape sequences
 
