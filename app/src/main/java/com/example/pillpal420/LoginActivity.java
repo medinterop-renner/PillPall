@@ -29,6 +29,15 @@ public class LoginActivity extends AppCompatActivity {
     private EditText svnNummer;
     private Button loginButton;
 
+    /**
+     * Diese Methode wird das erste mal aufgerufen wenn die Activity created wird. Es initialisiert die UI Components und
+     * erstellt die ROOMDB conneciton.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +51,6 @@ public class LoginActivity extends AppCompatActivity {
 
         Log.d(LogTag.LOG_IN.getTag(), "Checking if the test patient needs to be created");
         checkAndCreateTestPatient();
-
         loginButton.setOnClickListener(v -> {
             String vornameCheck = vorname.getText().toString();
             String svnCheck = svnNummer.getText().toString();
@@ -64,7 +72,6 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, "Fehler: falscher Benutzername oder Passwort", Toast.LENGTH_SHORT).show();
                     }
                 }
-
                 @Override
                 public void onDataNotAvailable() {
                     Log.d(LogTag.LOG_IN.getTag(), "Patient data not available in the database.");
@@ -74,6 +81,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     *
+     */
     private void checkAndCreateTestPatient() {
         fetchPatientLogInInformation(1, new CorePatientDataCallback() {
             @Override
@@ -91,12 +101,22 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     *
+     * @param vornameCheck
+     * @param svnCheck
+     * @return
+     */
     private boolean validateLogin(String vornameCheck, String svnCheck) {
         boolean isValid = vornameCheck.equals(corePatientProfil.getFamily()) && svnCheck.equals(corePatientProfil.getIdentifierSocialSecurityNum());
         Log.d(LogTag.LOG_IN.getTag(), "Login validation result: " + isValid);
         return isValid;
     }
 
+    /**
+     *
+     * @param patientRoomDB
+     */
     public void addPersonInBackground(CorePatientProfil patientRoomDB) {
         ExecutorService executorServiceDB = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
@@ -123,6 +143,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     *
+     */
     public void createTestPatientForLogInOnlyOnce() {
         CorePatientProfil patientRoomDB0 = new CorePatientProfil(1, "1599", "0", "Tom", "turbo", "Dr",
                 "male", "2000-01-01", "Patientenstrasse 1", "Graz", "Stmk", "8052", "AUT");
