@@ -3,7 +3,7 @@ package com.example.pillpal420.backend.dataModels;
 public class PractitionerDataModel {
 
    private String id;
-   private String oidPractitioner; // 1.2.40.0.34.3.2.0 test person OID Browser
+   private String oidPractitioner;
    private String family;
     private String given;
     private String suffix;

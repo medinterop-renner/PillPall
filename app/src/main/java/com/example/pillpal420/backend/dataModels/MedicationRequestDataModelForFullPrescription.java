@@ -39,9 +39,14 @@ public class MedicationRequestDataModelForFullPrescription {
         @NonNull
         @Override
         public String toString() {
-            return patientInstruction + '\'' +
-                    "Bitte so oft einnehmen: " + frequency + '\'' +
-                    "am: " + when + '\'';
+            String timing;
+            if (when.equals("EVE")){
+                timing = "Abend";
+            }else{
+                timing = "Morgen";
+            }
+            return patientInstruction + ".\nEinnahmeplan: Medikament " + frequency + "." + timing + " einnehmen."+"\n";
+
         }
     }
 
@@ -58,13 +63,10 @@ public class MedicationRequestDataModelForFullPrescription {
         StringBuilder sb = new StringBuilder();
         sb.append("Medikament: ")
                 .append(displayMedication)
-                .append('\'')
-                .append("Bitte achten Sie bei der Einahme auf folgende Sachen: ");
+                .append("\nBesondere Hinweise: ");
         for (DosageInstructionsForMedicationRequestDataModelForFullPrescription dosageInstruction : dosageInstructions) {
-            sb.append(dosageInstruction.toString()).append(", \n");
+            sb.append(dosageInstruction.toString());
         }
-        sb.delete(sb.length() - 2, sb.length()); // Remove the last comma and space
-
         return sb.toString();
     }
 }

@@ -87,10 +87,20 @@ public class PatientDataModel {
 
     @Override
     public String toString() {
-
+        String ansprech;
+        if (gender.equals("female")){
+            ansprech = "Frau";
+        } else if (gender.equals("male")) {
+            ansprech = "Herr";
+        }else{
+            ansprech = "";
+        }
+        if (prefix == null){
+            prefix = "";
+        }
         return
                 "Sozialversicherungsnummer: " + identifierSocialSecurityNum + " \n" +
-                        "Name: " + " " + gender + ". " + prefix + " " + family + " " + given + "\n" +
+                        "Name: " + " " +ansprech+ ". " + prefix + " " + family + " " + given + "\n" +
                         "Geboren am: " + birthDate + "\n" +
                         "Addresse: " + line + " " + city + " " + postalCode + " " + state + " " + country;
 
