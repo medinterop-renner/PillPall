@@ -100,8 +100,9 @@ public class Fragment_nav2 extends Fragment {
 
         //Backend magic oben
 
-        rezeptAdapter = new RezeptAdapter(fullPrescriptionDataModels);
-        rezeptRecView.setAdapter(rezeptAdapter);
+            rezeptAdapter = new RezeptAdapter(fullPrescriptionDataModels);
+            rezeptRecView.setAdapter(rezeptAdapter);
+
 
     }
 

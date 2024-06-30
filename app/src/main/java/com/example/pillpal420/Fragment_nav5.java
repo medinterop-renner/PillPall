@@ -15,6 +15,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -49,6 +51,7 @@ public class Fragment_nav5 extends Fragment {
 
     private void sendMessage() {
         String message = botEditText.getText().toString();
+        botEditText.setText("");
         if (message.isEmpty()) {
             botTextView.setText("Please enter a question.");
             return;
@@ -67,7 +70,7 @@ public class Fragment_nav5 extends Fragment {
         );
 
         Request request = new Request.Builder()
-                .url("http://192.168.0.2:8008/chat")
+                .url("http://192.168.0.2:8000/chat")
                 .post(body)
                 .build();
 
@@ -85,7 +88,18 @@ public class Fragment_nav5 extends Fragment {
                     getActivity().runOnUiThread(() -> botTextView.setText("Error: " + response.message()));
                 } else {
                     String responseBody = response.body().string();
-                    getActivity().runOnUiThread(() -> botTextView.setText(responseBody));
+                    Log.d("Testing",responseBody);
+
+                    // Removing escape characters and decoding Unicode characters
+                    responseBody = responseBody.replace("\\", "");
+                    responseBody = responseBody.replace("\n", "");
+
+                    // Decoding Unicode escape sequences
+                   responseBody = replaceUnicodeEscapeSequences(responseBody);
+
+
+                    String finalResponseBody = responseBody;
+                    getActivity().runOnUiThread(() -> botTextView.setText(finalResponseBody));
 
 
                    /* try {
@@ -99,5 +113,19 @@ public class Fragment_nav5 extends Fragment {
                 }
             }
         });
+    }
+
+    public static String replaceUnicodeEscapeSequences(String input) {
+        Pattern pattern = Pattern.compile("\\\\u([0-9A-Fa-f]{4})");
+        Matcher matcher = pattern.matcher(input);
+        StringBuffer result = new StringBuffer();
+
+        while (matcher.find()) {
+            String unicodeChar = String.valueOf((char) Integer.parseInt(matcher.group(1), 16));
+            matcher.appendReplacement(result, unicodeChar);
+        }
+        matcher.appendTail(result);
+
+        return result.toString();
     }
 }
