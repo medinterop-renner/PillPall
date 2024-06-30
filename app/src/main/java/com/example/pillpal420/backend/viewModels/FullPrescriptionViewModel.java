@@ -26,10 +26,25 @@ public class FullPrescriptionViewModel extends AndroidViewModel {
         fullPrescriptionLiveData = new MutableLiveData<>();
     }
 
+    /**
+     * Gibt ein LiveData Objekt mit einer Liste von FullPrescriptionDataModel Objekten zurück
+     *
+     * @return LiveData Objekt mit einer Liste von FullPrescriptionDataModel Objekten
+     */
     public LiveData<List<FullPrescriptionDataModel>> getFullPrescriptionLiveData() {
         return fullPrescriptionLiveData;
     }
 
+    /**
+     * Erhält das FullPrescription Obkelt für eine gegebene patientId und aktualisiert das LiveData Objekt mit dem Ergebnis
+     *
+     * Funktion:
+     * 1. Erhält sich die fullMedicationRequest für die gegebene patientId
+     * 2. Callback:
+     *    --> erfolgreich: aktualisiert fullPrescriptionLiveData mit der erhaltenen Liste der FullPrescriptionDataModel Objekte
+     *    --> nicht erfolgreich: Log und printStackTrace, setzt fullPrescriptionLiveData auf nullgit
+     * @param patientId id des Patienten dessen FullPrescription erhalten werden soll
+     */
     public void fetchFullPrescriptions(String patientId) {
         repository.getFullMedicationRequests(patientId, new FullPrescriptionRepository.FullPrescriptionRepositoryCallback() {
             @Override

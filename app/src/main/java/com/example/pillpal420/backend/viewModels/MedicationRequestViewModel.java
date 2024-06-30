@@ -59,9 +59,13 @@ private MedicationRequestRepository medicationRequestRepository;
 
 
     /**
-     * 
-     * @param medicationRequest
-     * @return
+     * Postet ein MedicationRequest und gibt ein LiveData Objekt zurück um das Ergebnis zu beobachten
+     *
+     * Funktion:
+     * 1. Log für das posten der MedicationRequest
+     * 2. Posten der MedicationRequest und return des LiveData Objekts
+     * @param medicationRequest das MedicationRequestDataModel Objekt das geposted werden soll
+     * @return LiveData Objekt das die Ergebnisse der post-Operation enthält
      */
 
     public LiveData<MedicationRequestDataModel> postMedicationRequest(MedicationRequestDataModel medicationRequest) {
