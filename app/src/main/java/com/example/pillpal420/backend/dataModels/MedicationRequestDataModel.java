@@ -39,33 +39,24 @@ public class MedicationRequestDataModel {
         this.dosageInstructions = dosageInstructions;
     }
     public String getId() {
-        return id;
-    }
+        return id;}
     public String getIdentifiereMedID() {
-        return identifiereMedID;
-    }
+        return identifiereMedID;}
     public String getIdentifiereMedIDGroup() {
-        return identifiereMedIDGroup;
-    }
+        return identifiereMedIDGroup;}
     public String getAspCode() {
-        return aspCode;
-    }
+        return aspCode;}
     public String getDisplayMedication() {
-        return displayMedication;
-    }
+        return displayMedication;}
     public String getRequester() {
-        return requester;
-    }
+        return requester;}
     public String getSubject() {
-        return subjectReference;
-    }
+        return subjectReference;}
     public List<DosageInstruction> getDosageInstructions() {
-        return dosageInstructions;
-    }
+        return dosageInstructions;}
     public void setId(String id) {this.id = id;}
     public void setSubjectReference(String subjectReference) {this.subjectReference = subjectReference;}
-    public void setRequester(String requester) {this.requester = requester;
-    }
+    public void setRequester(String requester) {this.requester = requester;}
     /**
      *  Methode die verwendet wird um MedicationRequestDataModels besser darzustellen in Code und UI.
      *
@@ -78,16 +69,15 @@ public class MedicationRequestDataModel {
         for (DosageInstruction instruction : dosageInstructions) {
             dosageInstructionsStr.append(instruction.toString()).append("\n");
         }
-        return "MedicationRequestDataModel{" +
+        return "MedicationRequestDataModel: " +
                 "id= " + id +
-                ", identifiereMedID= " + identifiereMedID +
-                ", identifiereMedIDGroup= " + identifiereMedIDGroup +
-                ", aspCode= " + aspCode +
-                ", displayMedication= " + displayMedication +
-                ", requester= " + requester +
-                ", subjectReference= " + subjectReference +
-                ", dosageInstructions= " + dosageInstructionsStr.toString() +
-                '}';
+                "identifiereMedID= " + identifiereMedID +
+                "identifiereMedIDGroup= " + identifiereMedIDGroup +
+                "aspCode= " + aspCode +
+                "displayMedication= " + displayMedication +
+                "requester= " + requester +
+                "subjectReference= " + subjectReference +
+                "dosageInstructions= " + dosageInstructionsStr.toString();
     }
     /**
      * Innere Klasse um FHIR R5 HL7 Austria eMedikamention medicationRequest besser darstellen zu können.
@@ -107,17 +97,13 @@ public class MedicationRequestDataModel {
         public DosageInstruction(String patientInstruction, String frequency, String when) {
             this.patientInstruction = patientInstruction;
             this.frequency = frequency;
-            this.when = when;
-        }
+            this.when = when;}
         public String getPatientInstruction() {
-            return patientInstruction;
-        }
+            return patientInstruction;}
         public String getFrequency() {
-            return frequency;
-        }
+            return frequency;}
         public String getWhen() {
-            return when;
-        }
+            return when;}
         /**
          *  Reformatiert das  MedicationRequestDataModel um es besser für Logging und UI zu verwenden.
          *

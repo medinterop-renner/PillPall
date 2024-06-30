@@ -31,8 +31,6 @@ import okhttp3.Response;
  * raw json values an die Parser Klasse weiter die FullPrescriptionModels parsed. Hier werden Patient und Practitioner Daten processed.
  */
 public class FullPrescriptionRepository {
-
-
     private final String serverAddress = "192.168.0.2:8080";
     private final String urlFetchBundleForOnePatientWithAllMedicationDataRequests = "http://" + serverAddress + "/hapi-fhir-jpaserver/fhir/MedicationRequest?subject=";
     private final OkHttpClient client = new OkHttpClient();
@@ -43,7 +41,6 @@ public class FullPrescriptionRepository {
      */
     public interface FullPrescriptionRepositoryCallback {
         void onResponse(List<FullPrescriptionDataModel> fullPrescriptionDataModels);
-
         void onFailure(Exception e);
     }
 
@@ -55,58 +52,41 @@ public class FullPrescriptionRepository {
      */
     public void getFullMedicationRequests(String patientId, FullPrescriptionRepositoryCallback fullPrescriptionRepositoryCallback) {
         String urlFullPrescription = urlFetchBundleForOnePatientWithAllMedicationDataRequests + patientId;
-
         Request request = new Request.Builder().url(urlFullPrescription).build();
-
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 Log.e(LogTag.FULL_PRESCRIPTION.getTag(), "Failed to fetch medication requests: " + e.getMessage());
                 fullPrescriptionRepositoryCallback.onFailure(e);
             }
-
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 if (!response.isSuccessful()) {
-
                     fullPrescriptionRepositoryCallback.onFailure(new IOException("Unexpected code " + response));
                     return;
                 }
-
-
                 String responseBody = response.body().string();
                 Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "Server response: " + responseBody);
-
                 List<MedicationRequestDataModel> medicationRequests = parser.createMedicationRequest(responseBody);
                 Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "Parsed medication requests with size: " + medicationRequests.size());
-
-
                 Map<String, List<MedicationRequestDataModel>> groupedRequests = groupByGroupIdentifier(medicationRequests);
                 Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "Grouped medication requests by the group identifier.");
-
                 List<FullPrescriptionDataModel> fullPrescriptions = new ArrayList<>();
-
                 for (String groupIdentifier : groupedRequests.keySet()) {
                     List<MedicationRequestDataModel> requests = groupedRequests.get(groupIdentifier);
-
-
                     String patientReference = requests.get(0).getSubject();
                     String practitionerReference = requests.get(0).getRequester();
                     Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "Fetching details for patient reference: " + patientReference + " and practitioner reference: " + practitionerReference);
-
                     PatientDataModel patient = fetchPatient(patientReference);
                     PractitionerDataModel practitioner = fetchPractitioner(practitionerReference);
                     Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "Fetched patient and practitioner resources from the FHIR R5 Server.");
-
                     List<MedicationRequestDataModelForFullPrescription> medicationRequestModels = new ArrayList<>();
                     for (MedicationRequestDataModel request : requests) {
                         medicationRequestModels.add(convertToFullPrescriptionModel(request));
                     }
-
                     FullPrescriptionDataModel fullPrescription = new FullPrescriptionDataModel(patient, practitioner, medicationRequestModels);
                     fullPrescriptions.add(fullPrescription);
                 }
-
                 fullPrescriptionRepositoryCallback.onResponse(fullPrescriptions);
                 Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "Full prescriptions fetched successfully.");
             }
@@ -141,14 +121,11 @@ public class FullPrescriptionRepository {
      */
     private PatientDataModel fetchPatient(String patientReference) throws IOException {
         String urlPatient = "http://192.168.0.2:8080/hapi-fhir-jpaserver/fhir/" + patientReference;
-
-
         Request request = new Request.Builder().url(urlPatient).build();
         Response response = client.newCall(request).execute();
         if (!response.isSuccessful()) {
             throw new IOException("Unexpected code " + response);
         }
-
         String responseBody = response.body().string();
         Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "Fetched patient details from the FHIR R5 server");
         return parser.createPatient(responseBody);
@@ -163,14 +140,12 @@ public class FullPrescriptionRepository {
      */
     private PractitionerDataModel fetchPractitioner(String practitionerReference) throws IOException {
         String urlPractitioner = "http://192.168.0.2:8080/hapi-fhir-jpaserver/fhir/" + practitionerReference;
-
         Request request = new Request.Builder().url(urlPractitioner).build();
         String responseBody;
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
                 throw new IOException("Unexpected code " + response);
             }
-
             responseBody = response.body().string();
         }
         Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "Fetched practitioner details from the FHIR R5 server.");
