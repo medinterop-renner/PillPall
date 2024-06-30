@@ -35,7 +35,8 @@ public class Vision {
     private static MedicationRequestDataModel medicationRequestDataModel;
 
 
-    private String serverAddress = "192.168.0.2:8080";
+    private String serverAddressFHIR = "192.168.0.2:8080";
+    private String serverAddressPython = "192.168.0.2:8000";
 
     private Parser parser = new Parser();
     private OkHttpClient client = new OkHttpClient();
@@ -54,7 +55,7 @@ public class Vision {
         MediaType mediaType = MediaType.parse("text/plain");
         RequestBody body = RequestBody.create(mediaType, scannedText);
         Request request = new Request.Builder()
-                .url("http://192.168.0.2:8000/upload")
+                .url("http://"+serverAddressPython+"/upload")
                 .post(body)
                 .build();
 
@@ -223,7 +224,7 @@ public class Vision {
     }
     private PatientDataModel fetchPatient(String patientReference) throws IOException {
         Log.d(LogTag.VISION.getTag(), "Fetching ID for Patient");
-        String urlPatient = " http://"+ serverAddress +"/hapi-fhir-jpaserver/fhir/Patient?family=" + patientReference;
+        String urlPatient = " http://"+ serverAddressFHIR +"/hapi-fhir-jpaserver/fhir/Patient?family=" + patientReference;
 
         Request request = new Request.Builder().url(urlPatient).build();
         Response response = client.newCall(request).execute();
@@ -237,7 +238,7 @@ public class Vision {
 
     private PractitionerDataModel fetchPractitioner(String practitionerReference) throws IOException {
         Log.d(LogTag.VISION.getTag(), "Fetching ID for Practitioner");
-        String urlPractitioner = " http://"+ serverAddress +"/hapi-fhir-jpaserver/fhir/Practitioner?family=" + practitionerReference;
+        String urlPractitioner = " http://"+ serverAddressFHIR +"/hapi-fhir-jpaserver/fhir/Practitioner?family=" + practitionerReference;
 
         Request request = new Request.Builder().url(urlPractitioner).build();
         Response response = client.newCall(request).execute();
