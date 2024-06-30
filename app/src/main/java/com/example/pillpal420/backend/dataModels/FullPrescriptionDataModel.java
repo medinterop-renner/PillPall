@@ -48,15 +48,14 @@ public class FullPrescriptionDataModel {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("FullPrescriptionDataModel{")
-                .append("patientDataModel=").append(patientDataModel.toString())
-                .append(", practitionerDataModel=").append(practitionerDataModel.toString())
-                .append(", medicationRequestDataModelForFullPrescription=");
+        sb.append("Rezept: ")
+                .append("PatientIn: ").append(patientDataModel.toString())
+                .append("ÄrztIn").append(practitionerDataModel.toString())
+                .append("Medikamente: ");
         for (MedicationRequestDataModelForFullPrescription medicationRequest : medicationRequestDataModelForFullPrescription) {
-            sb.append(medicationRequest.toString()).append(", ");
+            sb.append(medicationRequest.toString());
         }
         sb.delete(sb.length() - 2, sb.length()); // Remove the last comma and space
-        sb.append('}');
         return sb.toString();
     }
 }

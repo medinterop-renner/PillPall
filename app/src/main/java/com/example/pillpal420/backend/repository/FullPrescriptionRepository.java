@@ -1,5 +1,7 @@
-
 package com.example.pillpal420.backend.repository;
+
+
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -9,6 +11,7 @@ import com.example.pillpal420.backend.dataModels.MedicationRequestDataModel;
 import com.example.pillpal420.backend.dataModels.MedicationRequestDataModelForFullPrescription;
 import com.example.pillpal420.backend.dataModels.PatientDataModel;
 import com.example.pillpal420.backend.dataModels.PractitionerDataModel;
+import com.example.pillpal420.documentation.LogTag;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,36 +33,35 @@ import okhttp3.Response;
 public class FullPrescriptionRepository {
 
 
-
-    private String serverAddress = "192.168.0.2:8080";
-    private String urlFetchBundleForOnePatientWithAllMedicationDataRequests = "http://" + serverAddress + "/hapi-fhir-jpaserver/fhir/MedicationRequest?subject=";
-    private OkHttpClient client = new OkHttpClient();
-    private Parser parser = new Parser();
+    private final String serverAddress = "192.168.0.2:8080";
+    private final String urlFetchBundleForOnePatientWithAllMedicationDataRequests = "http://" + serverAddress + "/hapi-fhir-jpaserver/fhir/MedicationRequest?subject=";
+    private final OkHttpClient client = new OkHttpClient();
+    private final Parser parser = new Parser();
 
     /**
      * Callback interface für das FullPrescriptionRepository
      */
     public interface FullPrescriptionRepositoryCallback {
         void onResponse(List<FullPrescriptionDataModel> fullPrescriptionDataModels);
+
         void onFailure(Exception e);
     }
+
     /**
      * Holt alle MedicationRequests vom FHIR R5 Server für einen Patienten und processed sie zu FullPrescriptionDataModels.
      *
-     * @param patientId                      The ID of the patient whose medication requests are fetched
+     * @param patientId                          The ID of the patient whose medication requests are fetched
      * @param fullPrescriptionRepositoryCallback The callback to handle response or failure.
      */
     public void getFullMedicationRequests(String patientId, FullPrescriptionRepositoryCallback fullPrescriptionRepositoryCallback) {
         String urlFullPrescription = urlFetchBundleForOnePatientWithAllMedicationDataRequests + patientId;
 
-        Request request = new Request.Builder()
-                .url(urlFullPrescription)
-                .build();
+        Request request = new Request.Builder().url(urlFullPrescription).build();
 
-        client.newCall(request)
-                .enqueue(new Callback() {
+        client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                Log.e(LogTag.FULL_PRESCRIPTION.getTag(), "Failed to fetch medication requests: " + e.getMessage());
                 fullPrescriptionRepositoryCallback.onFailure(e);
             }
 
@@ -71,26 +73,30 @@ public class FullPrescriptionRepository {
                     return;
                 }
 
-                // Bekomme vom Server ein Bundle zurück.
-                String responseBody = response.body().string();
-                // Hier wird es in unterschiedliche RequestData models aufgeteilt -> jeweils mit Metadaten /pat, pract, group id etc...
-                List<MedicationRequestDataModel> medicationRequests = parser.createMedicationRequest(responseBody);
 
-                // Group medication requests by group identifier
-                // Hier werden die einzelnen MedicationRequest nach GroupIdentifier sortiert.
+                String responseBody = response.body().string();
+                Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "Server response: " + responseBody);
+
+                List<MedicationRequestDataModel> medicationRequests = parser.createMedicationRequest(responseBody);
+                Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "Parsed medication requests with size: " + medicationRequests.size());
+
+
                 Map<String, List<MedicationRequestDataModel>> groupedRequests = groupByGroupIdentifier(medicationRequests);
+                Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "Grouped medication requests by the group identifier.");
 
                 List<FullPrescriptionDataModel> fullPrescriptions = new ArrayList<>();
 
                 for (String groupIdentifier : groupedRequests.keySet()) {
                     List<MedicationRequestDataModel> requests = groupedRequests.get(groupIdentifier);
 
-                    // Fetch patient and practitioner details (synchronously for simplicity)
+
                     String patientReference = requests.get(0).getSubject();
                     String practitionerReference = requests.get(0).getRequester();
+                    Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "Fetching details for patient reference: " + patientReference + " and practitioner reference: " + practitionerReference);
 
                     PatientDataModel patient = fetchPatient(patientReference);
                     PractitionerDataModel practitioner = fetchPractitioner(practitionerReference);
+                    Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "Fetched patient and practitioner resources from the FHIR R5 Server.");
 
                     List<MedicationRequestDataModelForFullPrescription> medicationRequestModels = new ArrayList<>();
                     for (MedicationRequestDataModel request : requests) {
@@ -102,9 +108,11 @@ public class FullPrescriptionRepository {
                 }
 
                 fullPrescriptionRepositoryCallback.onResponse(fullPrescriptions);
+                Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "Full prescriptions fetched successfully.");
             }
         });
     }
+
     /**
      * Gruppiert medication requests anhand ihrer group identifier
      *
@@ -112,8 +120,6 @@ public class FullPrescriptionRepository {
      * @return A map with key group identifier and the value list of medication requests.
      */
     private Map<String, List<MedicationRequestDataModel>> groupByGroupIdentifier(List<MedicationRequestDataModel> requests) {
-
-        // Neue
         Map<String, List<MedicationRequestDataModel>> groupedRequests = new HashMap<>();
         for (MedicationRequestDataModel request : requests) {
             String groupIdentifier = request.getIdentifiereMedIDGroup();
@@ -122,8 +128,10 @@ public class FullPrescriptionRepository {
             }
             groupedRequests.get(groupIdentifier).add(request);
         }
+        Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "Grouped " + requests.size() + " medication requests into this number:  " + groupedRequests.size() + " of groups.");
         return groupedRequests;
     }
+
     /**
      * Holt die Patienten Resource die von FHIR als relativer path angegeben wird
      *
@@ -134,6 +142,7 @@ public class FullPrescriptionRepository {
     private PatientDataModel fetchPatient(String patientReference) throws IOException {
         String urlPatient = "http://192.168.0.2:8080/hapi-fhir-jpaserver/fhir/" + patientReference;
 
+
         Request request = new Request.Builder().url(urlPatient).build();
         Response response = client.newCall(request).execute();
         if (!response.isSuccessful()) {
@@ -141,8 +150,10 @@ public class FullPrescriptionRepository {
         }
 
         String responseBody = response.body().string();
+        Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "Fetched patient details from the FHIR R5 server");
         return parser.createPatient(responseBody);
     }
+
     /**
      * Fetched Practitioner details. über die id/ relative Path am FHIR Server
      *
@@ -154,12 +165,15 @@ public class FullPrescriptionRepository {
         String urlPractitioner = "http://192.168.0.2:8080/hapi-fhir-jpaserver/fhir/" + practitionerReference;
 
         Request request = new Request.Builder().url(urlPractitioner).build();
-        Response response = client.newCall(request).execute();
-        if (!response.isSuccessful()) {
-            throw new IOException("Unexpected code " + response);
-        }
+        String responseBody;
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
 
-        String responseBody = response.body().string();
+            responseBody = response.body().string();
+        }
+        Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "Fetched practitioner details from the FHIR R5 server.");
         return parser.createPractitioner(responseBody);
     }
 
@@ -172,12 +186,9 @@ public class FullPrescriptionRepository {
     private MedicationRequestDataModelForFullPrescription convertToFullPrescriptionModel(MedicationRequestDataModel request) {
         List<MedicationRequestDataModelForFullPrescription.DosageInstructionsForMedicationRequestDataModelForFullPrescription> dosageInstructions = new ArrayList<>();
         for (MedicationRequestDataModel.DosageInstruction instruction : request.getDosageInstructions()) {
-            dosageInstructions.add(new MedicationRequestDataModelForFullPrescription.DosageInstructionsForMedicationRequestDataModelForFullPrescription(
-                    instruction.getPatientInstruction(),
-                    instruction.getFrequency(),
-                    instruction.getWhen()
-            ));
+            dosageInstructions.add(new MedicationRequestDataModelForFullPrescription.DosageInstructionsForMedicationRequestDataModelForFullPrescription(instruction.getPatientInstruction(), instruction.getFrequency(), instruction.getWhen()));
         }
+        Log.d(LogTag.FULL_PRESCRIPTION.getTag(), "Converted medication request to fullprescriptiondatamodel.");
         return new MedicationRequestDataModelForFullPrescription(request.getDisplayMedication(), dosageInstructions);
     }
 }

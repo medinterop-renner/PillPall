@@ -66,17 +66,10 @@ public class PractitionerDataModel {
 
     @Override
     public String toString() {
-        return "PractitionerDataModel{" +
-                "id='" + id + '\'' +
-                ", family='" + family + '\'' +
-                ", given='" + given + '\'' +
-                ", suffix='" + suffix + '\'' +
-                ", telecom='" + telecom + '\'' +
-                ", line='" + line + '\'' +
-                ", city='" + city + '\'' +
-                ", postalCode='" + postalCode + '\'' +
-                ", country='" + country + '\'' +
-                '}';
+       return  "Name: " + suffix + " " + family + " " + given + "\n" +
+                "Telefonnummer: " + telecom + "\n" +
+                "Addresse: " + line + " " + city + " " + postalCode + " " + country;
+
     }
 }
 

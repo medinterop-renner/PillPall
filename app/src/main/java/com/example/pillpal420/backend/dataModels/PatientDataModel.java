@@ -1,9 +1,6 @@
 package com.example.pillpal420.backend.dataModels;
 
 
-
-
-
 public class PatientDataModel {
     private String id;
 
@@ -23,10 +20,8 @@ public class PatientDataModel {
     private String postalCode;
 
 
-
-
     public PatientDataModel(String id, String identifierSocialSecurityNum, String family, String given, String prefix, String gender, String birthDate,
-                            String line, String city, String state, String postalCode, String country){
+                            String line, String city, String state, String postalCode, String country) {
         this.id = id;
         this.identifierSocialSecurityNum = identifierSocialSecurityNum;
         this.family = family;
@@ -57,6 +52,7 @@ public class PatientDataModel {
     public String getPrefix() {
         return prefix;
     }
+
     public String getIdentifierSocialSecurityNum() {
         return identifierSocialSecurityNum;
     }
@@ -76,7 +72,8 @@ public class PatientDataModel {
     public String getCity() {
         return city;
     }
-    public String getState(){
+
+    public String getState() {
         return state;
     }
 
@@ -91,19 +88,11 @@ public class PatientDataModel {
     @Override
     public String toString() {
 
-        return "{" +
-                "id='" + id + '\'' +
-                ", Sozialversicherungsnummer='" + identifierSocialSecurityNum + '\'' +
-                ", family='" + family + '\'' +
-                ", given='" + given + '\'' +
-                ", prefix='" + prefix + '\'' +
-                ", gender='" + gender + '\'' +
-                ", birthDate='" + birthDate + '\'' +
-                ", line='" + line + '\'' +
-                ", city='" + city + '\'' +
-                ", state='" + state + '\'' +
-                ", country='" + country + '\'' +
-                ", postalCode='" + postalCode + '\'' +
-                '}';
+        return
+                "Sozialversicherungsnummer: " + identifierSocialSecurityNum + " \n" +
+                        "Name: " + " " + gender + ". " + prefix + " " + family + " " + given + "\n" +
+                        "Geboren am: " + birthDate + "\n" +
+                        "Addresse: " + line + " " + city + " " + postalCode + " " + state + " " + country;
+
     }
 }
