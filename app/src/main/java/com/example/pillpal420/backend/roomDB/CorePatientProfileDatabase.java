@@ -14,6 +14,19 @@ public abstract class CorePatientProfileDatabase extends RoomDatabase {
 
     private static volatile CorePatientProfileDatabase INSTANCE;
 
+    /**
+     * Erhält ein Element aus der CorePatientProfileDatabase
+     *
+     * Funktion:
+     * 1. Überprüfen ob die Instance null ist
+     *    --> Instance ist null: synchronisieren der CorePatientProfilDatabase Klasse
+     *        erneutes Überprufen der Instanz
+     *    --> Instanz ist immmernoch null: Initialisieren der Datenbank mit Name und Klasse
+     * 2. Hinzufügen eines Callbacks zum Datenbank-Builder
+     * 3. Erstellen der Datenbank und hinzufügen zu Instance
+     * @param context Context um die Datenbank zu Initialisieren
+     * @return ein Element der CorePatientProfilDatabase
+     */
     public static CorePatientProfileDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (CorePatientProfileDatabase.class) {
@@ -28,6 +41,9 @@ public abstract class CorePatientProfileDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
+    /**
+     * Callback für die Erstellung und Öffnung der Datenbank
+     */
     private static final RoomDatabase.Callback myRoomCallBack = new RoomDatabase.Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {

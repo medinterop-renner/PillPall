@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //TOOLBAR
+
         Toolbar tBar = findViewById(R.id.toolbar);
         setSupportActionBar(tBar);
 
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         if (savedInstanceState == null) {
-            //nav1 = Home
+
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Fragment_nav1()).commit();
             navView.setCheckedItem(R.id.nav_home);
         }
@@ -134,10 +134,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     public boolean checkStoragePermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            //Android 11 oder darüber
+
             return Environment.isExternalStorageManager();
         } else {
-            //Unter Android 11
+
             int write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             int read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
 
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * {@link Manifest.permission.READ_EXTERNAL_STORAGE} ab.
      */
     private void reqStoragePermission() {
-        //Android 11 und drüber
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             try {
                 Intent intent = new Intent();
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 storageLauncher.launch(intent);
             }
         } else {
-            //Unter Android 11
+
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
                             Manifest.permission.READ_EXTERNAL_STORAGE},
                     REQUEST_PERMISSIONS);
@@ -192,9 +192,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //lambda anstatt new ActivityResultCallback<ActivityResult>()
     private ActivityResultLauncher<Intent> storageLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), o -> {
-                //über Android 11
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    //External Storage granted
+
                     if (Environment.isExternalStorageManager()) {
 
                     } else {

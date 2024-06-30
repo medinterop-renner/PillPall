@@ -54,7 +54,13 @@ public class Vision {
      *
      * Funktion:
      * 1. Erstellen einer OkHttpClient Instanz
-     * @param scannedText
+     * 2. MediaType wird auf einfachen Text gesetzt und ein RequestBody mit dem gescannten Text erstellt
+     * 3. Erstellen eines HTTP POST requests
+     * 4. Der Request wird geschickt
+     *    --> ist dieser erfolgreich wird {@link #parseAndVerifyMedicationRequestResourceFromPython(String)} aufgerufen um die weitere Verarbeitung durchzuführen
+     *    --> ist dieser nicht erfolgreich wird ein Log erstellt
+     *
+     * @param scannedText der eingescannte Text der an den Server übergeben werden soll
      */
     private void sendTextToServer(String scannedText) {
         OkHttpClient client = new OkHttpClient();
@@ -85,6 +91,17 @@ public class Vision {
         });
     }
 
+    /**
+     * Hier wird die FHIR MEdicationRequest aus dem JSON String erstellt, der vom Server erhalten wurde
+     *
+     * Funktion:
+     * 1. Verarbeiten des JSON Strings um das message-Objekt und das entry-Array zu erhalten
+     * 2. Verarbeitet das entry-Array um die relevanten Felder zu extrahieren
+     * 3. Ein MedicationRequestDataModel Objekt wird erstellt
+     * 4. {@link #createMedicationRequestWithAcurateData(MedicationRequestDataModel)} wird aufgerufen um MedicationRequest zu verarbeiten
+     *
+     * @param fhirResourcePreParsing ist der JSON String der vom Server zurück kommt
+     */
     public void parseAndVerifyMedicationRequestResourceFromPython(String fhirResourcePreParsing) {
         try {
            /* JSONObject serverResponse = new JSONObject(fhirResourcePreParsing);
@@ -172,7 +189,19 @@ public class Vision {
         }
     }
 
-
+    /**
+     * Hier wird ein MedicationRequest mit "richtigen" Daten erstellt und an den FHIR Server geschickt
+     *
+     * Funktion:
+     * 1. Erhalten der Patient Data und der Practicioner Data
+     * 2. Aktualisieren des MedicationRequestDataModel mit den "richtigen" Patient und Practicioner Daten
+     * 3. Erstellen eines JSON Objekts für die MedicationRequest
+     * 4. Erstellen eines POST Request mit dem JSON Objekt und setzen des MediaType
+     * 5. Erstellen eines HTTP POST Requests an den FHIR Server
+     * 6. Bearbeiten der Server Antwort
+     *
+     * @param medicationRequestDataModel enthält die ursprünglichen MedicationRequest Daten
+     */
     public void createMedicationRequestWithAcurateData(MedicationRequestDataModel medicationRequestDataModel){
 
         PatientDataModel patientDataModel;
@@ -220,6 +249,22 @@ public class Vision {
 
 
     }
+
+    /**
+     * Erhält PatientData vom FHIR Server abhängig von der gegebenen patientReference
+     *
+     * Funktion:
+     * 1. Erstellen der URL für die FHIR Serverabfrage mit der patientReference
+     * 2. Erstellen und senden einer HTTP GET Request zum FHIR Server
+     * 3. Überprüfung der Antwort
+     *    --> wenn nicht erfolgreich -> IOException
+     * 4. Erstellen eines Strings aus dem responsebody
+     * 5. Erstellung eines PatientDataModel aus den Daten des responsebody
+     *
+     * @param patientReference Referenz des Patienten, dessen Daten erhalten werden sollen
+     * @return PatientDataModel mit den Patienten Daten
+     * @throws IOException
+     */
     private PatientDataModel fetchPatient(String patientReference) throws IOException {
         Log.d(LogTag.VISION.getTag(), "Fetching ID for Patient");
         String urlPatient = " http://"+ serverAddressFHIR +"/hapi-fhir-jpaserver/fhir/Patient?family=" + patientReference;
@@ -234,6 +279,21 @@ public class Vision {
         return parser.createPatient(responseBody);
     }
 
+    /**
+     * Erhält PatientData vom FHIR Server abhängig von der gegebenen practicionerReference
+     *
+     * Funktion:
+     * 1. Erstellen der URL für die FHIR Serverabfrage mit der patientReference
+     * 2. Erstellen und senden einer HTTP GET Request zum FHIR Server
+     * 3. Überprüfung der Antwort
+     *    --> wenn nicht erfolgreich -> IOException
+     * 4. Erstellen eines Strings aus dem responsebody
+     * 5. Erstellung eines PracticionerDataModel aus den Daten des responsebody
+     *
+     * @param practitionerReference Referenz des Practicioner, dessen Daten erhalten werden sollen
+     * @return PracticionerDataModel mit Daten des Practicioner
+     * @throws IOException
+     */
     private PractitionerDataModel fetchPractitioner(String practitionerReference) throws IOException {
         Log.d(LogTag.VISION.getTag(), "Fetching ID for Practitioner");
         String urlPractitioner = " http://"+ serverAddressFHIR +"/hapi-fhir-jpaserver/fhir/Practitioner?family=" + practitionerReference;
