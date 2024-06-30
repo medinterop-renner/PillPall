@@ -14,9 +14,7 @@ public class PractitionerDataModel {
     private String line;
     private String city;
     private String country;
-
     private String postalCode;
-
     /**
      * Dies ist der Constructor der PractitionerDataModel Klasse.
      * Er wird gebracuht um Objekte dieser Klasse zu erstellen.
@@ -46,38 +44,29 @@ public class PractitionerDataModel {
         this.postalCode = postalCode;
         this.country = country;
     }
-
     public String getId() {
         return id;
     }
     public String getOidPractitioner(){return oidPractitioner;}
-
     public String getFamily() {
         return family;
     }
-
     public String getGiven() {
         return given;
     }
-
     public String getSuffix() {
         return suffix;
     }
-
     public String getTelecom() {
         return telecom;
     }
-
     public String getLine() {
         return line;
     }
-
     public String getCity() {
         return city;
     }
-
     public String getPostalCode(){return postalCode;}
-
     public String getCountry() {
         return country;
     }

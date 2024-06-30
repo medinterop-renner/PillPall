@@ -20,7 +20,7 @@ import java.util.List;
 public class Parser {
 
     /**
-     * Parses the JSON response to create a PatientDataModel object.
+     * Parsed die JSON Response vom FHIR R5 server um ein PatientDataModel zu erstellen
      * @param jsonResponse The JSON response string.
      * @return The PatientDataModel object.
      */
@@ -72,11 +72,11 @@ public class Parser {
         }
         return patientDataModel;
     }
-
     /**
+     * Erstellt ein JSON Objekt um es an den FHIR R5 Server zu schicken.
      *
-     * @param patientDataModel
-     * @return
+     * @param patientDataModel The PatientDataModelObject that will be posted to the FHIR R5 Server.
+     * @return The JSON object that represents a FHIR HL7 Austria Core implementation Guide Patient Resource.
      */
     public JSONObject createPostPatientResource(PatientDataModel patientDataModel) {
         JSONObject json = new JSONObject();
@@ -121,11 +121,12 @@ public class Parser {
         Log.d(LogTag.PATIENT.name(),"JSON parsed succeffully for postReq");
         return json;
     }
-
     /**
+     * Parsed die JSON Response vom FHIR R5 server um eine Liste von MedicationResourceDataModels zu erstellen.
+     * Es wird gebraucht um die Daten für diverse Funktionen zu verwenden und sie optimal für die UI aufzubereiten.
      *
-     * @param jsonResponse
-     * @return
+     * @param jsonResponse The response from the FHIR R5 Server that represents a ELGA eMedication MedicationRequest Resource.
+     * @return List of MedicationRequestDataModel objects for further use in UI and Code.
      */
     public List<MedicationRequestDataModel> createMedicationRequest(String jsonResponse) {
         Log.d(LogTag.MEDICATION_REQUEST.name(), "Parsing json from get Request");
@@ -151,10 +152,11 @@ public class Parser {
     }
 
     /**
+     * Parsed ein JSON Object um ein MedicationRequestDataModel zu erstellen.
      *
-     * @param resource
-     * @return
-     * @throws JSONException
+     * @param resource The JSON Object that represents the FHIR R5 medicationRequest that will be parsed to MedicationRequestDataModel.
+     * @return A MedicationRequestDataModel
+     * @throws JSONException JSONExeption if an error ocurs while parsing the JSON Object.
      */
     public MedicationRequestDataModel parseMedicationRequest(JSONObject resource) throws JSONException {
         String id = resource.getString("id");
@@ -209,9 +211,10 @@ public class Parser {
     }
 
     /**
+     * Erstellt ein FHIR R5 HL7 Austria eMedikation MedicationRequest resource.
      *
-     * @param medicationRequest
-     * @return
+     * @param medicationRequest medicationRequest object that will be parsed to JSON.
+     * @return JSON Object that contains a FHIR R5 medicationrequest.
      */
     public JSONObject createPostMedicationRequest(MedicationRequestDataModel medicationRequest) {
         JSONObject json = new JSONObject();
