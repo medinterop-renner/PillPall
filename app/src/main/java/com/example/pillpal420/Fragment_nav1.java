@@ -38,15 +38,32 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-//Scan Fragment Magic
 public class Fragment_nav1 extends Fragment {
     private Uri picUri;
     private ImageView scanImgView;
     private TextView scanTextView;
     private ActivityResultLauncher<Uri> scanPicLauncher;
     public static String finalString;
-    //Consti this urs ^
 
+    /**
+     *Inflated das "fragment_home.xml" layout
+     *
+     * Funktion:
+     * 1. Initialisierung des Buttons sowie einer ImageView und einer TextView
+     * 2. Registrierung des ActivityResultLaunchers um ein Bild aufzunehmen
+     * 3. Setzen eines onClickListeners für den Button der die Methode openCam() aufruft
+     *
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return scanView oder null
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -72,6 +89,15 @@ public class Fragment_nav1 extends Fragment {
         return scanView;
     }
 
+    /**
+     *Methode um die Kamera zu öffnen und ein Bild zu machen
+     *
+     * Funktion:
+     * 1. wir versuchen mithilfe der {@link #createImageFile()} Methode ein File zu erstellen
+     * 2. tritt eine IOException auf wird diese im Log dargestellt
+     * 3. wurde das File erfolgreich erstell --> ist nicht null, setzen wir eine Uri für das Bild
+     * 4. dann übergeben wir diese Uri dem {@link #scanPicLauncher} um die Kamera zu öffnen und ein Bild im erstellten File speichern zu können
+     */
     private void openCam(){
         File scanPicFile = null;
         try{
@@ -84,6 +110,16 @@ public class Fragment_nav1 extends Fragment {
             scanPicLauncher.launch(picUri);
         }
     }
+
+    /**
+     *Hier erstellen wir ein temporäres File um dann in {@link #openCam()} ein Bild darin speichern zu können
+     * Funktion:
+     * 1. Erstellung der Strings, "timeStamp" für ein SimpleDateFormat, scanFileName um den Namen des Files zu erstellen
+     * 2. das File "storageDir" erhält ddas ExternalFilesDirectory für Bilder
+     *
+     * @return temporäres File mit dem Namen, dem Suffix und dem ExternalFilesDirectory
+     * @throws IOException wird in {@link #openCam()} behandelt
+     */
     private File createImageFile() throws IOException{
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String scanFileName = "JPEG_" + timeStamp + "_";
@@ -91,6 +127,17 @@ public class Fragment_nav1 extends Fragment {
         return File.createTempFile(scanFileName, ".jgp",storageDir);
     }
 
+    /**
+     *Hier verwenden wir das ML Kit Text Recognition API um den Text aus einem Bild, für die Weiterverarbeitung, zu extrahieren
+     *
+     * Funktion:
+     * 1. Erstellung eines InputImage mit dem FilePath der Uri des Bildes
+     * 2. Initialisierung des TextRecognizer
+     * 3. Verarbeitung des Bildes mithilfe des TextRecognizer
+     * 4. onSuccessListener:
+     *
+     * @param uri ist die Uri des Bildes woraus wir den Text extrahieren wollen
+     */
     private void processImg(Uri uri){
         try{
             InputImage img = InputImage.fromFilePath(getContext(),uri);
@@ -99,9 +146,9 @@ public class Fragment_nav1 extends Fragment {
             recognizer.process(img).addOnSuccessListener(visionText -> {
                 displayText(visionText);
 
-                //mach diese String
+
                 getStringFromScan(visionText);
-                //zeig String in TextView
+
                 scanImgView.setImageURI(uri);
 
             }).addOnFailureListener(e -> {
@@ -122,17 +169,14 @@ public class Fragment_nav1 extends Fragment {
         scanTextView.setText(resultText.toString());
     }
 
-    //CONSTI DA IS DEIN STRING LES GOOOOOOOO
+
     private void getStringFromScan(Text visionText){
         StringBuilder text = new StringBuilder();
 
         for (Text.TextBlock block : visionText.getTextBlocks()){
             text.append(block.getText());
         }
-        //!!!! EINZIGER STRING SONST NIX ANGREIFEN/VERWENDEN !!!!!
         finalString = text.toString();
-
         Vision vision = new Vision(finalString);
-    //-------------------------------------------------------------
     }
 }

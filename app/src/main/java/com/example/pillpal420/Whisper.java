@@ -209,24 +209,6 @@ public class Whisper extends Fragment {
         }).start();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_RECORD_AUDIO_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startRecording();
-            } else {
-                Toast.makeText(getActivity(), "Permission to record audio is required", Toast.LENGTH_SHORT).show();
-            }
-        } else if (requestCode == REQUEST_STORAGE_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startRecording();
-            } else {
-                Toast.makeText(getActivity(), "Permission to access storage is required", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
     public MedicationRequestDataModel parseToFHIRMedicationRequest(String speechToTextString) {
         List<String> parts = new ArrayList<>();
         StringBuilder currentPart = new StringBuilder();

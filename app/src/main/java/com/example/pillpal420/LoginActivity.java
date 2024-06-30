@@ -18,6 +18,9 @@ import java.util.concurrent.Executors;
 
 public class LoginActivity extends AppCompatActivity {
 
+    /**
+     *
+     */
     private CorePatientProfileDatabase corePatientProfileDatabase;
     private CorePatientProfil corePatientProfil;
 

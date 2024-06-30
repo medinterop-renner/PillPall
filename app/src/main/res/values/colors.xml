@@ -6,4 +6,5 @@
     <color name="green">#0DFF00</color>
     <color name="lightgreen">#74FF6D</color>
     <color name="purple">#cd02d4</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>
