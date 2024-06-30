@@ -22,21 +22,34 @@ public class WhisperViewModel extends ViewModel {
         repository = new WhisperRepository();
     }
 
+    /**
+     * Getter für patientLiveData
+     *
+     * @return patientLiveData
+     */
     public LiveData<PatientDataModel> getPatientLiveData() {
         return patientLiveData;
     }
 
+    /**
+     * Hier wird die patiendData basierend auf dem Nachnamen geholt und das LiveData Objekt mit dem Ergebnis aktualisiert
+     * <p>
+     * Funktion:
+     * 1. Aufrufen der repository Methode um einen Patienten anhand des Nachnamens zu suchen
+     * 2. Callback für:
+     * --> erfolgreich: aktualisieren der patientLiveData mit dem erhaltenen PatientDataModel
+     * --> nicht erfolgreich: Log und printStackTrace
+     *
+     * @param familyNameForFHIRSearch familyName des zu suchenden Patienten
+     */
     public void fetchPatientData(String familyNameForFHIRSearch) {
 
-       // repository.searchPatientWithNameGetBackPatientObject(familyNameForFHIRSearch,WhisperRepository.WhisperCallback)
 
         repository.searchPatientWithNameGetBackPatientObject(familyNameForFHIRSearch, new WhisperRepository.WhisperCallback() {
             @Override
             public void onResponse(PatientDataModel patientDataModel) {
                 patientLiveData.postValue(patientDataModel);
 
-                // Hier könnte man direkt den neuen Patienten zum Server Posten practitioner muss seine DienstNummer -> "Practioner/ + idfromVoice" string sagen
-                // Login nur mit practitioner -> nur whisper sichtabr
 
             }
 
@@ -47,12 +60,5 @@ public class WhisperViewModel extends ViewModel {
             }
         });
 
-    }
-
-    public LiveData<PatientDataModel> postPatientRessource(PatientDataModel patientDataModel){
-        Log.d(LogTag.WHISPER.getTag(), "Preparing to post new Patient");
-
-        return null;
-        //repository.postPatientRessource(patientDataModel);
     }
 }
