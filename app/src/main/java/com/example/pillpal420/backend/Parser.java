@@ -14,6 +14,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ */
 public class Parser {
 
     /**
@@ -25,12 +28,8 @@ public class Parser {
         PatientDataModel patientDataModel = null;
         Log.d(LogTag.PATIENT.name(), "Parsing JSON for getRequest");
         try {
-            // Parse the JSON response string into a JSONObject
             JSONObject jsonObject = new JSONObject(jsonResponse);
-
             JSONObject patientResource;
-
-            // Check if the response is a bundle
             if (jsonObject.has("resourceType") && "Bundle".equals(jsonObject.getString("resourceType"))) {
                 JSONArray entryArray = jsonObject.getJSONArray("entry");
                 if (entryArray.length() > 0) {
@@ -40,27 +39,17 @@ public class Parser {
                     throw new JSONException("No entries found in the bundle");
                 }
             } else {
-                // Assume it's a single patient resource
                 patientResource = jsonObject;
             }
-
             String id = patientResource.getString("id");
-
             JSONArray svnArray = patientResource.getJSONArray("identifier");
             JSONObject svnObject = svnArray.getJSONObject(0);
             String sVN = svnObject.getString("value");
-
-            // Get the JSONArray associated with the key "name"
             JSONArray nameArray = patientResource.getJSONArray("name");
-
-            // Get the first JSONObject from the "name" array
             JSONObject nameObject = nameArray.getJSONObject(0);
-
-            // Extract values from the "name" object
             String family = nameObject.getString("family");
             JSONArray givenArray = nameObject.getJSONArray("given");
             String givenName = givenArray.getString(0);
-            // "prefix" might not be present in the JSON, so we check if it exists
             String prefixValue = "";
             if (nameObject.has("prefix")) {
                 JSONArray prefixArray = nameObject.getJSONArray("prefix");
@@ -68,20 +57,15 @@ public class Parser {
             }
             String gender = patientResource.getString("gender");
             String birthDate = patientResource.getString("birthDate");
-
             JSONArray addressArray = patientResource.getJSONArray("address");
             JSONObject addressObject = addressArray.getJSONObject(0);
-
             JSONArray lineArray = addressObject.getJSONArray("line");
             String line = lineArray.getString(0);
-
             String city = addressObject.getString("city");
             String state = addressObject.getString("state");
             String postalCode = addressObject.getString("postalCode");
             String country = addressObject.getString("country");
-
             patientDataModel = new PatientDataModel(id, sVN, family, givenName, prefixValue, gender, birthDate, line, city, state, postalCode, country);
-
         } catch (JSONException e) {
             Log.d(LogTag.PATIENT.name(), "Error while parsing json for get Request");
             throw new RuntimeException(e);
@@ -89,44 +73,36 @@ public class Parser {
         return patientDataModel;
     }
 
+    /**
+     *
+     * @param patientDataModel
+     * @return
+     */
     public JSONObject createPostPatientResource(PatientDataModel patientDataModel) {
         JSONObject json = new JSONObject();
         try {
             json.put("resourceType", "Patient");
-
-            // Adding identifier
             JSONArray identifierArray = new JSONArray();
             JSONObject identifierObject = new JSONObject();
             identifierObject.put("system", "urn:oid:1.2.40.0.10.1.4.3.1");
             identifierObject.put("value", patientDataModel.getIdentifierSocialSecurityNum());
             identifierArray.put(identifierObject);
             json.put("identifier", identifierArray);
-
-            // Adding name
             JSONObject nameObject = new JSONObject();
             nameObject.put("family", patientDataModel.getFamily());
-
             JSONArray givenArray = new JSONArray();
             givenArray.put(patientDataModel.getGiven());
             nameObject.put("given", givenArray);
-
             if (patientDataModel.getPrefix() != null && !patientDataModel.getPrefix().isEmpty()) {
                 JSONArray prefixArray = new JSONArray();
                 prefixArray.put(patientDataModel.getPrefix());
                 nameObject.put("prefix", prefixArray);
             }
-
             JSONArray nameArray = new JSONArray();
             nameArray.put(nameObject);
             json.put("name", nameArray);
-
-            // Adding gender
             json.put("gender", patientDataModel.getGender());
-
-            // Adding birthDate
             json.put("birthDate", patientDataModel.getBirthDate());
-
-            // Adding address
             JSONObject addressObject = new JSONObject();
             JSONArray lineArray = new JSONArray();
             lineArray.put(patientDataModel.getLine());
@@ -135,11 +111,9 @@ public class Parser {
             addressObject.put("state", patientDataModel.getState());
             addressObject.put("postalCode", patientDataModel.getPostalCode());
             addressObject.put("country", patientDataModel.getCountry());
-
             JSONArray addressArray = new JSONArray();
             addressArray.put(addressObject);
             json.put("address", addressArray);
-
         } catch (JSONException e) {
             Log.d(LogTag.PATIENT.name(),"Error while parsing JSON for post req");
             throw new RuntimeException(e);
@@ -147,27 +121,27 @@ public class Parser {
         Log.d(LogTag.PATIENT.name(),"JSON parsed succeffully for postReq");
         return json;
     }
-    public List<MedicationRequestDataModel> createMedicationRequest(String jsonResponse) {
 
+    /**
+     *
+     * @param jsonResponse
+     * @return
+     */
+    public List<MedicationRequestDataModel> createMedicationRequest(String jsonResponse) {
         Log.d(LogTag.MEDICATION_REQUEST.name(), "Parsing json from get Request");
         List<MedicationRequestDataModel> medicationRequests = new ArrayList<>();
-
         try {
             JSONObject jsonObject = new JSONObject(jsonResponse);
-
             if (jsonObject.getString("resourceType").equals("Bundle")) {
                 JSONArray entries = jsonObject.getJSONArray("entry");
-
                 for (int i = 0; i < entries.length(); i++) {
                     JSONObject entry = entries.getJSONObject(i);
                     JSONObject resource = entry.getJSONObject("resource");
-
                     medicationRequests.add(parseMedicationRequest(resource));
                 }
             } else {
                 medicationRequests.add(parseMedicationRequest(jsonObject));
             }
-
         } catch (JSONException e) {
             Log.d(LogTag.MEDICATION_REQUEST.name(), "Error during Medication parsing from get request");
             throw new RuntimeException(e);
@@ -176,11 +150,14 @@ public class Parser {
         return medicationRequests;
     }
 
+    /**
+     *
+     * @param resource
+     * @return
+     * @throws JSONException
+     */
     public MedicationRequestDataModel parseMedicationRequest(JSONObject resource) throws JSONException {
         String id = resource.getString("id");
-
-
-        // Extract eMedID and eMedIDGroup from identifier
         String eMedID = "";
         String eMedIDGroup = "";
         if (resource.has("identifier")) {
@@ -190,8 +167,6 @@ public class Parser {
         if (resource.has("groupIdentifier")) {
             eMedIDGroup = resource.getJSONObject("groupIdentifier").getString("value");
         }
-
-        // Extract aspCode and displayMedication from medication.concept.coding
         String aspCode = "";
         String displayMedication = "";
         if (resource.has("medication")) {
@@ -208,20 +183,14 @@ public class Parser {
                 }
             }
         }
-
-        // Extract requester reference
         String requester = "";
         if (resource.has("requester")) {
             requester = resource.getJSONObject("requester").getString("reference");
         }
-
-        // Extract subject reference
         String subjectReference = "";
         if (resource.has("subject")) {
             subjectReference = resource.getJSONObject("subject").getString("reference");
         }
-
-        // Extract dosage instructions
         List<MedicationRequestDataModel.DosageInstruction> dosageInstructions = new ArrayList<>();
         if (resource.has("dosageInstruction")) {
             JSONArray dosageArray = resource.getJSONArray("dosageInstruction");
@@ -235,30 +204,29 @@ public class Parser {
                 dosageInstructions.add(new MedicationRequestDataModel.DosageInstruction(patientInstruction, frequency, when));
             }
         }
-
      Log.d(LogTag.MEDICATION_REQUEST.name(), "MedicationRequest parsed successfully from get");
         return new MedicationRequestDataModel(id, eMedID, eMedIDGroup, aspCode, displayMedication, requester, subjectReference, dosageInstructions);
     }
 
+    /**
+     *
+     * @param medicationRequest
+     * @return
+     */
     public JSONObject createPostMedicationRequest(MedicationRequestDataModel medicationRequest) {
         JSONObject json = new JSONObject();
         try {
             json.put("resourceType", "MedicationRequest");
-
-
             JSONObject identifierObject = new JSONObject();
             identifierObject.put("value", medicationRequest.getIdentifiereMedID());
             JSONArray identifierArray = new JSONArray();
             identifierArray.put(identifierObject);
             json.put("identifier", identifierArray);
-
             JSONObject groupIdentifierObject = new JSONObject();
             groupIdentifierObject.put("value", medicationRequest.getIdentifiereMedIDGroup());
             json.put("groupIdentifier", groupIdentifierObject);
-
             json.put("status", "completed");
             json.put("intent", "order");
-
             JSONObject medication = new JSONObject();
             JSONObject concept = new JSONObject();
             JSONArray codingArray = new JSONArray();
@@ -270,26 +238,21 @@ public class Parser {
             concept.put("coding", codingArray);
             medication.put("concept", concept);
             json.put("medication", medication);
-
             json.put("requester", new JSONObject().put("reference","Practitioner/" + medicationRequest.getRequester()));
             json.put("subject", new JSONObject().put("reference","Patient/" + medicationRequest.getSubject()));
-
             JSONArray dosageInstructionArray = new JSONArray();
             for (MedicationRequestDataModel.DosageInstruction instruction : medicationRequest.getDosageInstructions()) {
                 JSONObject dosageInstructionObject = new JSONObject();
                 dosageInstructionObject.put("patientInstruction", instruction.getPatientInstruction());
-
                 JSONObject timing = new JSONObject();
                 JSONObject repeat = new JSONObject();
                 repeat.put("frequency", instruction.getFrequency());
                 repeat.put("when", new JSONArray().put(instruction.getWhen()));
                 timing.put("repeat", repeat);
-
                 dosageInstructionObject.put("timing", timing);
                 dosageInstructionArray.put(dosageInstructionObject);
             }
             json.put("dosageInstruction", dosageInstructionArray);
-
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -297,18 +260,18 @@ public class Parser {
         return json;
     }
 
-    public PractitionerDataModel createPractitioner(String jsonResponse){
+    /**
+     *
+     * @param jsonResponse
+     * @return
+     */
+    public PractitionerDataModel createPractitioner(String jsonResponse) {
         PractitionerDataModel practitioner = null;
-
         Log.d(LogTag.PRACTITIONER.getTag(), "Creating new Practitioner");
-        Log.d(LogTag.PRACTITIONER.getTag(),jsonResponse);
-
+        Log.d(LogTag.PRACTITIONER.getTag(), jsonResponse);
         try {
             JSONObject jsonObject = new JSONObject(jsonResponse);
-
             JSONObject practitionerResource;
-
-
             if (jsonObject.has("resourceType") && "Bundle".equals(jsonObject.getString("resourceType"))) {
                 JSONArray entryArray = jsonObject.getJSONArray("entry");
                 Log.d(LogTag.VISION.getTag(), "entry extracted");
@@ -321,101 +284,87 @@ public class Parser {
                     throw new JSONException("No entries found in the bundle");
                 }
             } else {
-                // Assume it's a single patient resource
                 practitionerResource = jsonObject;
             }
-
-            Log.d(LogTag.VISION.getTag(), "1");
-
             String id = practitionerResource.getString("id");
-            Log.d(LogTag.VISION.getTag(), "2");
-
             JSONArray oidIdentifierArray = practitionerResource.getJSONArray("identifier");
             JSONObject oidObject = oidIdentifierArray.getJSONObject(0);
             String oidPractitioner = oidObject.getString("value");
-            Log.d(LogTag.VISION.getTag(), "3");
-
-            // Getting Practitioner Name
             JSONArray nameArray = practitionerResource.getJSONArray("name");
             JSONObject nameObject = nameArray.getJSONObject(0);
-
-            Log.d(LogTag.VISION.getTag(), "4");
-
             String family = nameObject.getString("family");
-            String given = nameObject.getString("given");
-            String suffix = nameObject.getString("suffix");
-
-            Log.d(LogTag.VISION.getTag(), "5");
-
-            // Getting Practitioner digits
-
+            JSONArray givenArray = nameObject.getJSONArray("given");
+            StringBuilder givenNames = new StringBuilder();
+            for (int i = 0; i < givenArray.length(); i++) {
+                if (i > 0) {
+                    givenNames.append(" ");
+                }
+                givenNames.append(givenArray.getString(i));
+            }
+            String suffix = "";
+            if (nameObject.has("suffix")) { // better format > optional
+                JSONArray suffixArray = nameObject.getJSONArray("suffix");
+                StringBuilder suffixes = new StringBuilder();
+                for (int i = 0; i < suffixArray.length(); i++) {
+                    if (i > 0) {
+                        suffixes.append(", ");
+                    }
+                    suffixes.append(suffixArray.getString(i));
+                }
+                suffix = suffixes.toString();
+            }
             JSONArray telecomArray = practitionerResource.getJSONArray("telecom");
             JSONObject telecomObject = telecomArray.getJSONObject(0);
-
             String telecom = telecomObject.getString("value");
-            Log.d(LogTag.VISION.getTag(), "6");
-            // Getting Address
-
             JSONArray addressArray = practitionerResource.getJSONArray("address");
             JSONObject addressObject = addressArray.getJSONObject(0);
-
-            Log.d(LogTag.VISION.getTag(), "7");
-
-            String line = addressObject.getString("line");
+            JSONArray lineArray = addressObject.getJSONArray("line");
+            StringBuilder lines = new StringBuilder();
+            for (int i = 0; i < lineArray.length(); i++) {// better format > optional
+                if (i > 0) {
+                    lines.append(", ");
+                }
+                lines.append(lineArray.getString(i));
+            }
             String city = addressObject.getString("city");
             String postalCode = addressObject.getString("postalCode");
             String country = addressObject.getString("country");
-
-            Log.d(LogTag.VISION.getTag(), "8");
-
-            Log.d(LogTag.PRACTITIONER.getTag(),id +" " + family+" " + given + " " + suffix+ " " +telecom+ " " +line+ " " +city+ " " +postalCode+ " " +country);
-
-            practitioner = new PractitionerDataModel(id,oidPractitioner,family,given,suffix,telecom,line,city,postalCode,country);
-
-
-
-
+            Log.d(LogTag.PRACTITIONER.getTag(), id + " " + family + " " + givenNames + " " + suffix + " " + telecom + " " + lines + " " + city + " " + postalCode + " " + country);
+            practitioner = new PractitionerDataModel(id, oidPractitioner, family, givenNames.toString(), suffix, telecom, lines.toString(), city, postalCode, country);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-
         return practitioner;
     }
 
+    /**
+     *
+     * @param practitioner
+     * @return
+     */
     public JSONObject createPostPractitionerResource(PractitionerDataModel practitioner) {
         JSONObject json = new JSONObject();
         try {
             json.put("resourceType", "Practitioner");
-
-
-            // OID hinzufügen
             JSONArray gdaIdentifierArray = new JSONArray();
             JSONObject gdaIdentifierObject = new JSONObject();
-
             gdaIdentifierObject.put("system","urn:ietf:rfc:3986");
             gdaIdentifierObject.put("value",practitioner.getOidPractitioner());
-
             gdaIdentifierArray.put(gdaIdentifierObject);
             json.put("identifier",gdaIdentifierArray);
-
-
             JSONObject nameObject = new JSONObject();
             nameObject.put("family", practitioner.getFamily());
-
             JSONArray givenArray = new JSONArray();
             givenArray.put(practitioner.getGiven());
             nameObject.put("given", givenArray);
-
             if (practitioner.getSuffix() != null && !practitioner.getSuffix().isEmpty()) {
                 JSONArray suffixArray = new JSONArray();
                 suffixArray.put(practitioner.getSuffix());
                 nameObject.put("suffix", suffixArray);
             }
-
             JSONArray nameArray = new JSONArray();
             nameArray.put(nameObject);
             json.put("name", nameArray);
-
             if (practitioner.getTelecom() != null && !practitioner.getTelecom().isEmpty()) {
                 JSONArray telecomArray = new JSONArray();
                 JSONObject telecomObject = new JSONObject();
@@ -425,7 +374,6 @@ public class Parser {
                 telecomArray.put(telecomObject);
                 json.put("telecom", telecomArray);
             }
-
             if (practitioner.getLine() != null && !practitioner.getLine().isEmpty()) {
                 JSONArray addressArray = new JSONArray();
                 JSONObject addressObject = new JSONObject();
@@ -439,9 +387,7 @@ public class Parser {
                 addressArray.put(addressObject);
                 json.put("address", addressArray);
             }
-
-            json.put("gender", "female"); // Assuming gender is always female as per your provided resource example
-
+            json.put("gender", "female");
         } catch (JSONException e) {
             Log.d(LogTag.PRACTITIONER.getTag(),"failure by parsing json for post request");
             throw new RuntimeException(e);
