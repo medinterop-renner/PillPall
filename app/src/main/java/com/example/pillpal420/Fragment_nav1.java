@@ -66,13 +66,10 @@ public class Fragment_nav1 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View scanView = inflater.inflate(R.layout.fragment_home, container, false);
-
         Button scanBtn = scanView.findViewById(R.id.scanBtn);
         scanImgView = scanView.findViewById(R.id.scanImgView);
         scanTextView = scanView.findViewById(R.id.scanTextView);
-
         scanPicLauncher = registerForActivityResult(new ActivityResultContracts.TakePicture(), result -> {
-
             if (result) {
                 processImg(picUri);
             } else {
@@ -143,15 +140,10 @@ public class Fragment_nav1 extends Fragment {
         try {
             InputImage img = InputImage.fromFilePath(getContext(), uri);
             TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
-
             recognizer.process(img).addOnSuccessListener(visionText -> {
                 displayText(visionText);
-
-
                 getStringFromScan(visionText);
-
                 scanImgView.setImageURI(uri);
-
             }).addOnFailureListener(e -> {
                 Log.e(LogTag.MLKIT.getTag(), "Text nicht erkannt", e);
                 Toast.makeText(getActivity(), R.string.text_notfound, Toast.LENGTH_SHORT).show();
@@ -190,7 +182,6 @@ public class Fragment_nav1 extends Fragment {
 
     private void getStringFromScan(Text visionText) {
         StringBuilder text = new StringBuilder();
-
         for (Text.TextBlock block : visionText.getTextBlocks()) {
             text.append(block.getText());
         }

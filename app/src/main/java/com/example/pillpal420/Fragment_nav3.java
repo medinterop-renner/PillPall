@@ -79,11 +79,9 @@ public class Fragment_nav3 extends Fragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View invView = inflater.inflate(R.layout.fragment_inventur, container, false);
         Button invPicBtn = invView.findViewById(R.id.invPicBtn);
         invLinLayout = invView.findViewById(R.id.invLinLayout);
-
         invPicLauncher = registerForActivityResult(new ActivityResultContracts.TakePicture(), result -> {
             if (result) {
                 addPicTags(picUri);
@@ -92,9 +90,7 @@ public class Fragment_nav3 extends Fragment {
                 Toast.makeText(getActivity(), R.string.pic_error, Toast.LENGTH_SHORT).show();
             }
         });
-
         invPicBtn.setOnClickListener(v -> openCam());
-
         loadPics();
         return invView;
     }
@@ -138,7 +134,6 @@ public class Fragment_nav3 extends Fragment {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String picFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-
         return File.createTempFile(picFileName, ".jpg", storageDir);
     }
 
@@ -156,12 +151,10 @@ public class Fragment_nav3 extends Fragment {
      */
     private void addPicTags(Uri picUri) {
         View addTagView = getLayoutInflater().inflate(R.layout.inventory_item, invLinLayout, false);
-
         ImageView imgView = addTagView.findViewById(R.id.imgView);
         EditText editName = addTagView.findViewById(R.id.editName);
         EditText editExpiryDate = addTagView.findViewById(R.id.editExpiryDate);
         Button deleteBtn = addTagView.findViewById(R.id.deleteBtn);
-
         imgView.setImageURI(picUri);
         imgView.setTag(picUri.toString());
         deleteBtn.setOnClickListener(v -> {
@@ -201,31 +194,25 @@ public class Fragment_nav3 extends Fragment {
      * - speichert jedes JSON Objekt im JSON Array
      * - speichert das JSON Array als String in der Shared Preference
      */
-
     private void savePics() {
         SharedPreferences sharedPref = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-
         JSONArray jsonArr = new JSONArray();
         for (int i = 0; i < invLinLayout.getChildCount(); i++) {
             View view = invLinLayout.getChildAt(i);
             ImageView imgView = view.findViewById(R.id.imgView);
             EditText editName = view.findViewById(R.id.editName);
             EditText editExpiryDate = view.findViewById(R.id.editExpiryDate);
-
-            //funktioniert nicht: Uri picUri = imgView.getStringURI(); -->
             String imgUriString = (String) imgView.getTag();
             Uri picUri = Uri.parse(imgUriString);
             String editName22 = editName.getText().toString();
             String editExpiryDate22 = editExpiryDate.getText().toString();
-
             JSONObject jsonObj = new JSONObject();
             try {
                 jsonObj.put("picUri", picUri.toString());
                 jsonObj.put("editName", editName22);
                 jsonObj.put("editExpiryDate", editExpiryDate22);
                 jsonArr.put(jsonObj);
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -251,7 +238,6 @@ public class Fragment_nav3 extends Fragment {
     private void loadPics() {
         SharedPreferences sharedPref = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         String jsonPics = sharedPref.getString(KEY_PICS, "");
-
         if (!jsonPics.isEmpty()) {
             try {
                 JSONArray jsonArr = new JSONArray(jsonPics);
@@ -260,14 +246,11 @@ public class Fragment_nav3 extends Fragment {
                     String imgUriString = jsonObj.getString("picUri");
                     String editName = jsonObj.getString("editName");
                     String editExpiryDate = jsonObj.getString("editExpiryDate");
-
                     Uri picUri = Uri.parse(imgUriString);
                     addPicTags(picUri);
-
                     View view = invLinLayout.getChildAt(invLinLayout.getChildCount() - 1);
                     EditText editName1 = view.findViewById(R.id.editName);
                     EditText editExpiryDate1 = view.findViewById(R.id.editExpiryDate);
-
                     editName1.setText(editName);
                     editExpiryDate1.setText(editExpiryDate);
                 }
