@@ -13,7 +13,19 @@ public abstract class CorePractitionerProfileDatabase extends RoomDatabase {
     public abstract CorePractitionerProfilDAO getCorePractitionerProfilDAO();
 
     private static volatile CorePractitionerProfileDatabase INSTANCE;
-
+    /**
+     * Erhält ein Element aus der CorePracticionerProfileDatabase
+     *
+     * Funktion:
+     * 1. Überprüfen ob die Instance null ist
+     *    --> Instance ist null: synchronisieren der CorePracticionerProfilDatabase Klasse
+     *        erneutes Überprufen der Instanz
+     *    --> Instanz ist immmernoch null: Initialisieren der Datenbank mit Name und Klasse
+     * 2. Hinzufügen eines Callbacks zum Datenbank-Builder
+     * 3. Erstellen der Datenbank und hinzufügen zu Instance
+     * @param context Context um die Datenbank zu Initialisieren
+     * @return ein Element der CorePracticionerProfilDatabase
+     */
     public static CorePractitionerProfileDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (CorePractitionerProfileDatabase.class) {
@@ -28,6 +40,10 @@ public abstract class CorePractitionerProfileDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
+
+    /**
+     * Callback für die Erstellung und Öffnung der Datenbank
+     */
     private static final RoomDatabase.Callback myRoomCallBack = new RoomDatabase.Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
