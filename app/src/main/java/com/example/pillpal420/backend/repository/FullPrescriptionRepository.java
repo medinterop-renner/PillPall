@@ -29,16 +29,26 @@ import okhttp3.Response;
  */
 public class FullPrescriptionRepository {
 
+
+
     private String serverAddress = "192.168.0.2:8080";
     private String urlFetchBundleForOnePatientWithAllMedicationDataRequests = "http://" + serverAddress + "/hapi-fhir-jpaserver/fhir/MedicationRequest?subject=";
     private OkHttpClient client = new OkHttpClient();
     private Parser parser = new Parser();
 
+    /**
+     * Callback interface für das FullPrescriptionRepository
+     */
     public interface FullPrescriptionRepositoryCallback {
         void onResponse(List<FullPrescriptionDataModel> fullPrescriptionDataModels);
         void onFailure(Exception e);
     }
-
+    /**
+     * Holt alle MedicationRequests vom FHIR R5 Server für einen Patienten und processed sie zu FullPrescriptionDataModels.
+     *
+     * @param patientId                      The ID of the patient whose medication requests are fetched
+     * @param fullPrescriptionRepositoryCallback The callback to handle response or failure.
+     */
     public void getFullMedicationRequests(String patientId, FullPrescriptionRepositoryCallback fullPrescriptionRepositoryCallback) {
         String urlFullPrescription = urlFetchBundleForOnePatientWithAllMedicationDataRequests + patientId;
 
@@ -95,7 +105,12 @@ public class FullPrescriptionRepository {
             }
         });
     }
-
+    /**
+     * Gruppiert medication requests anhand ihrer group identifier
+     *
+     * @param requests The list of medication request data models.
+     * @return A map with key group identifier and the value list of medication requests.
+     */
     private Map<String, List<MedicationRequestDataModel>> groupByGroupIdentifier(List<MedicationRequestDataModel> requests) {
 
         // Neue
@@ -109,7 +124,13 @@ public class FullPrescriptionRepository {
         }
         return groupedRequests;
     }
-
+    /**
+     * Holt die Patienten Resource die von FHIR als relativer path angegeben wird
+     *
+     * @param patientReference The reference ID of the patient/ the relative Path of the Patient resource on the FHIR R5 Server
+     * @return A PatientDataModel object representing the patient's personal details.
+     * @throws IOException if the request fails.
+     */
     private PatientDataModel fetchPatient(String patientReference) throws IOException {
         String urlPatient = "http://192.168.0.2:8080/hapi-fhir-jpaserver/fhir/" + patientReference;
 
@@ -122,7 +143,13 @@ public class FullPrescriptionRepository {
         String responseBody = response.body().string();
         return parser.createPatient(responseBody);
     }
-
+    /**
+     * Fetched Practitioner details. über die id/ relative Path am FHIR Server
+     *
+     * @param practitionerReference The reference ID of the practitioner/ relative Path from the FHIR server.
+     * @return A PractitionerDataModel object representing the practitioner's details.
+     * @throws IOException if the request fails.
+     */
     private PractitionerDataModel fetchPractitioner(String practitionerReference) throws IOException {
         String urlPractitioner = "http://192.168.0.2:8080/hapi-fhir-jpaserver/fhir/" + practitionerReference;
 
@@ -136,6 +163,12 @@ public class FullPrescriptionRepository {
         return parser.createPractitioner(responseBody);
     }
 
+    /**
+     * Erstellt aus einem MedicationRequestDataModel Objekt ein MedicationDataModelForFullPrescriptionsModel
+     *
+     * @param request the MedicationRequestDataModel object that has to be converted
+     * @return Returns a MedicationRequestDataModelForFullPrescriptions object for further use in the FullPrescriptionRepository.
+     */
     private MedicationRequestDataModelForFullPrescription convertToFullPrescriptionModel(MedicationRequestDataModel request) {
         List<MedicationRequestDataModelForFullPrescription.DosageInstructionsForMedicationRequestDataModelForFullPrescription> dosageInstructions = new ArrayList<>();
         for (MedicationRequestDataModel.DosageInstruction instruction : request.getDosageInstructions()) {
