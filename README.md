@@ -59,9 +59,11 @@ Allow users to scan and digitize prescriptions and medications. Automatically ge
 
 ## Development 
 
-The backend logic can be found [here](https://github.com/medinterop-renner/PillPall/tree/master/app/src/main/java/com/example/pillpal420/backend). 
-The Python Server can be found [here](https://github.com/medinterop-renner/PillPall/blob/master/python_server.py)
-For the App to work a FHIR R4 Server is needed. A Docker Image can be found [here](https://hub.docker.com/r/hapiproject/hapi)
+- The backend logic can be found [here](https://github.com/medinterop-renner/PillPall/tree/master/app/src/main/java/com/example/pillpal420/backend).
+  
+- The Python Server can be found [here](https://github.com/medinterop-renner/PillPall/blob/master/python_server.py)
+  
+- For the App to work a FHIR R4 Server is needed. A Docker Image can be found [here](https://hub.docker.com/r/hapiproject/hapi)
 
 
 Implemented by:
